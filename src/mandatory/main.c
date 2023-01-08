@@ -10,8 +10,9 @@
 #define MINIMAP_SIZE 500
 #define GRID_SIZE 50
 #define DISK_SIZE 5
-#define DISK_SPEED 5
-
+#define DISK_SPEED 1
+#define TRUE 1
+#define FALSE 0
 /*
  mlx_line_horizontal : This function draws a horizontal line filled with a given color on an open window. It takes in a pointer to the MinilibX instance, a pointer to the open window, the x-coordinate of the start of the line, the y-coordinate of the line, the length of the line and the color of the line in hexadecimal as input.
  */
@@ -92,47 +93,69 @@ void	draw_grid(t_game *game)
     }
 }
 
-void	move_player(t_game *game)
-{
-		// Clear window
-		mlx_clear_window(game->mlx, game->window);
-		// Draw grid
-		draw_grid(game);
-		// Draw disk
-		mlx_circle_filled(game->mlx, game->window, game->player.x, game->player.y, DISK_SIZE, 0x0000FF);
-}
 
-int key_press(int key, void *param) {
-	t_game		*game;
-	
-	game = param;
+int key_press(int key, t_game *game) 
+{
 	printf("pressed: %i\n", key);
     // Update key state
     switch (key) {
         case 119: // Up arrow
-			game->player.y -= DISK_SPEED;
+			game->player.up = TRUE;
             break;
         case 115: // Down arrow
-			game->player.y += DISK_SPEED;
+			game->player.down = TRUE;
             break;
         case 97: // Left arrow
-			game->player.x -= DISK_SPEED;
+			game->player.left = TRUE;
             break;
         case 100: // Right arrow
-			game->player.x += DISK_SPEED;
+			game->player.right = TRUE;
             break;
     }
-	move_player(game);
     return 0;
 }
 
 int	key_release(int key, t_game *game)
 {
-	(void)game;
 	printf("released: %i\n", key);
-	return (0);
+    // Update key state
+    switch (key) {
+        case 119: // Up arrow
+			game->player.up = FALSE;
+            break;
+        case 115: // Down arrow
+			game->player.down = FALSE;
+            break;
+        case 97: // Left arrow
+			game->player.left = FALSE;
+            break;
+        case 100: // Right arrow
+			game->player.right = FALSE;
+            break;
+    }
+    return 0;
 }
 
+int	update_game(t_game *game)
+{
+	usleep(1000000/24);
+	if (game->player.up)
+		game->player.y -= DISK_SPEED;
+	if (game->player.down)
+		game->player.y += DISK_SPEED;
+	if (game->player.left)
+		game->player.x -= DISK_SPEED;
+	if (game->player.right)
+		game->player.x += DISK_SPEED;
+	
+	// Clear window
+	mlx_clear_window(game->mlx, game->window);
+	// Draw grid
+	draw_grid(game);
+	// Draw disk
+	mlx_circle_filled(game->mlx, game->window, game->player.x, game->player.y, DISK_SIZE, 0x0000FF);
+	return (0);
+}
 
 int main() 
 {
@@ -143,15 +166,20 @@ int main()
  	// Initialize disk position
     game.player.x = WINDOW_WIDTH / 2;
     game.player.y = WINDOW_HEIGHT / 2;
-
-    draw_grid(&game);
-
+	game.player.up = FALSE;
+	game.player.down = FALSE;
+	game.player.left = FALSE;
+	game.player.right = FALSE;
+    
+	// Draw first frame
+	draw_grid(&game);
 	mlx_circle_filled(game.mlx, game.window, game.player.x, game.player.y, DISK_SIZE, 0x0000FF);
+	
 	// Set up keyboard events
-	//mlx_hook(game.window, 3, 1L<<1, test_close, &game);
-    //mlx_key_hook(game.window, key_press, (void *)&game);
-	mlx_hook(game.window, 2, 1L<<0, key_press, (void *)&game);
-	//mlx_hook(game.window, 3, 1L<<1, key_release, (void *)&game);
+	mlx_do_key_autorepeatoff(game.mlx);
+	mlx_hook(game.window, 2, 1L<<0, key_press, &game);
+	mlx_hook(game.window, 3, 1L<<1, key_release, &game);
+	mlx_loop_hook(game.mlx, update_game, &game);
 	mlx_loop(game.mlx);
     return 0;
 }
