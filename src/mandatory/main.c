@@ -13,13 +13,22 @@
 #define DISK_SPEED 1
 #define TRUE 1
 #define FALSE 0
+
+void	my_mlx_pixel_put(t_img_data *img, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
+}
+
 /*
  mlx_line_horizontal : This function draws a horizontal line filled with a given color on an open window. It takes in a pointer to the MinilibX instance, a pointer to the open window, the x-coordinate of the start of the line, the y-coordinate of the line, the length of the line and the color of the line in hexadecimal as input.
  */
-void mlx_line_horizontal(void *mlx_ptr, void *win_ptr, int x, int y, int len, int color)
+void mlx_line_horizontal(t_img_data img, int x, int y, int len, int color)
 {
     while (len--) {
-        mlx_pixel_put(mlx_ptr, win_ptr, x++, y, color);
+        my_mlx_pixel_put(&img, x++, y, color);
     }
 }
 
@@ -27,27 +36,31 @@ void mlx_line_horizontal(void *mlx_ptr, void *win_ptr, int x, int y, int len, in
 mlx_circle_filled : This function draws a filled circle of a given color on an open window using the Bresenham's circle drawing algorithm. It takes in a pointer to the MinilibX instance, a pointer to the open window, the x-coordinate of the center of the circle, the y-coordinate of the center of the circle, the radius of the circle and the color of the circle in hexadecimal as input.
 */
 
-void mlx_circle_filled(void *mlx_ptr, void *win_ptr, int x, int y, int r, int color)
+void	mlx_circle_filled(t_game *game,
+			int x, int y, int r, int color)
 {
-    int d;
-    int cx = 0;
-    int cy = r;
+	int	d;
+	int	cx;
+	int	cy;
 
-    d = 3 - 2 * r;
-    while (cx <= cy) {
-        mlx_line_horizontal(mlx_ptr, win_ptr, x - cy, y + cx, 2 * cy, color);
-        mlx_line_horizontal(mlx_ptr, win_ptr, x - cy, y - cx, 2 * cy, color);
-        mlx_line_horizontal(mlx_ptr, win_ptr, x - cx, y - cy, 2 * cx, color);
-        mlx_line_horizontal(mlx_ptr, win_ptr, x - cx, y + cy, 2 * cx, color);
-        if (d < 0) {
-            d = d + 4 * cx + 6;
-        }
-        else {
-            d = d + 4 * (cx - cy) + 10;
-            cy--;
-        }
-        cx++;
-    }
+	cx = 0;
+	cy = r;
+	d = 3 - 2 * r;
+	while (cx <= cy)
+	{
+		mlx_line_horizontal(game->img, x - cy, y + cx, 2 * cy, color);
+		mlx_line_horizontal(game->img, x - cy, y - cx, 2 * cy, color);
+		mlx_line_horizontal(game->img, x - cx, y - cy, 2 * cx, color);
+		mlx_line_horizontal(game->img, x - cx, y + cy, 2 * cx, color);
+		if (d < 0)
+			d = d + 4 * cx + 6;
+		else
+		{
+			d = d + 4 * (cx - cy) + 10;
+			cy--;
+		}
+		cx++;
+	}
 }
 
 /*
@@ -56,29 +69,32 @@ void mlx_circle_filled(void *mlx_ptr, void *win_ptr, int x, int y, int r, int co
 
 void mlx_circle(void *mlx_ptr, void *win_ptr, int x, int y, int r, int color)
 {
-    int d;
-    int cx = 0;
-    int cy = r;
+	int d;
+	int cx;
+	int cy;
 
-    d = 3 - 2 * r;
-    while (cx <= cy) {
-        mlx_pixel_put(mlx_ptr, win_ptr, x + cx, y + cy, color);
-        mlx_pixel_put(mlx_ptr, win_ptr, x + cy, y + cx, color);
-        mlx_pixel_put(mlx_ptr, win_ptr, x + cy, y - cx, color);
-        mlx_pixel_put(mlx_ptr, win_ptr, x + cx, y - cy, color);
-        mlx_pixel_put(mlx_ptr, win_ptr, x - cx, y - cy, color);
-        mlx_pixel_put(mlx_ptr, win_ptr, x - cy, y - cx, color);
-        mlx_pixel_put(mlx_ptr, win_ptr, x - cy, y + cx, color);
-        mlx_pixel_put(mlx_ptr, win_ptr, x - cx, y + cy, color);
-        if (d < 0) {
-            d = d + 4 * cx + 6;
-        }
-        else {
-            d = d + 4 * (cx - cy) + 10;
-            cy--;
-        }
-        cx++;
-    }
+	cx = 0;
+	cy = r;
+	d = 3 - 2 * r;
+	while (cx <= cy)
+	{
+		mlx_pixel_put(mlx_ptr, win_ptr, x + cx, y + cy, color);
+		mlx_pixel_put(mlx_ptr, win_ptr, x + cy, y + cx, color);
+		mlx_pixel_put(mlx_ptr, win_ptr, x + cy, y - cx, color);
+		mlx_pixel_put(mlx_ptr, win_ptr, x + cx, y - cy, color);
+		mlx_pixel_put(mlx_ptr, win_ptr, x - cx, y - cy, color);
+		mlx_pixel_put(mlx_ptr, win_ptr, x - cy, y - cx, color);
+		mlx_pixel_put(mlx_ptr, win_ptr, x - cy, y + cx, color);
+		mlx_pixel_put(mlx_ptr, win_ptr, x - cx, y + cy, color);
+		if (d < 0)
+			d = d + 4 * cx + 6;
+		else
+		{
+			d = d + 4 * (cx - cy) + 10;
+			cy--;
+		}
+		cx++;
+	}
 }
 
 void	draw_grid(t_game *game)
@@ -147,13 +163,17 @@ int	update_game(t_game *game)
 		game->player.x -= DISK_SPEED;
 	if (game->player.right)
 		game->player.x += DISK_SPEED;
+	game->img.img = mlx_new_image(game->mlx, 500, 500);
+	game->img.addr = mlx_get_data_addr(game->img.img, &game->img.bits_per_pixel, &game->img.line_length, &game->img.endian);
 	
 	// Clear window
 	mlx_clear_window(game->mlx, game->window);
 	// Draw grid
-	draw_grid(game);
+//	draw_grid(game);
 	// Draw disk
-	mlx_circle_filled(game->mlx, game->window, game->player.x, game->player.y, DISK_SIZE, 0x0000FF);
+	mlx_circle_filled(game, game->player.x, game->player.y, DISK_SIZE, 0x0000FF);
+	mlx_put_image_to_window(game->mlx, game->window, game->img.img, 0, 0);
+	mlx_destroy_image(game->mlx, &game->img);
 	return (0);
 }
 
@@ -172,8 +192,8 @@ int main()
 	game.player.right = FALSE;
     
 	// Draw first frame
-	draw_grid(&game);
-	mlx_circle_filled(game.mlx, game.window, game.player.x, game.player.y, DISK_SIZE, 0x0000FF);
+	//draw_grid(&game);
+//	mlx_circle_filled(&game, game.player.x, game.player.y, DISK_SIZE, 0x0000FF);
 	
 	// Set up keyboard events
 	mlx_do_key_autorepeatoff(game.mlx);
