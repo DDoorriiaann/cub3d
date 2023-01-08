@@ -1,10 +1,10 @@
-SRCS			=	main.c
+SRC			=	main.c
 
-SRCS_BONUS		=
+SRC_BONUS		=
 
-OBJS			=	${addprefix srcs/mandatory/, ${SRCS:.c=.o}}
+OBJS			=	${addprefix src/mandatory/, ${SRC:.c=.o}}
 
-OBJS_BONUS		=	${addprefix srcs/bonus/, ${SRCS_BONUS:.c=.o}}
+OBJS_BONUS		=	${addprefix src/bonus/, ${SRC_BONUS:.c=.o}}
 
 LIB_FLAGS		=	-L libft -L mlx_linux
 

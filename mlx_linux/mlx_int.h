@@ -29,7 +29,6 @@
 # include <sys/ipc.h>
 # include <sys/shm.h>
 # include <X11/extensions/XShm.h>
-# include <X11/extensions/Xrender.h>
 # include <X11/XKBlib.h>
 /* #include	<X11/xpm.h> */
 
@@ -71,11 +70,6 @@ typedef struct	s_event_list
 typedef struct	s_win_list
 {
 	Window				window;
-	Pixmap				window_back;
-	Picture				pict;
-	Picture				pict_back;
-	int					width;
-	int					height;
 	GC					gc;
 	struct s_win_list	*next;
 	int					(*mouse_hook)();
@@ -92,7 +86,6 @@ typedef struct	s_img
 {
 	XImage			*image;
 	Pixmap			pix;
-	Picture			pict;
 	GC				gc;
 	int				size_line;
 	int				bpp;
@@ -106,22 +99,23 @@ typedef struct	s_img
 
 typedef struct	s_xvar
 {
-	Display				*display;
-	Window				root;
-	int					depth;
-	Visual				*visual;
-	XRenderPictFormat	*pict_format;
-	Colormap			cmap;
-	t_win_list			*win_list;
-	int					(*loop_hook)();
-	void				*loop_param;
-	int					use_xshm;
-	int					pshm_format;
-	int					do_flush;
-	int					decrgb[6];
-	Atom				wm_delete_window;
-	Atom				wm_protocols;
-	int 				end_loop;
+	Display		*display;
+	Window		root;
+	int			screen;
+	int			depth;
+	Visual		*visual;
+	Colormap	cmap;
+	int			private_cmap;
+	t_win_list	*win_list;
+	int			(*loop_hook)();
+	void		*loop_param;
+	int			use_xshm;
+	int			pshm_format;
+	int			do_flush;
+	int			decrgb[6];
+	Atom		wm_delete_window;
+	Atom		wm_protocols;
+	int 		end_loop;
 }				t_xvar;
 
 

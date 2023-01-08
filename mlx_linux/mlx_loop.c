@@ -28,19 +28,6 @@ static int	win_count(t_xvar *xvar)
 	return (i);
 }
 
-void	win_buffer_flip(t_xvar *xvar)
-{
-	t_win_list	*win;
-
-	win = xvar->win_list;
-	while (win)
-	{
-		XCopyArea(xvar->display, win->window_back, win->window,
-				  win->gc, 0, 0, win->width, win->height, 0, 0);
-		win = win->next;
-	}
-}
-
 int			mlx_loop_end(t_xvar *xvar)
 {
 	xvar->end_loop = 1;
@@ -54,7 +41,7 @@ int			mlx_loop(t_xvar *xvar)
 
 	mlx_int_set_win_event_mask(xvar);
 	xvar->do_flush = 0;
-	while (xvar->win_list && !xvar->end_loop)
+	while (win_count(xvar) && !xvar->end_loop)
 	{
 		while (!xvar->end_loop && (!xvar->loop_hook || XPending(xvar->display)))
 		{
@@ -71,7 +58,6 @@ int			mlx_loop(t_xvar *xvar)
 		XSync(xvar->display, False);
 		if (xvar->loop_hook)
 			xvar->loop_hook(xvar->loop_param);
-		win_buffer_flip(xvar);
 	}
 	return (0);
 }
