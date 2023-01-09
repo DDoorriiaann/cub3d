@@ -9,8 +9,9 @@
 #define WINDOW_HEIGHT 500
 #define MINIMAP_SIZE 500
 #define GRID_SIZE 50
-#define DISK_SIZE 5
-#define DISK_SPEED 2
+#define PLAYER_SIZE 5
+#define PLAYER_SPEED 3
+#define PLAYER_TURN_SPEED M_PI / 4 / 10
 #define TRUE 1
 #define FALSE 0
 
@@ -30,6 +31,61 @@ void mlx_line_horizontal(t_frame frame, int x, int y, int len, int color)
 	while (len--) {
 		my_mlx_pixel_put(&frame, x++, y, color);
     }
+}
+
+void draw_line(t_game *game, int beginX, int beginY, int endX, int endY, int color)
+{
+	double deltaX = endX - beginX; // 10
+	double deltaY = endY - beginY; // 0
+
+	int pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
+	double pixelX = beginX;
+	double pixelY = beginY;
+	while (pixels)
+	{
+		my_mlx_pixel_put(&game->frame, pixelX, pixelY, color);
+		pixelX += deltaX;
+		pixelY += deltaY;
+		--pixels;
+	}
+}
+
+
+/* draw_line_bresenham : This function draws a line on the screen using the Bresenham line drawing algorithm.  
+It uses the Bresenham algorithm to efficiently determine which pixels should be drawn, and draws them one by one
+*/
+void draw_line_bresenham(t_game *game, int x1, int y1, int x2, int y2)
+{
+	int	dx;
+	int	dy;
+	int	decision;
+	int	x;
+	int	y;
+
+	dx = x2 - x1;
+	dy = y2 - y1;
+
+	x = x1;
+	y = y1;
+
+	// initialize the decision parameter
+	decision = 2 * dy - dx;
+
+	while (x < x2)
+	{
+		if (decision >= 0)
+		{
+			my_mlx_pixel_put(&game->frame, x, y, 0x0000FF);
+			y = y + 1;
+			decision = decision + 2 * dy - 2 * dx;
+		}
+		else
+		{
+			my_mlx_pixel_put(&game->frame, x, y, 0x0000FF);
+			decision = decision + 2 * dy;
+		}
+		x = x + 1;
+	}
 }
 
 /*
@@ -67,7 +123,7 @@ void	mlx_circle_filled(t_game *game,
  mlx_circle : This function draws a circle of a given color on an open window using the Bresenham's circle drawing algorithm. It takes in a pointer to the MinilibX instance, a pointer to the open window, the x-coordinate of the center of the circle, the y-coordinate of the center of the circle, the radius of the circle and the color of the circle in hexadecimal as input.
 */
 
-void mlx_circle(void *frame, int x, int y, int r, int color)
+void mlx_circle(t_frame frame, int x, int y, int r, int color)
 {
 	int d;
 	int cx;
@@ -78,14 +134,14 @@ void mlx_circle(void *frame, int x, int y, int r, int color)
 	d = 3 - 2 * r;
 	while (cx <= cy)
 	{
-		my_mlx_pixel_put(frame, x + cx, y + cy, color);
-		my_mlx_pixel_put(frame, x + cy, y - cx, color);
-		my_mlx_pixel_put(frame, x + cx, y - cy, color);
-		my_mlx_pixel_put(frame, x + cy, y + cx, color);
-		my_mlx_pixel_put(frame, x - cx, y - cy, color);
-		my_mlx_pixel_put(frame, x - cy, y - cx, color);
-		my_mlx_pixel_put(frame, x - cy, y + cx, color);
-		my_mlx_pixel_put(frame, x - cx, y + cy, color);
+		my_mlx_pixel_put(&frame, x + cx, y + cy, color);
+		my_mlx_pixel_put(&frame, x + cy, y - cx, color);
+		my_mlx_pixel_put(&frame, x + cx, y - cy, color);
+		my_mlx_pixel_put(&frame, x + cy, y + cx, color);
+		my_mlx_pixel_put(&frame, x - cx, y - cy, color);
+		my_mlx_pixel_put(&frame, x - cy, y - cx, color);
+		my_mlx_pixel_put(&frame, x - cy, y + cx, color);
+		my_mlx_pixel_put(&frame, x - cx, y + cy, color);
 		if (d < 0)
 			d = d + 4 * cx + 6;
 		else
@@ -114,6 +170,7 @@ void	quit_game(t_game *game)
 	mlx_destroy_window(game->mlx, game->window);
 	if (game->frame.img)
 		mlx_destroy_image(game->mlx, game->frame.img);
+	mlx_do_key_autorepeaton(game->mlx);
 	mlx_destroy_display(game->mlx);
 	free(game->mlx);
 	exit(0);
@@ -151,23 +208,45 @@ int	key_release(int key, t_game *game)
 
 int	update_game(t_game *game)
 {
+	static int frame = 0;
 	usleep(1000000/60);
+	frame = frame + 1;
 	if (game->player.up)
-		game->player.y -= DISK_SPEED;
+	{
+		game->player.y -= PLAYER_SPEED * sin(game->player.angle);
+		game->player.x -= PLAYER_SPEED * cos(game->player.angle);
+	}
 	if (game->player.down)
-		game->player.y += DISK_SPEED;
+	{
+		game->player.y += PLAYER_SPEED * sin(game->player.angle);
+		game->player.x += PLAYER_SPEED * cos(game->player.angle);
+	}
 	if (game->player.left)
-		game->player.x -= DISK_SPEED;
+		game->player.angle = (game->player.angle - PLAYER_TURN_SPEED);
 	if (game->player.right)
-		game->player.x += DISK_SPEED;
+		game->player.angle = (game->player.angle + PLAYER_TURN_SPEED);
 
 	// Create image and get address
 	game->frame.img = mlx_new_image(game->mlx, 501, 501);
 	game->frame.addr = mlx_get_data_addr(game->frame.img, &game->frame.bits_per_pixel, &game->frame.line_length, &game->frame.endian);
+	
+	if (game->player.angle > 2 * M_PI)
+		game->player.angle = 0;
+	else if (game->player.angle < 0)
+		game->player.angle = 2 * M_PI;
+	if (frame % 20 == 0)
+	{
+		printf("angle: %f\n", game->player.angle);
+		printf("line end x: %i \nline end y : %i\n", game->player.x + (int)(cos(game->player.angle) * game->player.line_length), game->player.y + (int)(sin(game->player.angle) * game->player.line_length));
+		printf("cos: %f\n", cos(game->player.angle));
+		printf("sin: %f\n", sin(game->player.angle));
+	}
 	// Draw grid
 	draw_grid(game);
 	// Draw disk
-	mlx_circle_filled(game, game->player.x, game->player.y, DISK_SIZE, 0x0000FF);
+	mlx_circle_filled(game, game->player.x, game->player.y, PLAYER_SIZE, 0x0000FF);
+	draw_line_bresenham(game, game->player.x, game->player.y, game->player.x + (int)(cos(game->player.angle) * game->player.line_length), game->player.y + (int)(sin(game->player.angle) * game->player.line_length));
+	// Put image to window
 	mlx_put_image_to_window(game->mlx, game->window, game->frame.img, 0, 0);
 	if (game->frame.img)
 	{
@@ -190,6 +269,8 @@ int main()
  	// Initialize disk position
     game.player.x = WINDOW_WIDTH / 2;
     game.player.y = WINDOW_HEIGHT / 2;
+	game.player.angle = M_PI / 4;
+	game.player.line_length = 20;
 	game.player.up = FALSE;
 	game.player.down = FALSE;
 	game.player.left = FALSE;

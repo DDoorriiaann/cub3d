@@ -6,10 +6,12 @@ typedef struct s_player
 {
 	int	x;
 	int	y;
-	int	up;
-	int	down;
-	int	left;
-	int	right;
+	int		up;
+	int		down;
+	int		left;
+	int		right;
+	double	angle;
+	int		line_length;
 }	t_player;
 
 typedef struct	s_frame {
