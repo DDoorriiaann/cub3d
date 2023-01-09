@@ -12,19 +12,19 @@ typedef struct s_player
 	int	right;
 }	t_player;
 
-typedef struct	s_img_data {
+typedef struct	s_frame {
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-}				t_img_data;
+}				t_frame;
 
 typedef struct s_game
 {
 	void		*mlx;
 	void		*window;
-	t_img_data	img;
+	t_frame		frame;
 	t_player	player;
 }	t_game;
 
