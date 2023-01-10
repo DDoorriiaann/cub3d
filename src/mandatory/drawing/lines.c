@@ -53,20 +53,49 @@ void draw_line_bresenham(t_game *game, int x1, int y1, int x2, int y2)
 		x = x + 1;
 	}
 }
+
+void draw_line(t_game *game, t_player player, int x2, int y2)
+{
+    int delta_x;
+	int delta_y;
+	int step_x;
+	int step_y;
+	int x;
+	int y;
+	int err;
+	int err2;
+
+	x = (int)player.x;
+	y = (int)player.y;
+    delta_x = abs(x2 - x);
+    delta_y = abs(y2 - y);
+    step_x = x < x2 ? 1 : -1;
+    step_y = y < y2 ? 1 : -1;
+    err = (delta_x > delta_y ? delta_x : - delta_y) / 2;
+
+    while (1)
+    {
+        if (x < WINDOW_WIDTH && y < WINDOW_HEIGHT && x > 0 && y > 0)
+			my_mlx_pixel_put(&game->frame, x, y, 0xFF0000);
+		else
+			break ;
+        if (x == x2 && y == y2)
+            break ;
+        err2 = err;
+        if (err2 > - delta_x)
+        {
+            err -= delta_y;
+            x += step_x;
+        }
+        if (err2 < delta_y)
+        {
+            err += delta_x;
+            y += step_y;
+        }
+    }
+}
 /* simple line drawing algorithm */
 
-void draw_target(t_game *game, t_player player, int endX, int endY)
-{
-	double deltaX = (endX - player.x); // 10
-	double deltaY = (endY - player.y); // 0
-	double pixelX = player.x;
-	double pixelY = player.y;
-	int color = 0xFF0000;
-
-	pixelX += deltaX;
-	pixelY += deltaY;
-	mlx_circle_filled(game, pixelX, pixelY, 2, color);
-}
 
 /* simple grid drawing algorithm */
 

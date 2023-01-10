@@ -3,7 +3,7 @@
 int	game_routine(t_game *game)
 {
 	static int frame = 0;
-	usleep(1000000/60);
+	//usleep(1000000/60);
 	frame = frame + 1;
 	if (game->player.up)
 	{
@@ -38,8 +38,9 @@ int	game_routine(t_game *game)
 	// Draw grid
 	draw_grid(game);
 	// Draw disk
-	mlx_circle_filled(game, game->player.x, game->player.y, PLAYER_SIZE, 0x0000FF);
 	draw_target(game, game->player, game->player.x - (cos(game->player.angle) * game->player.line_length), game->player.y - (sin(game->player.angle) * game->player.line_length));
+	mlx_circle_filled(game, game->player.x, game->player.y, PLAYER_SIZE, 0x0000FF);
+	
 	// Put image to window
 	mlx_put_image_to_window(game->mlx, game->window, game->frame.img, 0, 0);
 	if (game->frame.img)

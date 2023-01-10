@@ -9,11 +9,12 @@
 # define WINDOW_HEIGHT 500
 # define MINIMAP_SIZE 500
 # define GRID_SIZE 50
-# define PLAYER_SIZE 5
-# define PLAYER_SPEED 3
-# define PLAYER_TURN_SPEED M_PI / 4 / 10
+# define PLAYER_SIZE 10
+# define PLAYER_SPEED 0.5
+# define PLAYER_TURN_SPEED M_PI / 180
 # define TRUE 1
 # define FALSE 0
+# define FOV 1.20428 // 69 degrees
 
 typedef struct s_player
 {
@@ -49,8 +50,10 @@ typedef struct s_game
 void	my_mlx_pixel_put(t_frame *frame, int x, int y, int color);
 void	draw_grid(t_game *game);
 void 	draw_target(t_game *game, t_player player, int endX, int endY);
+void	draw_fov(t_game *game, t_player player);
 void	mlx_line_horizontal(t_frame frame, int x, int y, int len, int color);
 void	draw_line_bresenham(t_game *game, int x1, int y1, int x2, int y2);
+void	draw_line(t_game *game, t_player player, int x2, int y2);
 void	mlx_circle_filled(t_game *game,
 			int x, int y, int r, int color);
 

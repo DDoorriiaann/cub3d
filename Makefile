@@ -2,6 +2,7 @@ SRC				=	main.c\
 					drawing/circles.c\
 					drawing/lines.c\
 					drawing/mlx_addons.c\
+					drawing/drawing_utils.c\
 					input_management/keys.c\
 					game/game_routine.c\
 					game/quit_game.c\

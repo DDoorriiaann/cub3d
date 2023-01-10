@@ -12,7 +12,7 @@ int main()
     game.player.x = WINDOW_WIDTH / 2;
     game.player.y = WINDOW_HEIGHT / 2;
 	game.player.angle = 0;
-	game.player.line_length = 20;
+	game.player.line_length = 50;
 	game.player.up = FALSE;
 	game.player.down = FALSE;
 	game.player.left = FALSE;
