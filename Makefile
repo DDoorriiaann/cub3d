@@ -6,6 +6,7 @@ SRC				=	main.c\
 					input_management/keys.c\
 					game/game_routine.c\
 					game/quit_game.c\
+					game/movements/collisions.c\
 
 SRC_BONUS		=
 

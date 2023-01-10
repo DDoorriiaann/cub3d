@@ -76,4 +76,8 @@ int		key_release(int key, t_game *game);
 void	quit_game(t_game *game);
 int		game_routine(t_game *game);
 
+//MOVEMENTS
+
+int	find_collision(t_game *game, t_player player);
+
 #endif

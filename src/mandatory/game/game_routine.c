@@ -7,13 +7,19 @@ int	game_routine(t_game *game)
 	frame = frame + 1;
 	if (game->player.up)
 	{
-		game->player.x -= PLAYER_SPEED * cos(game->player.angle);
-		game->player.y -= PLAYER_SPEED * sin(game->player.angle);
+		if (find_collision(game, game->player) == FALSE)
+		{
+			game->player.x -= PLAYER_SPEED * cos(game->player.angle);
+			game->player.y -= PLAYER_SPEED * sin(game->player.angle);
+		}
 	}
 	if (game->player.down)
 	{
-		game->player.x += PLAYER_SPEED * cos(game->player.angle);
-		game->player.y += PLAYER_SPEED * sin(game->player.angle);
+		if (find_collision(game, game->player) == FALSE)
+		{
+			game->player.x += PLAYER_SPEED * cos(game->player.angle);
+			game->player.y += PLAYER_SPEED * sin(game->player.angle);
+		}
 	}
 	if (game->player.left)
 		game->player.angle = (game->player.angle - PLAYER_TURN_SPEED);
