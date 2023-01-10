@@ -1,4 +1,10 @@
-SRC			=	main.c
+SRC				=	main.c\
+					drawing/circles.c\
+					drawing/lines.c\
+					drawing/mlx_addons.c\
+					input_management/keys.c\
+					game/game_routine.c\
+					game/quit_game.c\
 
 SRC_BONUS		=
 
