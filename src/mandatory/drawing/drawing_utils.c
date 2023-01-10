@@ -24,8 +24,6 @@ void	draw_fov(t_game *game, t_player player)
 	step = (float)FOV / (float)WINDOW_WIDTH;
 
 	iterations = WINDOW_WIDTH;
-	printf("iterations: %d", iterations);
-	printf("step: %f", step);
 	drawn_angle = player.angle - (FOV / 2);
 	while (iterations >= 0)
 	{

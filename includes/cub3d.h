@@ -11,7 +11,7 @@
 # define GRID_SIZE 50
 # define PLAYER_SIZE 10
 # define PLAYER_SPEED 0.5
-# define PLAYER_TURN_SPEED M_PI / 180
+# define PLAYER_TURN_SPEED 0.015
 # define TRUE 1
 # define FALSE 0
 # define FOV 1.20428 // 69 degrees
