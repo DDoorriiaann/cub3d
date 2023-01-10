@@ -4,8 +4,8 @@
 
 typedef struct s_player
 {
-	int	x;
-	int	y;
+	double	x;
+	double	y;
 	int		up;
 	int		down;
 	int		left;

@@ -33,22 +33,6 @@ void mlx_line_horizontal(t_frame frame, int x, int y, int len, int color)
     }
 }
 
-void draw_line(t_game *game, int beginX, int beginY, int endX, int endY, int color)
-{
-	double deltaX = endX - beginX; // 10
-	double deltaY = endY - beginY; // 0
-
-	int pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
-	double pixelX = beginX;
-	double pixelY = beginY;
-	while (pixels)
-	{
-		my_mlx_pixel_put(&game->frame, pixelX, pixelY, color);
-		pixelX += deltaX;
-		pixelY += deltaY;
-		--pixels;
-	}
-}
 
 
 /* draw_line_bresenham : This function draws a line on the screen using the Bresenham line drawing algorithm.  
@@ -117,6 +101,27 @@ void	mlx_circle_filled(t_game *game,
 		}
 		cx++;
 	}
+}
+void draw_line(t_game *game, int beginX, int beginY, int endX, int endY)
+{
+	double deltaX = (endX - beginX); // 10
+	double deltaY = (endY - beginY); // 0
+
+	//printf ("deltaX: %f", deltaX);
+	//printf ("deltaY: %f", deltaY);
+	int pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
+	double pixelX = beginX;
+	double pixelY = beginY;
+	int color = 0xFF0000;
+	
+	//while (pixels)
+	//{
+		pixelX += deltaX;
+		pixelY += deltaY;
+	mlx_circle_filled(game, pixelX, pixelY, 2, color);
+	//	my_mlx_pixel_put(&game->frame, pixelX, pixelY, color);
+				--pixels;
+	//}
 }
 
 /*
@@ -213,13 +218,13 @@ int	update_game(t_game *game)
 	frame = frame + 1;
 	if (game->player.up)
 	{
-		game->player.y -= PLAYER_SPEED * sin(game->player.angle);
 		game->player.x -= PLAYER_SPEED * cos(game->player.angle);
+		game->player.y -= PLAYER_SPEED * sin(game->player.angle);
 	}
 	if (game->player.down)
 	{
-		game->player.y += PLAYER_SPEED * sin(game->player.angle);
 		game->player.x += PLAYER_SPEED * cos(game->player.angle);
+		game->player.y += PLAYER_SPEED * sin(game->player.angle);
 	}
 	if (game->player.left)
 		game->player.angle = (game->player.angle - PLAYER_TURN_SPEED);
@@ -237,7 +242,7 @@ int	update_game(t_game *game)
 	if (frame % 20 == 0)
 	{
 		printf("angle: %f\n", game->player.angle);
-		printf("line end x: %i \nline end y : %i\n", game->player.x + (int)(cos(game->player.angle) * game->player.line_length), game->player.y + (int)(sin(game->player.angle) * game->player.line_length));
+		printf("line end x: %f \nline end y : %f\n", game->player.x + (cos(game->player.angle) * game->player.line_length), game->player.y + (sin(game->player.angle) * game->player.line_length));
 		printf("cos: %f\n", cos(game->player.angle));
 		printf("sin: %f\n", sin(game->player.angle));
 	}
@@ -245,7 +250,7 @@ int	update_game(t_game *game)
 	draw_grid(game);
 	// Draw disk
 	mlx_circle_filled(game, game->player.x, game->player.y, PLAYER_SIZE, 0x0000FF);
-	draw_line_bresenham(game, game->player.x, game->player.y, game->player.x + (int)(cos(game->player.angle) * game->player.line_length), game->player.y + (int)(sin(game->player.angle) * game->player.line_length));
+	draw_line(game, game->player.x, game->player.y, game->player.x - (cos(game->player.angle) * game->player.line_length), game->player.y - (sin(game->player.angle) * game->player.line_length));
 	// Put image to window
 	mlx_put_image_to_window(game->mlx, game->window, game->frame.img, 0, 0);
 	if (game->frame.img)
@@ -269,7 +274,7 @@ int main()
  	// Initialize disk position
     game.player.x = WINDOW_WIDTH / 2;
     game.player.y = WINDOW_HEIGHT / 2;
-	game.player.angle = M_PI / 4;
+	game.player.angle = 0;
 	game.player.line_length = 20;
 	game.player.up = FALSE;
 	game.player.down = FALSE;
