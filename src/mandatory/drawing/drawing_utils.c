@@ -2,8 +2,8 @@
 
 void draw_target(t_game *game, t_player player, int endX, int endY)
 {
-	double deltaX = (endX - player.x); // 10
-	double deltaY = (endY - player.y); // 0
+	double deltaX = (endX - player.x);
+	double deltaY = (endY - player.y);
 	double pixelX = player.x;
 	double pixelY = player.y;
 

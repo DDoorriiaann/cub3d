@@ -94,19 +94,59 @@ void draw_line(t_game *game, t_player player, int x2, int y2)
         }
     }
 }
-/* simple line drawing algorithm */
+void	draw_square(t_game *game, int x, int y)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i <= GRID_UNIT)
+	{
+		j = 0;
+		while (j <= GRID_UNIT)
+		{
+			my_mlx_pixel_put(&game->frame, x + j, y + i, 0xFFFFFF);
+			j++;
+		}
+		i++;
+	}
+	
+}
+
+void	draw_map(t_game *game)
+{
+	int	x;
+	int	y;
+	int	cell_nb = 0;
+
+	y = 0;
+	while (y < game->map.map_height)
+	{
+		x = 0;
+		while (x < game->map.map_width)
+		{
+			cell_nb++;
+			if(game->map.matrix[y][x] == '1')
+				draw_square(game, x * GRID_UNIT, y * GRID_UNIT);
+			x++;
+		}
+		y++;
+	}
+}
+
+
 
 
 /* simple grid drawing algorithm */
 
 void	draw_grid(t_game *game)
 {
-    for (int x = 0; x <= MINIMAP_SIZE; x++)
+    for (int y = 0; y <= game->map.map_height * GRID_UNIT; y++)
 	{
-        for (int y = 0; y <= MINIMAP_SIZE; y++)
+        for (int x = 0; x <= game->map.map_width * GRID_UNIT; x++)
 		{
-            if (x % GRID_SIZE == 0 || y % GRID_SIZE == 0)
-				my_mlx_pixel_put(&game->frame, x, y, 0xFFFFFF);
+            if (x % GRID_UNIT == 0 || y % GRID_UNIT == 0)
+				my_mlx_pixel_put(&game->frame, x, y, 0x00FF00);
         }
     }
 }

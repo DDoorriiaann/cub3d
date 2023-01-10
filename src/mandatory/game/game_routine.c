@@ -36,6 +36,8 @@ int	game_routine(t_game *game)
 		printf("sin: %f\n", sin(game->player.angle));
 	}
 	// Draw grid
+	
+	draw_map(game);
 	draw_grid(game);
 	// Draw disk
 	draw_target(game, game->player, game->player.x - (cos(game->player.angle) * game->player.line_length), game->player.y - (sin(game->player.angle) * game->player.line_length));

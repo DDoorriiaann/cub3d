@@ -1,8 +1,23 @@
 #include "cub3d.h"
 
+
+
+
 int main() 
 {
     t_game	game;
+	char	*map[]= {
+		"1111111111",
+		"1000000001",
+		"1000000001",
+		"1000000001",
+		"1000010001",
+		"1000000001",
+		"1000000001",
+		"1000000001",
+		"1000000001",
+		"1111111111"
+	};
 
 	// Initialize MinilibX
 	game.mlx = mlx_init();
@@ -18,6 +33,9 @@ int main()
 	game.player.left = FALSE;
 	game.player.right = FALSE;
     game.frame.img = NULL;
+	game.map.matrix = map;
+	game.map.map_height = 10;
+	game.map.map_width = 10;
 
 	// Set up keyboard events
 	mlx_do_key_autorepeatoff(game.mlx);
