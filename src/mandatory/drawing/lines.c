@@ -113,21 +113,37 @@ void	draw_square(t_game *game, int x, int y)
 	}
 	
 }
+int	get_fogged_color(int distance)
+{
+	int		fogged_color;
+	int		tmp;
+	if (distance > 255)
+		distance = 255;
+	tmp = (255 - distance);
+	fogged_color = tmp << 16 | tmp << 8 | tmp;
+	//fogged_color = ((255 - distance)) + ((255 - distance) * 255) + (255 - distance);
+
+	return (fogged_color);
+}
 
 void draw_wall_ray(t_game *game, t_ray ray, int ray_count)
 {
 	float	bottom;
 	float	top;
+	int		fogged_color;
 
+	if (ray.distance > 255)
+		return ;
 	bottom = WINDOW_HEIGHT / 2 + (ray.wall_height / 2);
 	//printf("bottom: %d", bottom);
 	top = bottom - ray.wall_height;
 	//printf("top: %d", top);
-	
+	fogged_color = get_fogged_color(ray.distance);
+
 	while (bottom > top)
 	{
 		if (bottom > 0 && bottom < WINDOW_HEIGHT)
-			my_mlx_pixel_put(&game->frame, (int)ray_count + MINIMAP_WIDTH, (int)bottom, 0xFFFFFF);
+			my_mlx_pixel_put(&game->frame, (int)ray_count + MINIMAP_WIDTH, (int)bottom, fogged_color);
 		bottom--;
 	}
 }
