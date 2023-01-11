@@ -22,8 +22,6 @@ int	find_collision(t_game *game, t_player player)
 	{
 		next_x = (floor(player.x - PLAYER_SPEED * cos(player.angle)) + (PLAYER_SIZE * cos_offset)) / GRID_UNIT;
 		next_y = (floor(player.y - PLAYER_SPEED * sin(player.angle)) + (PLAYER_SIZE * sin_offset)) / GRID_UNIT;
-		printf("next_x = %d", next_x);
-		printf("next_y = %d", next_y);
 		if (game->map.matrix[next_y][next_x] == '1')
 			return (TRUE);
 	}

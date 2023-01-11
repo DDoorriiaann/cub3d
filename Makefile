@@ -7,6 +7,7 @@ SRC				=	main.c\
 					game/game_routine.c\
 					game/quit_game.c\
 					game/movements/collisions.c\
+					game/raycasting/raycasting.c\
 
 SRC_BONUS		=
 

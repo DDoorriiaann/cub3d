@@ -46,7 +46,8 @@ int	game_routine(t_game *game)
 	draw_map(game);
 	draw_grid(game);
 	// Draw disk
-	draw_target(game, game->player, game->player.x - (cos(game->player.angle) * game->player.line_length), game->player.y - (sin(game->player.angle) * game->player.line_length));
+	//draw_target(game, game->player, game->player.x - (cos(game->player.angle) * game->player.line_length), game->player.y - (sin(game->player.angle) * game->player.line_length));
+	raycasting(game, game->player);
 	mlx_circle_filled(game, game->player.x, game->player.y, PLAYER_SIZE, 0x0000FF);
 	
 	// Put image to window
