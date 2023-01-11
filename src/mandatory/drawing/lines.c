@@ -94,6 +94,7 @@ void draw_line(t_game *game, t_player player, int x2, int y2)
         }
     }
 }
+
 void	draw_square(t_game *game, int x, int y)
 {
 	int	i;
@@ -111,6 +112,24 @@ void	draw_square(t_game *game, int x, int y)
 		i++;
 	}
 	
+}
+
+void draw_wall_ray(t_game *game, t_ray ray, int ray_count)
+{
+	float	bottom;
+	float	top;
+
+	bottom = WINDOW_HEIGHT / 2 + (ray.wall_height / 2);
+	//printf("bottom: %d", bottom);
+	top = bottom - ray.wall_height;
+	//printf("top: %d", top);
+	
+	while (bottom > top)
+	{
+		if (bottom > 0 && bottom < WINDOW_HEIGHT)
+			my_mlx_pixel_put(&game->frame, (int)ray_count + MINIMAP_WIDTH, (int)bottom, 0xFFFFFF);
+		bottom--;
+	}
 }
 
 void	draw_map(t_game *game)

@@ -13,15 +13,15 @@ int main()
 		"1000011101",
 		"1000000001",
 		"1000000001",
-		"1000000001",
-		"1000000001",
+		"1000010001",
+		"1010000001",
 		"1000000001",
 		"1111111111"
 	};
 
 	// Initialize MinilibX
 	game.mlx = mlx_init();
-    game.window = mlx_new_window(game.mlx, WINDOW_WIDTH + 1, WINDOW_HEIGHT + 1, "Minimap");
+    game.window = mlx_new_window(game.mlx, GAME_WIDTH + 1, GAME_HEIGHT + 1, "Minimap");
 
  	// Initialize disk position
     game.player.x = WINDOW_WIDTH / 2;

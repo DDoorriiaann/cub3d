@@ -27,7 +27,7 @@ int	game_routine(t_game *game)
 		game->player.angle = (game->player.angle + PLAYER_TURN_SPEED);
 
 	// Create image and get address
-	game->frame.img = mlx_new_image(game->mlx, 501, 501);
+	game->frame.img = mlx_new_image(game->mlx, 1001, 501);
 	game->frame.addr = mlx_get_data_addr(game->frame.img, &game->frame.bits_per_pixel, &game->frame.line_length, &game->frame.endian);
 	
 	if (game->player.angle > 2 * M_PI)
