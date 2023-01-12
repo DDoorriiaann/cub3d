@@ -28,6 +28,8 @@ typedef struct s_player
 	int		left;
 	int		right;
 	double	angle;
+	int		x_dir;
+	int		y_dir;
 	int		line_length;
 }	t_player;
 
@@ -63,6 +65,12 @@ typedef struct ray
 	float	distance;
 	int		collision;
 	float	wall_height;
+	int		x_dir;
+	int		y_dir;
+	float	x_offset;
+	float	y_offset;
+	float	x_first_offset;
+	float	y_first_offset;
 }	t_ray;
 
 //DRAWING

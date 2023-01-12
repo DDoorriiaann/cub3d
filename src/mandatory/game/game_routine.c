@@ -31,9 +31,17 @@ int	game_routine(t_game *game)
 	game->frame.addr = mlx_get_data_addr(game->frame.img, &game->frame.bits_per_pixel, &game->frame.line_length, &game->frame.endian);
 	
 	if (game->player.angle > 2 * M_PI)
-		game->player.angle = 0;
+		game->player.angle -= 2 * M_PI;
 	else if (game->player.angle < 0)
-		game->player.angle = 2 * M_PI;
+		game->player.angle += 2 * M_PI;
+	if (cos(game->player.angle >= 0))
+		game->player.x_dir = -1;
+	else
+		game->player.x_dir = 1;
+	if (sin(game->player.angle >= 0))
+		game->player.y_dir = 1;
+	else
+		game->player.y_dir = -1;
 	if (frame % 20 == 0)
 	{
 		printf("angle: %f\n", game->player.angle);

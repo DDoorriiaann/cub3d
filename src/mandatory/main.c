@@ -24,9 +24,9 @@ int main()
     game.window = mlx_new_window(game.mlx, GAME_WIDTH + 1, GAME_HEIGHT + 1, "Minimap");
 
  	// Initialize disk position
-    game.player.x = WINDOW_WIDTH / 2;
-    game.player.y = WINDOW_HEIGHT / 2;
-	game.player.angle = 0;
+    game.player.x = WINDOW_WIDTH / 2 + 25;
+    game.player.y = WINDOW_HEIGHT / 2  + 30;
+	game.player.angle = M_PI_2;
 	game.player.line_length = 50;
 	game.player.up = FALSE;
 	game.player.down = FALSE;
