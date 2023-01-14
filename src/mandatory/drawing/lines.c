@@ -155,10 +155,10 @@ void	draw_map(t_game *game)
 	int	cell_nb = 0;
 
 	y = 0;
-	while (y < game->map.map_height)
+	while (y < game->map.height)
 	{
 		x = 0;
-		while (x < game->map.map_width)
+		while (x < game->map.width)
 		{
 			cell_nb++;
 			if(game->map.matrix[y][x] == '1')
@@ -176,9 +176,9 @@ void	draw_map(t_game *game)
 
 void	draw_grid(t_game *game)
 {
-    for (int y = 0; y <= game->map.map_height * GRID_UNIT; y++)
+    for (int y = 0; y <= game->map.height * GRID_UNIT; y++)
 	{
-        for (int x = 0; x <= game->map.map_width * GRID_UNIT; x++)
+        for (int x = 0; x <= game->map.width * GRID_UNIT; x++)
 		{
             if (x % GRID_UNIT == 0 || y % GRID_UNIT == 0)
 				my_mlx_pixel_put(&game->frame, x, y, 0x00FF00);

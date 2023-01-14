@@ -21,12 +21,12 @@ int main()
 
 	// Initialize MinilibX
 	game.mlx = mlx_init();
-    game.window = mlx_new_window(game.mlx, GAME_WIDTH + 1, GAME_HEIGHT + 1, "Minimap");
+    game.window = mlx_new_window(game.mlx, GAME_WIDTH + 1, GAME_HEIGHT + 1, "cub3D");
 
  	// Initialize disk position
-    game.player.x = WINDOW_WIDTH / 2 + 25;
-    game.player.y = WINDOW_HEIGHT / 2  + 30;
-	game.player.angle = M_PI_2;
+    game.player.x = MINIMAP_WIDTH / 2 + 25;
+    game.player.y = MINIMAP_HEIGHT/ 2  + 30;
+	game.player.angle = M_PI /2 - M_PI / 4;
 	game.player.line_length = 50;
 	game.player.up = FALSE;
 	game.player.down = FALSE;
@@ -34,8 +34,8 @@ int main()
 	game.player.right = FALSE;
     game.frame.img = NULL;
 	game.map.matrix = map;
-	game.map.map_height = 10;
-	game.map.map_width = 10;
+	game.map.height = 10;
+	game.map.width = 10;
 
 	// Set up keyboard events
 	mlx_do_key_autorepeatoff(game.mlx);

@@ -27,7 +27,7 @@ int	game_routine(t_game *game)
 		game->player.angle = (game->player.angle + PLAYER_TURN_SPEED);
 
 	// Create image and get address
-	game->frame.img = mlx_new_image(game->mlx, 1001, 501);
+	game->frame.img = mlx_new_image(game->mlx, GAME_WIDTH, GAME_HEIGHT);
 	game->frame.addr = mlx_get_data_addr(game->frame.img, &game->frame.bits_per_pixel, &game->frame.line_length, &game->frame.endian);
 	
 	if (game->player.angle > 2 * M_PI)
@@ -42,13 +42,13 @@ int	game_routine(t_game *game)
 		game->player.y_dir = 1;
 	else
 		game->player.y_dir = -1;
-	if (frame % 20 == 0)
-	{
-		printf("angle: %f\n", game->player.angle);
-		printf("line end x: %f \nline end y : %f\n", game->player.x + (cos(game->player.angle) * game->player.line_length), game->player.y + (sin(game->player.angle) * game->player.line_length));
-		printf("cos: %f\n", cos(game->player.angle));
-		printf("sin: %f\n", sin(game->player.angle));
-	}
+//	if (frame % 20 == 0)
+//	{
+//		printf("angle: %f\n", game->player.angle);
+//		printf("line end x: %f \nline end y : %f\n", game->player.x + (cos(game->player.angle) * game->player.line_length), game->player.y + (sin(game->player.angle) * game->player.line_length));
+//		printf("cos: %f\n", cos(game->player.angle));
+//		printf("sin: %f\n", sin(game->player.angle));
+//	}
 	// Draw grid
 	
 	draw_map(game);

@@ -5,16 +5,16 @@
 # include <math.h>
 # include "../mlx_linux/mlx.h"
 # include "../mlx_linux/mlx_int.h"
-# define GAME_WIDTH 1000
+# define GAME_WIDTH 1500
 # define GAME_HEIGHT 500
 # define MINIMAP_HEIGHT 500
 # define MINIMAP_WIDTH 500
-# define WINDOW_WIDTH 500
+# define WINDOW_WIDTH 1000
 # define WINDOW_HEIGHT 500
 # define GRID_UNIT 50
 # define PLAYER_SIZE 10
-# define PLAYER_SPEED 0.8
-# define PLAYER_TURN_SPEED 0.02
+# define PLAYER_SPEED 3
+# define PLAYER_TURN_SPEED 0.04
 # define TRUE 1
 # define FALSE 0
 # define FOV 1.20428 // 69 degrees
@@ -44,8 +44,8 @@ typedef struct	s_frame {
 typedef struct s_map
 {
 	char		**matrix;
-	int			map_width;
-	int			map_height;
+	int			width;
+	int			height;
 }	t_map;
 
 
@@ -63,7 +63,10 @@ typedef struct ray
 	float	x;
 	float	y;
 	float	distance;
+    double   angle;
 	int		collision;
+    int     scan_done;
+    int     collision_cel[2];
 	float	wall_height;
 	int		x_dir;
 	int		y_dir;
@@ -71,6 +74,7 @@ typedef struct ray
 	float	y_offset;
 	float	x_first_offset;
 	float	y_first_offset;
+	float 	unit_step_size;
 }	t_ray;
 
 //DRAWING
