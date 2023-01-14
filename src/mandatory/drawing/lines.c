@@ -75,7 +75,7 @@ void draw_line(t_game *game, t_player player, int x2, int y2)
 
     while (1)
     {
-        if (x < WINDOW_WIDTH && y < WINDOW_HEIGHT && x > 0 && y > 0)
+        if (x < MINIMAP_WIDTH && y < MINIMAP_HEIGHT && x > 0 && y > 0)
 			my_mlx_pixel_put(&game->frame, x, y, 0xFF0000);
 		else
 			break ;
@@ -117,9 +117,9 @@ int	get_fogged_color(int distance)
 {
 	int		fogged_color;
 	int		tmp;
-	if (distance > 255)
-		distance = 255;
-	tmp = (255 - distance);
+	if (distance > 400)
+		distance = 400;
+	tmp = (255 - ((distance * 255) / 400));
 	fogged_color = tmp << 16 | tmp << 8 | tmp;
 	//fogged_color = ((255 - distance)) + ((255 - distance) * 255) + (255 - distance);
 
@@ -132,7 +132,7 @@ void draw_wall_ray(t_game *game, t_ray ray, int ray_count)
 	float	top;
 	int		fogged_color;
 
-	if (ray.distance > 255)
+	if (ray.distance > 400)
 		return ;
 	bottom = WINDOW_HEIGHT / 2 + (ray.wall_height / 2);
 	//printf("bottom: %d", bottom);
