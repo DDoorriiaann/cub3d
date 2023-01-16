@@ -134,7 +134,7 @@ int	get_fogged_color(int distance, int color)
 }
 
 
-int	wall_color(t_ray ray)
+int	wall_color(t_ray ray, t_player player)
 {
 	int color;
 	color = 0xFFFFFF;
@@ -163,17 +163,27 @@ int	wall_color(t_ray ray)
 	horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT - ray.x;
 	vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT + GRID_UNIT - ray.y;
 	}
-	printf("ray angle: %f\n", ray.angle);
-	printf("horizontal_distance: %f\n", horizontal_distance);
-	printf("vertical_distance: %f\n", vertical_distance);
-	if (fabs(horizontal_distance) < fabs(vertical_distance)) {
+	if (fabs(horizontal_distance) < fabs(vertical_distance)) 
+	{
     // collision horizontale
-	color = 0xFF0000;
+		// if((ray.angle >= 45 && ray.angle < 135) ||( ray.angle >= 225 && ray.angle < 315))
+		// 	color = 0x00FF00;
+		// else 
+		if ((int)ray.y > (int)player.y)
+			color = 0xFF00FF;
+		else
+			color = 0x00FFFF;
 	} else {
 		// collision verticale
-		color = 0x00FF00;
+		// if((ray.angle >= 315 && ray.angle < 360 ) || (ray.angle >= 135 && ray.angle < 225))
+		// 	color = 0xFF0000;
+		// else
+		if ((int)ray.x > (int)player.x)
+			color = 0x0000FF;
+		else
+			color = 0xFFFF00;
 	}
-	return (color); 
+	return (color);
 }
 
 void draw_wall_ray(t_game *game, t_ray ray, int ray_count)
@@ -188,9 +198,9 @@ void draw_wall_ray(t_game *game, t_ray ray, int ray_count)
 	//printf("bottom: %d", bottom);
 	top = bottom - ray.wall_height;
 	//printf("top: %d", top);
-	int color = wall_color(ray);
-	fogged_color = get_fogged_color(ray.distance, color);
-
+	int color = wall_color(ray, game->player);
+	//fogged_color = get_fogged_color(ray.distance, color);
+	fogged_color = color;
 	while (bottom > top)
 	{
 		if (bottom > 0 && bottom < WINDOW_HEIGHT)

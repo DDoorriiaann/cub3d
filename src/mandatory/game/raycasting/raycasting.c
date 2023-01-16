@@ -121,7 +121,6 @@ void	raycasting(t_game *game, t_player player)
 					ray.collision = 1;
 					break ;
 				}
-
 			}
 			ray.distance = sqrt(((ray.x - player.x) * (ray.x - player.x))  + ((ray.y - player.y) * (ray.y - player.y)));
 			//Fisheye correction :
