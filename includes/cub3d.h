@@ -5,19 +5,19 @@
 # include <math.h>
 # include "../mlx_linux/mlx.h"
 # include "../mlx_linux/mlx_int.h"
-# define GAME_WIDTH 1140
-# define GAME_HEIGHT 980
-# define MINIMAP_HEIGHT 500
-# define MINIMAP_WIDTH 500
-# define WINDOW_WIDTH 640
-# define WINDOW_HEIGHT 480
-# define GRID_UNIT 50
-# define PLAYER_SIZE 10
-# define PLAYER_SPEED 3
+# define GAME_WIDTH 570
+# define GAME_HEIGHT 490
+# define MINIMAP_HEIGHT 250
+# define MINIMAP_WIDTH 250
+# define WINDOW_WIDTH 320
+# define WINDOW_HEIGHT 240
+# define GRID_UNIT 25
+# define PLAYER_SIZE 5
+# define PLAYER_SPEED 2
 # define PLAYER_TURN_SPEED 0.04
 # define TRUE 1
 # define FALSE 0
-# define FOV 1.20428 // 69 degrees
+# define FOV 1.0 // 60 degrees
 
 typedef struct s_player
 {
@@ -39,6 +39,8 @@ typedef struct	s_frame {
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+	int		width;
+	int		height;
 }				t_frame;
 
 typedef struct s_map
@@ -54,6 +56,7 @@ typedef struct s_game
 	void		*mlx;
 	void		*window;
 	t_frame		frame;
+	t_frame		zoomed_frame;
 	t_player	player;
 	t_map		map;	
 }	t_game;
@@ -90,6 +93,7 @@ void	draw_line(t_game *game, t_player player, int x2, int y2);
 void	draw_wall_ray(t_game *game, t_ray ray, int ray_count);
 void	mlx_circle_filled(t_game *game,
 			int x, int y, int r, int color);
+void	zoom(t_game *game);
 
 //RAYCASTING
 

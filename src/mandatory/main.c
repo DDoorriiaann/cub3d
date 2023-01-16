@@ -21,11 +21,11 @@ int main()
 
 	// Initialize MinilibX
 	game.mlx = mlx_init();
-    game.window = mlx_new_window(game.mlx, GAME_WIDTH + 1, GAME_HEIGHT + 1, "cub3D");
+    game.window = mlx_new_window(game.mlx, GAME_WIDTH * 2, GAME_HEIGHT * 2, "cub3D");
 
  	// Initialize disk position
-    game.player.x = MINIMAP_WIDTH / 2 + 25;
-    game.player.y = MINIMAP_HEIGHT/ 2  + 30;
+    game.player.x = MINIMAP_WIDTH / 2 + 12;
+    game.player.y = MINIMAP_HEIGHT/ 2  + 15;
 	game.player.angle = M_PI /2 - M_PI / 4;
 	game.player.line_length = 50;
 	game.player.up = FALSE;

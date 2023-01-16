@@ -113,17 +113,67 @@ void	draw_square(t_game *game, int x, int y)
 	}
 	
 }
-int	get_fogged_color(int distance)
+int	get_fogged_color(int distance, int color)
 {
 	int		fogged_color;
-	int		tmp;
+	
+	int		r;
+	int		g;
+	int		b;
+
 	if (distance > 400)
 		distance = 400;
-	tmp = (255 - ((distance * 255) / 400));
-	fogged_color = tmp << 16 | tmp << 8 | tmp;
+	r = ((color >> 16) & 0xFF) - ((distance * 255) / 400);
+	g = (color >> 8) & 0xFF - ((distance * 255) / 400);
+	b = color & 0xFF - ((distance * 255) / 400);
+	//tmp = (255 - ((distance * 255) / 400));
+	fogged_color = r << 16 | g << 8 | b;
 	//fogged_color = ((255 - distance)) + ((255 - distance) * 255) + (255 - distance);
 
 	return (fogged_color);
+}
+
+
+int	wall_color(t_ray ray)
+{
+	int color;
+	color = 0xFFFFFF;
+ 
+	//printf("ray angle: %f\n", ray.angle * (180/ M_PI));
+	float horizontal_distance = 0, vertical_distance = 0;
+
+	if (ray.angle >= 0 && ray.angle < 90)
+	{
+    horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT - ray.x;
+    vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT - ray.y;
+	}
+	else if (ray.angle >= 90 && ray.angle < 180)
+	{
+    horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT + GRID_UNIT - ray.x;
+    vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT - ray.y;
+	
+	}
+	else if (ray.angle >= 180 && ray.angle < 270)
+	{
+    horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT + GRID_UNIT - ray.x;
+    vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT + GRID_UNIT - ray.y;
+	} 
+	else if (ray.angle >= 270 && ray.angle < 360)
+	{
+	horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT - ray.x;
+	vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT + GRID_UNIT - ray.y;
+	}
+	printf("ray angle: %f\n", ray.angle);
+	printf("horizontal_distance: %f\n", horizontal_distance);
+	printf("vertical_distance: %f\n", vertical_distance);
+	if (fabs(horizontal_distance) < fabs(vertical_distance)) {
+    // collision horizontale
+	color = 0xFF0000;
+	} else {
+		// collision verticale
+		color = 0x00FF00;
+	}
+	return (color); 
 }
 
 void draw_wall_ray(t_game *game, t_ray ray, int ray_count)
@@ -138,7 +188,8 @@ void draw_wall_ray(t_game *game, t_ray ray, int ray_count)
 	//printf("bottom: %d", bottom);
 	top = bottom - ray.wall_height;
 	//printf("top: %d", top);
-	fogged_color = get_fogged_color(ray.distance);
+	int color = wall_color(ray);
+	fogged_color = get_fogged_color(ray.distance, color);
 
 	while (bottom > top)
 	{

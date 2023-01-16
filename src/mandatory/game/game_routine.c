@@ -59,7 +59,9 @@ int	game_routine(t_game *game)
 	mlx_circle_filled(game, game->player.x, game->player.y, PLAYER_SIZE, 0x0000FF);
 	
 	// Put image to window
+	zoom(game);
 	mlx_put_image_to_window(game->mlx, game->window, game->frame.img, 0, 0);
+	// sleep(1);
 	if (game->frame.img)
 	{
 		mlx_destroy_image(game->mlx, game->frame.img);
