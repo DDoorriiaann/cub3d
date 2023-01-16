@@ -49,13 +49,10 @@ int	game_routine(t_game *game)
 //		printf("cos: %f\n", cos(game->player.angle));
 //		printf("sin: %f\n", sin(game->player.angle));
 //	}
-	// Draw grid
-	
 	draw_map(game);
 	draw_grid(game);
-	// Draw disk
 	raycasting(game, game->player);
-	mlx_circle_filled(game, game->player.x, game->player.y, PLAYER_SIZE, 0x0000FF);
+	
 	
 	// Put image to window
 	zoom(game);

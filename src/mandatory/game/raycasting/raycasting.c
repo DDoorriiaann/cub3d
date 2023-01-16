@@ -110,10 +110,10 @@ void	raycasting(t_game *game, t_player player)
 			ray.y_dir = 1;
 
 		iteration = 2;
-		while (ray.collision == 0  && ray.distance < 400)
+		while (ray.collision == 0  && ray.distance < 50)
 		{
-				ray.x -= cos(drawn_angle) / 8;
-				ray.y -= sin(drawn_angle) / 8;
+				ray.x -= cos(drawn_angle) / 32;
+				ray.y -= sin(drawn_angle) / 32;
 			if (ray.x >= 0 && ray.y >= 0 && ray.x < game->map.width * GRID_UNIT && ray.y < game->map.height * GRID_UNIT)
 			{
 				if (game->map.matrix[(int)(ray.y / GRID_UNIT)][(int)(ray.x / GRID_UNIT)] == '1')
@@ -126,10 +126,12 @@ void	raycasting(t_game *game, t_player player)
 			//Fisheye correction :
 			ray.distance = ray.distance * cos(player.angle - drawn_angle);
 		}
-		ray.wall_height = ((WINDOW_HEIGHT / 2) / (ray.distance / (GRID_UNIT * 2.2)));
+		ray.wall_height = ((WINDOW_HEIGHT / 2) / (ray.distance / 13));
 		ray.angle = drawn_angle * (180/ M_PI);
-		draw_line(game, player, (int)ray.x, (int)ray.y);
+		
 		draw_wall_ray(game, ray, ray_count);
+		mlx_circle_filled(game, game->player.x, game->player.y, PLAYER_SIZE, 0x0000FF);
+		draw_line(game, player, (int)ray.x, (int)ray.y);
 		drawn_angle += step;
 		ray_count+=1;
 	}

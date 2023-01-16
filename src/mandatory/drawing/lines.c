@@ -75,7 +75,7 @@ void draw_line(t_game *game, t_player player, int x2, int y2)
 
     while (1)
     {
-        if (x < MINIMAP_WIDTH && y < MINIMAP_HEIGHT && x > 0 && y > 0)
+        if (x < GRID_UNIT * game->map.width && y < GRID_UNIT * game->map.height && x > 0 && y > 0)
 			my_mlx_pixel_put(&game->frame, x, y, 0xFF0000);
 		else
 			break ;
@@ -95,7 +95,7 @@ void draw_line(t_game *game, t_player player, int x2, int y2)
     }
 }
 
-void	draw_square(t_game *game, int x, int y)
+void	draw_square(t_game *game, int x, int y, int color)
 {
 	int	i;
 	int	j;
@@ -106,7 +106,7 @@ void	draw_square(t_game *game, int x, int y)
 		j = 0;
 		while (j <= GRID_UNIT)
 		{
-			my_mlx_pixel_put(&game->frame, x + j, y + i, 0xFFFFFF);
+			my_mlx_pixel_put(&game->frame, x + j, y + i, color);
 			j++;
 		}
 		i++;
@@ -123,9 +123,9 @@ int	get_fogged_color(int distance, int color)
 
 	if (distance > 400)
 		distance = 400;
-	r = ((color >> 16) & 0xFF) - ((distance * 255) / 400);
-	g = (color >> 8) & 0xFF - ((distance * 255) / 400);
-	b = color & 0xFF - ((distance * 255) / 400);
+	r = (color >> 16) & 0x000000 - ((distance * 255) / 400);
+	g = (color >> 8) & 0x000000 - ((distance * 255) / 400);
+	b = color & 0x000000 - ((distance * 255) / 400);
 	//tmp = (255 - ((distance * 255) / 400));
 	fogged_color = r << 16 | g << 8 | b;
 	//fogged_color = ((255 - distance)) + ((255 - distance) * 255) + (255 - distance);
@@ -146,6 +146,8 @@ int	wall_color(t_ray ray, t_player player)
 	{
     horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT - ray.x;
     vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT - ray.y;
+	// horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT - (ray.x + 0.01);
+    // vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT - (ray.y - 0.01);
 	}
 	else if (ray.angle >= 90 && ray.angle < 180)
 	{
@@ -166,19 +168,13 @@ int	wall_color(t_ray ray, t_player player)
 	if (fabs(horizontal_distance) < fabs(vertical_distance)) 
 	{
     // collision horizontale
-		// if((ray.angle >= 45 && ray.angle < 135) ||( ray.angle >= 225 && ray.angle < 315))
-		// 	color = 0x00FF00;
-		// else 
-		if ((int)ray.y > (int)player.y)
+		if ((int)ray.y > (int)(player.y))
 			color = 0xFF00FF;
 		else
 			color = 0x00FFFF;
 	} else {
 		// collision verticale
-		// if((ray.angle >= 315 && ray.angle < 360 ) || (ray.angle >= 135 && ray.angle < 225))
-		// 	color = 0xFF0000;
-		// else
-		if ((int)ray.x > (int)player.x)
+		if ((int)ray.x > (int)(player.x))
 			color = 0x0000FF;
 		else
 			color = 0xFFFF00;
@@ -191,6 +187,7 @@ void draw_wall_ray(t_game *game, t_ray ray, int ray_count)
 	float	bottom;
 	float	top;
 	int		fogged_color;
+	int 	color;
 
 	if (ray.distance > 400)
 		return ;
@@ -198,13 +195,17 @@ void draw_wall_ray(t_game *game, t_ray ray, int ray_count)
 	//printf("bottom: %d", bottom);
 	top = bottom - ray.wall_height;
 	//printf("top: %d", top);
-	int color = wall_color(ray, game->player);
+	if (ray.distance < 49)
+		color = wall_color(ray, game->player);
+	else
+		color = 0x000000;
 	//fogged_color = get_fogged_color(ray.distance, color);
+	//printf("ray distance : %f\n", ray.distance);
 	fogged_color = color;
 	while (bottom > top)
 	{
-		if (bottom > 0 && bottom < WINDOW_HEIGHT)
-			my_mlx_pixel_put(&game->frame, (int)ray_count + MINIMAP_WIDTH, (int)bottom, fogged_color);
+		if (bottom > 0 && bottom < WINDOW_HEIGHT && (bottom > GRID_UNIT * game->map.height || ray_count > GRID_UNIT * game->map.width))
+			my_mlx_pixel_put(&game->frame, (int)ray_count, (int)bottom, fogged_color);
 		bottom--;
 	}
 }
@@ -223,7 +224,9 @@ void	draw_map(t_game *game)
 		{
 			cell_nb++;
 			if(game->map.matrix[y][x] == '1')
-				draw_square(game, x * GRID_UNIT, y * GRID_UNIT);
+				draw_square(game, x * GRID_UNIT, y * GRID_UNIT, 0xFFFFFF);
+			else
+				draw_square(game, x * GRID_UNIT, y * GRID_UNIT, 0x000000);
 			x++;
 		}
 		y++;
