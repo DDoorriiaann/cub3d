@@ -112,8 +112,8 @@ void	raycasting(t_game *game, t_player player)
 		iteration = 2;
 		while (ray.collision == 0  && ray.distance < 50)
 		{
-				ray.x -= cos(drawn_angle) / 32;
-				ray.y -= sin(drawn_angle) / 32;
+				ray.x -= cos(drawn_angle) / 48;
+				ray.y -= sin(drawn_angle) / 48;
 			if (ray.x >= 0 && ray.y >= 0 && ray.x < game->map.width * GRID_UNIT && ray.y < game->map.height * GRID_UNIT)
 			{
 				if (game->map.matrix[(int)(ray.y / GRID_UNIT)][(int)(ray.x / GRID_UNIT)] == '1')

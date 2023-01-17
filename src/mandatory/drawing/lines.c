@@ -7,10 +7,18 @@
  the line, the y-coordinate of the line, the length of the line and the
  color of the line in hexadecimal as input.
  */
-void mlx_line_horizontal(t_frame frame, int x, int y, int len, int color)
+void mlx_line_horizontal(t_frame minimap, int x, int y, int len, int color)
 {
 	while (len--) {
-		my_mlx_pixel_put(&frame, x++, y, color);
+		my_mlx_pixel_put(&minimap, x++, y, color);
+    }
+}
+
+void draw_protected_line_horizontal(t_game *game, t_frame minimap, int x, int y, int len, int color)
+{
+	while (len--) {
+		if (x > 0 && y > 0 && x < game->map.width && y < game->map.height)
+			my_mlx_pixel_put(&minimap, x++, y, color);
     }
 }
 
@@ -20,39 +28,39 @@ void mlx_line_horizontal(t_frame frame, int x, int y, int len, int color)
 Bresenham line drawing algorithm. It uses the Bresenham algorithm to 
 efficiently determine which pixels should be drawn, and draws them one by one
 */
-void draw_line_bresenham(t_game *game, int x1, int y1, int x2, int y2)
-{
-	int	dx;
-	int	dy;
-	int	decision;
-	int	x;
-	int	y;
+// void draw_line_bresenham(t_game *game, int x1, int y1, int x2, int y2)
+// {
+// 	int	dx;
+// 	int	dy;
+// 	int	decision;
+// 	int	x;
+// 	int	y;
 
-	dx = x2 - x1;
-	dy = y2 - y1;
+// 	dx = x2 - x1;
+// 	dy = y2 - y1;
 
-	x = x1;
-	y = y1;
+// 	x = x1;
+// 	y = y1;
 
-	// initialize the decision parameter
-	decision = 2 * dy - dx;
+// 	// initialize the decision parameter
+// 	decision = 2 * dy - dx;
 
-	while (x < x2)
-	{
-		if (decision >= 0)
-		{
-			my_mlx_pixel_put(&game->frame, x, y, 0x0000FF);
-			y = y + 1;
-			decision = decision + 2 * dy - 2 * dx;
-		}
-		else
-		{
-			my_mlx_pixel_put(&game->frame, x, y, 0x0000FF);
-			decision = decision + 2 * dy;
-		}
-		x = x + 1;
-	}
-}
+// 	while (x < x2)
+// 	{
+// 		if (decision >= 0)
+// 		{
+// 			my_mlx_pixel_put(&game->frame, x, y, 0x0000FF);
+// 			y = y + 1;
+// 			decision = decision + 2 * dy - 2 * dx;
+// 		}
+// 		else
+// 		{
+// 			my_mlx_pixel_put(&game->frame, x, y, 0x0000FF);
+// 			decision = decision + 2 * dy;
+// 		}
+// 		x = x + 1;
+// 	}
+// }
 
 void draw_line(t_game *game, t_player player, int x2, int y2)
 {
@@ -76,7 +84,7 @@ void draw_line(t_game *game, t_player player, int x2, int y2)
     while (1)
     {
         if (x < GRID_UNIT * game->map.width && y < GRID_UNIT * game->map.height && x > 0 && y > 0)
-			my_mlx_pixel_put(&game->frame, x, y, 0xFF0000);
+			my_mlx_pixel_put(&game->minimap, x, y, 0xFF0000);
 		else
 			break ;
         if (x == x2 && y == y2)
@@ -106,14 +114,14 @@ void	draw_square(t_game *game, int x, int y, int color)
 		j = 0;
 		while (j <= GRID_UNIT)
 		{
-			my_mlx_pixel_put(&game->frame, x + j, y + i, color);
+			my_mlx_pixel_put(&game->minimap, x + j, y + i, color);
 			j++;
 		}
 		i++;
 	}
 	
 }
-int	get_fogged_color(int distance, int color)
+int	get_fogged_color(float distance, int color)
 {
 	int		fogged_color;
 	
@@ -121,15 +129,18 @@ int	get_fogged_color(int distance, int color)
 	int		g;
 	int		b;
 
-	if (distance > 400)
-		distance = 400;
-	r = (color >> 16) & 0x000000 - ((distance * 255) / 400);
-	g = (color >> 8) & 0x000000 - ((distance * 255) / 400);
-	b = color & 0x000000 - ((distance * 255) / 400);
-	//tmp = (255 - ((distance * 255) / 400));
+	if (distance > 49)
+		distance = 50;
+	r = (color >> 16) & 0xFF - ((int)(distance * 255) / 50);
+	g = (color >> 8) & 0xFF - ((int)(distance * 255) / 50);
+	b = color & 0xFF - ((int)(distance * 255) / 50);
+	if (r < 0)
+		r = 0;
+	if (g < 0)
+		g = 0;
+	if (b < 0)
+		b = 0;
 	fogged_color = r << 16 | g << 8 | b;
-	//fogged_color = ((255 - distance)) + ((255 - distance) * 255) + (255 - distance);
-
 	return (fogged_color);
 }
 
@@ -139,15 +150,12 @@ int	wall_color(t_ray ray, t_player player)
 	int color;
 	color = 0xFFFFFF;
  
-	//printf("ray angle: %f\n", ray.angle * (180/ M_PI));
 	float horizontal_distance = 0, vertical_distance = 0;
 
 	if (ray.angle >= 0 && ray.angle < 90)
 	{
     horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT - ray.x;
     vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT - ray.y;
-	// horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT - (ray.x + 0.01);
-    // vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT - (ray.y - 0.01);
 	}
 	else if (ray.angle >= 90 && ray.angle < 180)
 	{
@@ -165,6 +173,7 @@ int	wall_color(t_ray ray, t_player player)
 	horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT - ray.x;
 	vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT + GRID_UNIT - ray.y;
 	}
+
 	if (fabs(horizontal_distance) < fabs(vertical_distance)) 
 	{
     // collision horizontale
@@ -189,22 +198,22 @@ void draw_wall_ray(t_game *game, t_ray ray, int ray_count)
 	int		fogged_color;
 	int 	color;
 
-	if (ray.distance > 400)
+	if (ray.distance > 49)
 		return ;
 	bottom = WINDOW_HEIGHT / 2 + (ray.wall_height / 2);
 	//printf("bottom: %d", bottom);
 	top = bottom - ray.wall_height;
 	//printf("top: %d", top);
-	if (ray.distance < 49)
+//	if (ray.distance < 49)
 		color = wall_color(ray, game->player);
-	else
-		color = 0x000000;
-	//fogged_color = get_fogged_color(ray.distance, color);
+	// else
+	// 	color = 0x000000;
+	fogged_color = get_fogged_color(ray.distance, color);
 	//printf("ray distance : %f\n", ray.distance);
-	fogged_color = color;
+	//fogged_color = color;
 	while (bottom > top)
 	{
-		if (bottom > 0 && bottom < WINDOW_HEIGHT && (bottom > GRID_UNIT * game->map.height || ray_count > GRID_UNIT * game->map.width))
+		if (bottom > 0 && bottom < WINDOW_HEIGHT && (bottom > (GRID_UNIT * game->map.height) / 2 || ray_count > (GRID_UNIT * game->map.width) / 2))
 			my_mlx_pixel_put(&game->frame, (int)ray_count, (int)bottom, fogged_color);
 		bottom--;
 	}
@@ -245,7 +254,7 @@ void	draw_grid(t_game *game)
         for (int x = 0; x <= game->map.width * GRID_UNIT; x++)
 		{
             if (x % GRID_UNIT == 0 || y % GRID_UNIT == 0)
-				my_mlx_pixel_put(&game->frame, x, y, 0x00FF00);
+				my_mlx_pixel_put(&game->minimap, x, y, 0x00FF00);
         }
     }
 }

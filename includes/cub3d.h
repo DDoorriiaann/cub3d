@@ -56,6 +56,7 @@ typedef struct s_game
 	void		*mlx;
 	void		*window;
 	t_frame		frame;
+	t_frame		minimap;
 	t_frame		zoomed_frame;
 	t_player	player;
 	t_map		map;	
@@ -88,12 +89,14 @@ void	draw_map(t_game *game);
 void 	draw_target(t_game *game, t_player player, int endX, int endY);
 void	draw_fov(t_game *game, t_player player);
 void	mlx_line_horizontal(t_frame frame, int x, int y, int len, int color);
-void	draw_line_bresenham(t_game *game, int x1, int y1, int x2, int y2);
+void	draw_protected_line_horizontal(t_game *game, t_frame minimap, int x, int y, int len, int color);
 void	draw_line(t_game *game, t_player player, int x2, int y2);
 void	draw_wall_ray(t_game *game, t_ray ray, int ray_count);
 void	mlx_circle_filled(t_game *game,
 			int x, int y, int r, int color);
 void	zoom(t_game *game);
+int		get_pixel(t_frame frame, int x, int y);
+void	draw_minimap(t_game *game, t_frame minimap);
 
 //RAYCASTING
 

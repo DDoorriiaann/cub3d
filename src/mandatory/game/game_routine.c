@@ -29,7 +29,8 @@ int	game_routine(t_game *game)
 	// Create image and get address
 	game->frame.img = mlx_new_image(game->mlx, GAME_WIDTH, GAME_HEIGHT);
 	game->frame.addr = mlx_get_data_addr(game->frame.img, &game->frame.bits_per_pixel, &game->frame.line_length, &game->frame.endian);
-	
+	game->minimap.img = mlx_new_image(game->mlx, game->map.width * GRID_UNIT, game->map.height * GRID_UNIT);
+	game->minimap.addr = mlx_get_data_addr(game->minimap.img, &game->minimap.bits_per_pixel, &game->minimap.line_length, &game->minimap.endian);
 	if (game->player.angle > 2 * M_PI)
 		game->player.angle -= 2 * M_PI;
 	else if (game->player.angle < 0)
@@ -56,6 +57,7 @@ int	game_routine(t_game *game)
 	
 	// Put image to window
 	zoom(game);
+	draw_minimap(game, game->minimap);
 	mlx_put_image_to_window(game->mlx, game->window, game->frame.img, 0, 0);
 	// sleep(1);
 	if (game->frame.img)
