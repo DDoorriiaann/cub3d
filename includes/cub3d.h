@@ -60,6 +60,8 @@ typedef struct s_game
 	t_frame		zoomed_frame;
 	t_player	player;
 	t_map		map;	
+	int			floor_color;
+	int			ceiling_color;
 }	t_game;
 
 typedef struct ray
@@ -97,6 +99,7 @@ void	mlx_circle_filled(t_game *game,
 void	zoom(t_game *game);
 int		get_pixel(t_frame frame, int x, int y);
 void	draw_minimap(t_game *game, t_frame minimap);
+void	draw_floor_and_ceiling(t_frame frame);
 
 //RAYCASTING
 

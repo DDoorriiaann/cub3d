@@ -52,11 +52,13 @@ int	game_routine(t_game *game)
 //	}
 	draw_map(game);
 	draw_grid(game);
+	draw_floor_and_ceiling(game->frame);
 	raycasting(game, game->player);
 	
 	
 	// Put image to window
 	zoom(game);
+	
 	draw_minimap(game, game->minimap);
 	mlx_put_image_to_window(game->mlx, game->window, game->frame.img, 0, 0);
 	// sleep(1);
