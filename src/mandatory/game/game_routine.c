@@ -43,13 +43,13 @@ int	game_routine(t_game *game)
 		game->player.y_dir = 1;
 	else
 		game->player.y_dir = -1;
-//	if (frame % 20 == 0)
-//	{
-//		printf("angle: %f\n", game->player.angle);
-//		printf("line end x: %f \nline end y : %f\n", game->player.x + (cos(game->player.angle) * game->player.line_length), game->player.y + (sin(game->player.angle) * game->player.line_length));
-//		printf("cos: %f\n", cos(game->player.angle));
-//		printf("sin: %f\n", sin(game->player.angle));
-//	}
+	// if (frame % 20 == 0)
+	// {
+	// 	printf("angle: %f\n", game->player.angle);
+	// 	// printf("line end x: %f \nline end y : %f\n", game->player.x + (cos(game->player.angle) * game->player.line_length), game->player.y + (sin(game->player.angle) * game->player.line_length));
+	// 	// printf("cos: %f\n", cos(game->player.angle));
+	// 	// printf("sin: %f\n", sin(game->player.angle));
+	// }
 	draw_map(game);
 	draw_grid(game);
 	draw_floor_and_ceiling(game->frame);

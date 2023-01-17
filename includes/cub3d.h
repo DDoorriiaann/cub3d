@@ -76,6 +76,10 @@ typedef struct ray
 	float	wall_height;
 	int		x_dir;
 	int		y_dir;
+	int		x_step;
+	int		y_step;
+	float	x_offset_len;
+	float	y_offset_len;
 	float	x_offset;
 	float	y_offset;
 	float	x_first_offset;

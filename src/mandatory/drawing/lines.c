@@ -154,24 +154,23 @@ int	wall_color(t_ray ray, t_player player)
 
 	if (ray.angle >= 0 && ray.angle < 90)
 	{
-    horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT - ray.x;
-    vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT - ray.y;
+		horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT - ray.x;
+		vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT - ray.y;
 	}
 	else if (ray.angle >= 90 && ray.angle < 180)
 	{
-    horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT + GRID_UNIT - ray.x;
-    vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT - ray.y;
-	
+		horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT + GRID_UNIT - ray.x;
+		vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT - ray.y;
 	}
 	else if (ray.angle >= 180 && ray.angle < 270)
 	{
-    horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT + GRID_UNIT - ray.x;
-    vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT + GRID_UNIT - ray.y;
+		horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT + GRID_UNIT - ray.x;
+		vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT + GRID_UNIT - ray.y;
 	} 
 	else if (ray.angle >= 270 && ray.angle < 360)
 	{
-	horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT - ray.x;
-	vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT + GRID_UNIT - ray.y;
+		horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT - ray.x;
+		vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT + GRID_UNIT - ray.y;
 	}
 
 	if (fabs(horizontal_distance) < fabs(vertical_distance)) 
@@ -181,7 +180,9 @@ int	wall_color(t_ray ray, t_player player)
 			color = 0xFF00FF;
 		else
 			color = 0x00FFFF;
-	} else {
+	} 
+	
+	else {
 		// collision verticale
 		if ((int)ray.x > (int)(player.x))
 			color = 0x0000FF;
@@ -201,7 +202,7 @@ void	draw_floor(t_frame frame)
 	while (y > WINDOW_HEIGHT / 2)
 	{
 		x = 0;
-		color = get_fogged_color((((WINDOW_HEIGHT) - y) * 255) / (WINDOW_HEIGHT *2), 0x0000FF);
+		color = get_fogged_color((((WINDOW_HEIGHT) - y) * 255) / (WINDOW_HEIGHT *2) * 0.9, 0x0000FF);
 		while (x < WINDOW_WIDTH)
 		{
 			my_mlx_pixel_put(&frame, x, y, color);
@@ -221,7 +222,7 @@ void	draw_ceiling(t_frame frame)
 	while (y < WINDOW_HEIGHT / 2)
 	{
 		x = 0;
-		color = get_fogged_color((y * 255 ) / (WINDOW_HEIGHT * 2), 0xFF0000);
+		color = get_fogged_color((y * 255 ) / (WINDOW_HEIGHT * 2) * 0.9, 0xFF0000);
 		while (x < WINDOW_WIDTH)
 		{
 			my_mlx_pixel_put(&frame, x, y, color);

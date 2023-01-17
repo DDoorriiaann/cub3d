@@ -1,6 +1,5 @@
 #include "cub3d.h"
 
-
 // void	raycasting(t_game *game, t_player player)
 // {
 // 	double	drawn_angle;
@@ -12,6 +11,7 @@
 // 	step = (((float)FOV / (float)WINDOW_WIDTH));
 // 	ray_count = 0;
 // 	drawn_angle = player.angle - (FOV / 2);
+	
 // 	while (ray_count < WINDOW_WIDTH)
 // 	{
 // 		 if (drawn_angle >= 2 * M_PI)
@@ -22,61 +22,61 @@
 // 		ray.distance = 0;
 // 		ray.x = player.x;
 // 		ray.y = player.y;
-// 		if (cos(drawn_angle) > 0)
-// 			ray.x_dir = 1;
-// 		else
-// 			ray.x_dir = -1;
-// 		if (sin(drawn_angle) > 0)
-// 			ray.y_dir = 1;
-// 		else
-// 			ray.y_dir = -1;
-// 		iteration = 2;
-// 		float deltaDistX = fabs(1 / cos(drawn_angle));
-// 		float deltaDistY = fabs(1 / sin(drawn_angle));
-// 		int currCellX = (int)ray.x;
-// 		int currCellY = (int)ray.y;
-// 		//int stepX;
-// 		//int stepY;
-// 		int test = 0;
-// 		while (test++ < 20) {
-// 			// Calculer les distances de côté
-// 			if (ray.x_dir < 0) {
-// 				ray.x += deltaDistX;
-// 				currCellX += -1;
-// 			} else {
-// 				ray.x += deltaDistX;
-// 				currCellX += 1;
-// 			}
-// 			if (ray.y_dir < 0) {
-// 				ray.y += deltaDistY;
-// 				currCellY += -1;
-// 			} else {
-// 				ray.y += deltaDistY;
-// 				currCellY += 1;
-// 			}
-// 			// Vérifier une collision
-// 			if (currCellX >= 0 && currCellY >= 0 && currCellX < game->map.width && currCellY < game->map.height)
-// 			{
-// 				if (game->map.matrix[currCellY][currCellX] == '1')
-// 				{
-// 				ray.collision = 1;
-// 				break ;
-// 				}
-// 			}
+// 		ray.angle = drawn_angle * (180 / M_PI);
+// 		float first_x_offset_len;
+// 		float first_y_offset_len;
+// 		float offset_x;
+// 		float offset_y;
+// 		offset_x = tan(ray.angle) * GRID_UNIT;
+// 		offset_y = GRID_UNIT / tan(ray.angle);
+// 		if (ray.angle > 0 && ray.angle < 90)
+// 		{
+// 			ray.x_step = - GRID_UNIT;
+// 			ray.y_step = - GRID_UNIT;
+// 			first_x_offset_len = (ray.x - (int)ray.x) / sin(ray.angle);
+// 			first_y_offset_len = (ray.y - (int)ray.y) / cos(ray.angle);
+			
 // 		}
-// 			ray.distance = sqrt(((ray.x - player.x) * (ray.x- player.x))  + ((ray.y - player.y) * (ray.y - player.y)));
-// 			//Fisheye correction :
-// 			ray.distance = ray.distance * cos(player.angle - drawn_angle);
-// 		// Sortir de la boucle lorsque le rayon sort des limites de la carte
-// 		if (currCellX < 0 || currCellX >= game->map.width || currCellY < 0 || currCellY >= game->map.height)
-// 			break;
+// 		else if (ray.angle >= 90 && ray.angle < 180)
+// 		{
+// 			ray.x_step = GRID_UNIT;
+// 			ray.y_step = -GRID_UNIT;
+// 			first_x_offset_len = (((int)ray.x + 1) - ray.x) / sin(ray.angle);
+// 			first_y_offset_len = (ray.y - (int)ray.y) / cos(ray.angle);
+// 		}
+// 		else if (ray.angle >= 180 && ray.angle < 270)
+// 		{
+// 			ray.x_step = GRID_UNIT;
+// 			ray.y_step = GRID_UNIT;
+// 			first_x_offset_len = (((int)ray.x + 1) - ray.x) / sin(ray.angle);
+// 			first_y_offset_len = (((int)ray.y + 1) - ray.y) / cos(ray.angle);
+// 		}
+// 		else if (ray.angle >= 270 && ray.angle < 360)
+// 		{
+// 			ray.x_step = -GRID_UNIT;
+// 			ray.y_step = GRID_UNIT;
+// 			first_x_offset_len = (ray.x - (int)ray.x) / sin(ray.angle);
+// 			first_y_offset_len = (((int)ray.y + 1) - ray.y) / cos(ray.angle);
+// 		}
+// 		if (first_x_offset_len < first_y_offset_len)
+// 		{
+// 			ray.x += first_x_offset_len * cos(ray.angle);
+// 			ray.y += first_x_offset_len * sin(ray.angle);
+// 			ray.distance += first_x_offset_len;
+// 		}
+// 		else
+// 		{
+// 			ray.x += first_y_offset_len * cos(ray.angle);
+// 			ray.y += first_y_offset_len * sin(ray.angle);
+// 			ray.distance += first_y_offset_len;
+// 		}
+
+// 		draw_line(game, player, (int)ray.x, (int)ray.y);
+// 		drawn_angle += step;
+// 		ray_count+=1;
 // 	}
-// 	ray.wall_height = ((WINDOW_HEIGHT / 2) / (ray.distance / (GRID_UNIT * 3.4)));
-// 	draw_line(game, player, (int)ray.x, (int)ray.y);
-// 	draw_wall_ray(game, ray, ray_count);
-// 	ray_count++;
-// 	drawn_angle += step;
 // }
+
 void	raycasting(t_game *game, t_player player)
 {
 	double	drawn_angle;
@@ -112,8 +112,8 @@ void	raycasting(t_game *game, t_player player)
 		iteration = 2;
 		while (ray.collision == 0  && ray.distance < 50)
 		{
-				ray.x -= cos(drawn_angle) / 48;
-				ray.y -= sin(drawn_angle) / 48;
+				ray.x -= cos(drawn_angle) / 64;
+				ray.y -= sin(drawn_angle) / 64;
 			if (ray.x >= 0 && ray.y >= 0 && ray.x < game->map.width * GRID_UNIT && ray.y < game->map.height * GRID_UNIT)
 			{
 				if (game->map.matrix[(int)(ray.y / GRID_UNIT)][(int)(ray.x / GRID_UNIT)] == '1')
