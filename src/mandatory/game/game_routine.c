@@ -7,19 +7,19 @@ int	game_routine(t_game *game)
 	frame = frame + 1;
 	if (game->player.up)
 	{
-		if (find_collision(game, game->player) == FALSE)
-		{
-			game->player.x -= PLAYER_SPEED * cos(game->player.angle);
-			game->player.y -= PLAYER_SPEED * sin(game->player.angle);
-		}
+		//if (find_collision(game, game->player) == FALSE)
+		//{
+			game->player.x += (int)(PLAYER_SPEED * cos(game->player.angle) * 20);
+			game->player.y += (int)(PLAYER_SPEED * sin(game->player.angle) * 20);
+		//}
 	}
 	if (game->player.down)
 	{
-		if (find_collision(game, game->player) == FALSE)
-		{
-			game->player.x += PLAYER_SPEED * cos(game->player.angle);
-			game->player.y += PLAYER_SPEED * sin(game->player.angle);
-		}
+		//if (find_collision(game, game->player) == FALSE)
+		//{
+			game->player.x -= (int)(PLAYER_SPEED * cos(game->player.angle) * 20);
+			game->player.y -= (int)(PLAYER_SPEED * sin(game->player.angle) * 20);
+		//}
 	}
 	if (game->player.left)
 		game->player.angle = (game->player.angle - PLAYER_TURN_SPEED);
@@ -45,21 +45,21 @@ int	game_routine(t_game *game)
 		game->player.y_dir = -1;
 	// if (frame % 20 == 0)
 	// {
-	// 	printf("angle: %f\n", game->player.angle);
+	// 	printf("angle: %f\n", game->player.angle * (180 / M_PI));
 	// 	// printf("line end x: %f \nline end y : %f\n", game->player.x + (cos(game->player.angle) * game->player.line_length), game->player.y + (sin(game->player.angle) * game->player.line_length));
 	// 	// printf("cos: %f\n", cos(game->player.angle));
 	// 	// printf("sin: %f\n", sin(game->player.angle));
 	// }
-	draw_map(game);
-	draw_grid(game);
-	draw_floor_and_ceiling(game->frame);
+	//draw_map(game);
+	//draw_grid(game);
+	//draw_floor_and_ceiling(game->frame);
 	raycasting(game, game->player);
 	
 	
 	// Put image to window
-	zoom(game);
+	//zoom(game);
 	
-	draw_minimap(game, game->minimap);
+	//draw_minimap(game, game->minimap);
 	mlx_put_image_to_window(game->mlx, game->window, game->frame.img, 0, 0);
 	// sleep(1);
 	if (game->frame.img)

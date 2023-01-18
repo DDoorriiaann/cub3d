@@ -1,138 +1,131 @@
 #include "cub3d.h"
 
-// void	raycasting(t_game *game, t_player player)
-// {
-// 	double	drawn_angle;
-// 	int		ray_count;
-// 	float	step;
-// 	t_ray	ray;
-// 	int		iteration;
+int	ray_collided(t_map map, int x, int y)
+{
+	//printf("tile at %d %d contains : %c\n", x, y, map.matrix[y][x]);
+	if (x >= 0 && y >= 0 && x < map.width && y < map.height && map.matrix[y][x] == '1')
+	{
+		//printf("collision at %d %d\n", x , y);
+		return (TRUE);
+	}
 
-// 	step = (((float)FOV / (float)WINDOW_WIDTH));
-// 	ray_count = 0;
-// 	drawn_angle = player.angle - (FOV / 2);
-	
-// 	while (ray_count < WINDOW_WIDTH)
-// 	{
-// 		 if (drawn_angle >= 2 * M_PI)
-// 		 	drawn_angle -= 2 * M_PI;
-// 		 else if (drawn_angle < 0)
-// 		 	drawn_angle += 2 * M_PI;
-// 		ray.collision = 0;
-// 		ray.distance = 0;
-// 		ray.x = player.x;
-// 		ray.y = player.y;
-// 		ray.angle = drawn_angle * (180 / M_PI);
-// 		float first_x_offset_len;
-// 		float first_y_offset_len;
-// 		float offset_x;
-// 		float offset_y;
-// 		offset_x = tan(ray.angle) * GRID_UNIT;
-// 		offset_y = GRID_UNIT / tan(ray.angle);
-// 		if (ray.angle > 0 && ray.angle < 90)
-// 		{
-// 			ray.x_step = - GRID_UNIT;
-// 			ray.y_step = - GRID_UNIT;
-// 			first_x_offset_len = (ray.x - (int)ray.x) / sin(ray.angle);
-// 			first_y_offset_len = (ray.y - (int)ray.y) / cos(ray.angle);
-			
-// 		}
-// 		else if (ray.angle >= 90 && ray.angle < 180)
-// 		{
-// 			ray.x_step = GRID_UNIT;
-// 			ray.y_step = -GRID_UNIT;
-// 			first_x_offset_len = (((int)ray.x + 1) - ray.x) / sin(ray.angle);
-// 			first_y_offset_len = (ray.y - (int)ray.y) / cos(ray.angle);
-// 		}
-// 		else if (ray.angle >= 180 && ray.angle < 270)
-// 		{
-// 			ray.x_step = GRID_UNIT;
-// 			ray.y_step = GRID_UNIT;
-// 			first_x_offset_len = (((int)ray.x + 1) - ray.x) / sin(ray.angle);
-// 			first_y_offset_len = (((int)ray.y + 1) - ray.y) / cos(ray.angle);
-// 		}
-// 		else if (ray.angle >= 270 && ray.angle < 360)
-// 		{
-// 			ray.x_step = -GRID_UNIT;
-// 			ray.y_step = GRID_UNIT;
-// 			first_x_offset_len = (ray.x - (int)ray.x) / sin(ray.angle);
-// 			first_y_offset_len = (((int)ray.y + 1) - ray.y) / cos(ray.angle);
-// 		}
-// 		if (first_x_offset_len < first_y_offset_len)
-// 		{
-// 			ray.x += first_x_offset_len * cos(ray.angle);
-// 			ray.y += first_x_offset_len * sin(ray.angle);
-// 			ray.distance += first_x_offset_len;
-// 		}
-// 		else
-// 		{
-// 			ray.x += first_y_offset_len * cos(ray.angle);
-// 			ray.y += first_y_offset_len * sin(ray.angle);
-// 			ray.distance += first_y_offset_len;
-// 		}
-
-// 		draw_line(game, player, (int)ray.x, (int)ray.y);
-// 		drawn_angle += step;
-// 		ray_count+=1;
-// 	}
-// }
+	else
+		return (FALSE);
+}
 
 void	raycasting(t_game *game, t_player player)
 {
-	double	drawn_angle;
+	//double	drawn_angle;
 	int		ray_count;
 	float	step;
 	t_ray	ray;
-	int		iteration;
+	int		i;
+	int		max_depth;
 
 	step = (((float)FOV / (float)WINDOW_WIDTH));
 	ray_count = 0;
-	drawn_angle = player.angle - (FOV / 2);
+	ray.angle = player.angle - (FOV / 2) + 0.0001;
+	ray.orig_x = player.x;
+	ray.orig_y = player.y;
+	ray.x_map = player.x;
+	ray.y_map = player.y;
+	max_depth = 10000;
+	//ray.angle = player.angle;
 	
 	while (ray_count < WINDOW_WIDTH)
 	{
-		 if (drawn_angle >= 2 * M_PI)
-		 	drawn_angle -= 2 * M_PI;
-		 else if (drawn_angle < 0)
-		 	drawn_angle += 2 * M_PI;
+			
+		 if (ray.angle >= 2 * M_PI)
+		 	ray.angle -= 2 * M_PI;
+		 else if (ray.angle < 0)
+		 	ray.angle += 2 * M_PI;
 		ray.collision = 0;
-		ray.distance = 0;
-		ray.x = player.x;
-		ray.y = player.y;
+		ray.depth = 0;
 
-		if (cos(drawn_angle) > 0)
-			ray.x_dir = -1;
-		else
-			ray.x_dir = 1;
-		if (sin(drawn_angle) > 0)
-			ray.y_dir = -1;
-		else
-			ray.y_dir = 1;
+		ray.sin_a = sin(ray.angle);
+		ray.cos_a = cos(ray.angle);
 
-		iteration = 2;
-		while (ray.collision == 0  && ray.distance < 50)
+		//Horizontal collision checks
+		if (ray.sin_a > 0)
 		{
-				ray.x -= cos(drawn_angle) / 64;
-				ray.y -= sin(drawn_angle) / 64;
-			if (ray.x >= 0 && ray.y >= 0 && ray.x < game->map.width * GRID_UNIT && ray.y < game->map.height * GRID_UNIT)
-			{
-				if (game->map.matrix[(int)(ray.y / GRID_UNIT)][(int)(ray.x / GRID_UNIT)] == '1')
-				{
-					ray.collision = 1;
-					break ;
-				}
-			}
-			ray.distance = sqrt(((ray.x - player.x) * (ray.x - player.x))  + ((ray.y - player.y) * (ray.y - player.y)));
-			//Fisheye correction :
-			ray.distance = ray.distance * cos(player.angle - drawn_angle);
+			ray.y_hor = ray.y_map + 1;
+			ray.dy = 1;
 		}
-		ray.wall_height = ((WINDOW_HEIGHT / 2) / (ray.distance / 13));
-		ray.angle = drawn_angle * (180/ M_PI);
-		
-		draw_wall_ray(game, ray, ray_count);
+		else
+		{
+			ray.y_hor = ray.y_map - 1e-6;
+			ray.dy = -1;
+		}
+		ray.depth_hor = (ray.y_hor - ray.orig_y) / ray.sin_a;
+		ray.x_hor = ray.orig_x + ray.depth_hor * ray.cos_a;
+
+		ray.delta_depth = ray.dy / ray.sin_a;
+		ray.dx = ray.delta_depth * ray.cos_a;
+		i = 0;
+		while (i < max_depth)
+		{
+			ray.tile_hor[0] = (int)(ray.x_hor / GRID_UNIT);
+			ray.tile_hor[1] = (int)(ray.y_hor / GRID_UNIT);
+
+			if (ray_collided(game->map, ray.tile_hor[0], ray.tile_hor[1]))
+				break;
+			ray.x_hor += ray.dx;
+			ray.y_hor += ray.dy;
+			ray.depth_hor += ray.delta_depth;
+			i++;
+		}
+		//Vertical collision checks
+		if (ray.cos_a > 0)
+		{
+			ray.x_vert = ray.x_map + 1;
+			ray.dx = 1;
+		}
+		else
+		{
+			ray.x_vert = ray.x_map - 1e-6;
+			ray.dx = -1;
+		}
+		ray.depth_vert = (ray.x_vert - ray.orig_x) / ray.cos_a;
+		ray.y_vert = ray.orig_y + ray.depth_vert * ray.sin_a;
+
+		ray.delta_depth = ray.dx / ray.cos_a;
+		ray.dy = ray.delta_depth * ray.sin_a;
+
+		i = 0;
+		while (i < max_depth)
+		{
+			ray.tile_vert[0] = (int)(ray.x_vert / GRID_UNIT);
+			ray.tile_vert[1] = (int)(ray.y_vert / GRID_UNIT);
+			if (ray_collided(game->map, ray.tile_vert[0], ray.tile_vert[1]))
+				break;
+			ray.x_vert += ray.dx;
+			ray.y_vert += ray.dy;
+			ray.depth_vert += ray.delta_depth;
+			i++;
+		}
+		if (ray.depth_vert < ray.depth_hor)
+		{
+			ray.depth = ray.depth_vert;
+				//Fisheye correction :
+			ray.depth = ray.depth * cos(player.angle - ray.angle);
+			ray.wall_height = ((WINDOW_HEIGHT / 2) / (ray.depth / 13));
+			ray.x = ray.x_vert;
+			ray.y = ray.y_vert;
+			draw_wall_ray(game, ray, ray_count);
+		}
+		else
+		{
+			ray.depth = ray.depth_hor;
+			//Fisheye correction :
+			ray.depth = ray.depth * cos(player.angle - ray.angle);
+			ray.wall_height = ((WINDOW_HEIGHT / 2) / (ray.depth / 13));
+			ray.x = ray.x_hor;
+			ray.y = ray.y_hor;
+			draw_wall_ray(game, ray, ray_count);
+		}
 		mlx_circle_filled(game, game->player.x, game->player.y, PLAYER_SIZE, 0x0000FF);
-		draw_line(game, player, (int)ray.x, (int)ray.y);
-		drawn_angle += step;
-		ray_count+=1;
+		
+		ray.angle += step;
+		ray_count+=1;	
 	}
 }
