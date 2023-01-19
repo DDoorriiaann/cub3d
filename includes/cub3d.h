@@ -5,24 +5,26 @@
 # include <math.h>
 # include "../mlx_linux/mlx.h"
 # include "../mlx_linux/mlx_int.h"
-# define GAME_WIDTH 320
-# define GAME_HEIGHT 240
+# define GAME_WIDTH 1280
+# define GAME_HEIGHT 960
 # define MINIMAP_HEIGHT 50
 # define MINIMAP_WIDTH 50
-# define WINDOW_WIDTH 320
-# define WINDOW_HEIGHT 240
-# define GRID_UNIT 5
+# define WINDOW_WIDTH 1280
+# define WINDOW_HEIGHT 960
+# define GRID_UNIT 128
 # define PLAYER_SIZE 1
-# define PLAYER_SPEED 0.15
-# define PLAYER_TURN_SPEED 0.02
+# define PLAYER_SPEED 1
+# define PLAYER_TURN_SPEED 0.03
 # define TRUE 1
 # define FALSE 0
 # define FOV 1.0 // 60 degrees
 
 typedef struct s_player
 {
-	double	x;
-	double	y;
+	int	x;
+	int	y;
+	int	dx;
+	int	dy;
 	int		up;
 	int		down;
 	int		left;
@@ -60,25 +62,37 @@ typedef struct s_game
 	t_frame		zoomed_frame;
 	t_player	player;
 	t_map		map;	
+	int			floor_color;
+	int			ceiling_color;
 }	t_game;
 
 typedef struct ray
 {
-	float	x;
-	float	y;
-	float	distance;
+	double	x;
+	double	y;
+	double	depth;
     double   angle;
 	int		collision;
-    int     scan_done;
-    int     collision_cel[2];
-	float	wall_height;
+	double	wall_height;
 	int		x_dir;
 	int		y_dir;
-	float	x_offset;
-	float	y_offset;
-	float	x_first_offset;
-	float	y_first_offset;
-	float 	unit_step_size;
+	double	orig_x;
+	double	orig_y;
+	double	x_map;
+	double	y_map;
+	double	sin_a;
+	double	cos_a;
+	double	x_vert;
+	double	y_vert;
+	double	x_hor;
+	double	y_hor;
+	double	depth_vert;
+	double	depth_hor;
+	double	delta_depth;
+	double	dx;
+	double	dy;
+	int		tile_vert[2];
+	int		tile_hor[2];
 }	t_ray;
 
 //DRAWING
@@ -97,6 +111,7 @@ void	mlx_circle_filled(t_game *game,
 void	zoom(t_game *game);
 int		get_pixel(t_frame frame, int x, int y);
 void	draw_minimap(t_game *game, t_frame minimap);
+void	draw_floor_and_ceiling(t_frame frame);
 
 //RAYCASTING
 
@@ -114,6 +129,8 @@ int		game_routine(t_game *game);
 
 //MOVEMENTS
 
+int	check_collision(t_map map, int x, int y);
+int	check_player_colision(t_map map, int x, int y);
 int	find_collision(t_game *game, t_player player);
 
 #endif

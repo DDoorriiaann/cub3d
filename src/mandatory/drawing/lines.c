@@ -129,11 +129,11 @@ int	get_fogged_color(float distance, int color)
 	int		g;
 	int		b;
 
-	if (distance > 49)
-		distance = 50;
-	r = (color >> 16) & 0xFF - ((int)(distance * 255) / 50);
-	g = (color >> 8) & 0xFF - ((int)(distance * 255) / 50);
-	b = color & 0xFF - ((int)(distance * 255) / 50);
+	if (distance > 10000)
+		distance = 10000;
+	r = (color >> 16) & 0xFF - ((int)(distance * 255) / 10000);
+	g = (color >> 8) & 0xFF - ((int)(distance * 255) / 10000);
+	b = color & 0xFF - ((int)(distance * 255) / 10000);
 	if (r < 0)
 		r = 0;
 	if (g < 0)
@@ -148,49 +148,115 @@ int	get_fogged_color(float distance, int color)
 int	wall_color(t_ray ray, t_player player)
 {
 	int color;
-	color = 0xFFFFFF;
- 
-	float horizontal_distance = 0, vertical_distance = 0;
+	// double	angle;
 
-	if (ray.angle >= 0 && ray.angle < 90)
-	{
-    horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT - ray.x;
-    vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT - ray.y;
-	}
-	else if (ray.angle >= 90 && ray.angle < 180)
-	{
-    horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT + GRID_UNIT - ray.x;
-    vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT - ray.y;
-	
-	}
-	else if (ray.angle >= 180 && ray.angle < 270)
-	{
-    horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT + GRID_UNIT - ray.x;
-    vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT + GRID_UNIT - ray.y;
-	} 
-	else if (ray.angle >= 270 && ray.angle < 360)
-	{
-	horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT - ray.x;
-	vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT + GRID_UNIT - ray.y;
-	}
+	// color = 0xFFFFFF;
+	// angle = ray.angle * (180 / M_PI);
+	// float horizontal_distance = 0, vertical_distance = 0;
 
-	if (fabs(horizontal_distance) < fabs(vertical_distance)) 
+	// if (angle >= 0 && angle < 90)
+	// {
+	// 	horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT + GRID_UNIT - ray.x;
+	// 	vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT + GRID_UNIT - ray.y;
+	// }
+	// else if (angle >= 90 && angle < 180)
+	// {
+	// 	horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT - ray.x;
+	// 	vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT + GRID_UNIT - ray.y;
+	// }
+	// else if (angle >= 180 && angle < 270)
+	// {
+	// 	horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT - ray.x;
+	// 	vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT - ray.y;
+		
+	// } 
+	// else if (angle >= 270 && angle< 360)
+	// {
+	// 	horizontal_distance = (int)(ray.x / GRID_UNIT) * GRID_UNIT + GRID_UNIT - ray.x;
+	// 	vertical_distance = (int)(ray.y / GRID_UNIT) * GRID_UNIT - ray.y;
+		
+	// }
+
+if (ray.depth_hor < ray.depth_vert) 
 	{
     // collision horizontale
 		if ((int)ray.y > (int)(player.y))
 			color = 0xFF00FF;
 		else
 			color = 0x00FFFF;
-	} else {
+	} 
+	
+	else {
 		// collision verticale
 		if ((int)ray.x > (int)(player.x))
 			color = 0x0000FF;
 		else
 			color = 0xFFFF00;
 	}
+	// if (fabs(horizontal_distance) < fabs(vertical_distance)) 
+	// {
+    // // collision horizontale
+	// 	if ((int)ray.y > (int)(player.y))
+	// 		color = 0xFF00FF;
+	// 	else
+	// 		color = 0x00FFFF;
+	// } 
+	
+	// else {
+	// 	// collision verticale
+	// 	if ((int)ray.x > (int)(player.x))
+	// 		color = 0x0000FF;
+	// 	else
+	// 		color = 0xFFFF00;
+	// }
 	return (color);
 }
 
+void	draw_floor(t_frame frame)
+{
+	int y;
+	int x;
+	int color;
+
+	y = WINDOW_HEIGHT;
+	while (y > WINDOW_HEIGHT / 2)
+	{
+		x = 0;
+		color = get_fogged_color(((WINDOW_HEIGHT/2) - y) * 20, 0x0000FF);
+		while (x < WINDOW_WIDTH)
+		{
+			my_mlx_pixel_put(&frame, x, y, color);
+			x++;
+		}
+		y--;
+	}
+}
+
+void	draw_ceiling(t_frame frame)
+{
+	int y;
+	int x;
+	int color;
+
+	y = 0;
+	while (y < WINDOW_HEIGHT / 2)
+	{
+		x = 0;
+		color = get_fogged_color(y * 20, 0xFF0000);
+		while (x < WINDOW_WIDTH)
+		{
+			my_mlx_pixel_put(&frame, x, y, color);
+			x++;
+		}
+		y++;
+	}
+}
+
+void draw_floor_and_ceiling(t_frame frame)
+{
+	draw_floor(frame);
+	draw_ceiling(frame);
+}
 void draw_wall_ray(t_game *game, t_ray ray, int ray_count)
 {
 	float	bottom;
@@ -198,22 +264,25 @@ void draw_wall_ray(t_game *game, t_ray ray, int ray_count)
 	int		fogged_color;
 	int 	color;
 
-	if (ray.distance > 49)
-		return ;
-	bottom = WINDOW_HEIGHT / 2 + (ray.wall_height / 2);
+	
+	bottom = WINDOW_HEIGHT / 2 + (ray.wall_height * 25 / 2);
 	//printf("bottom: %d", bottom);
-	top = bottom - ray.wall_height;
+	top = bottom - ray.wall_height * 25;
 	//printf("top: %d", top);
 //	if (ray.distance < 49)
 		color = wall_color(ray, game->player);
 	// else
 	// 	color = 0x000000;
-	fogged_color = get_fogged_color(ray.distance, color);
+	fogged_color = get_fogged_color(ray.depth * 4, color);
+	if (ray.depth > 2500)
+		fogged_color = 0x000000;
+	//printf("ray depth %f\n", ray.depth);
 	//printf("ray distance : %f\n", ray.distance);
 	//fogged_color = color;
 	while (bottom > top)
 	{
-		if (bottom > 0 && bottom < WINDOW_HEIGHT && (bottom > (GRID_UNIT * game->map.height) / 2 || ray_count > (GRID_UNIT * game->map.width) / 2))
+		//if (bottom > 0 && bottom < WINDOW_HEIGHT && (bottom > (GRID_UNIT * game->map.height) / 2 || ray_count > (GRID_UNIT * game->map.width) / 2))
+		if (bottom > 0 && bottom < WINDOW_HEIGHT)
 			my_mlx_pixel_put(&game->frame, (int)ray_count, (int)bottom, fogged_color);
 		bottom--;
 	}
