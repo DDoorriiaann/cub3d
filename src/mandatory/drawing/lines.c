@@ -274,7 +274,7 @@ void draw_wall_ray(t_game *game, t_ray ray, int ray_count)
 	// else
 	// 	color = 0x000000;
 	fogged_color = get_fogged_color(ray.depth * 4, color);
-	if (ray.depth > 2400)
+	if (ray.depth > 2500)
 		fogged_color = 0x000000;
 	//printf("ray depth %f\n", ray.depth);
 	//printf("ray distance : %f\n", ray.distance);
