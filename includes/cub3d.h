@@ -23,6 +23,8 @@ typedef struct s_player
 {
 	int	x;
 	int	y;
+	int	dx;
+	int	dy;
 	int		up;
 	int		down;
 	int		left;
@@ -127,6 +129,8 @@ int		game_routine(t_game *game);
 
 //MOVEMENTS
 
+int	check_collision(t_map map, int x, int y);
+int	check_player_colision(t_map map, int x, int y);
 int	find_collision(t_game *game, t_player player);
 
 #endif

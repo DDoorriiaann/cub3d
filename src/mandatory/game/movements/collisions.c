@@ -8,6 +8,27 @@ int	calculate_offset(double angle_check)
 		return (1);
 }
 
+int	check_player_colision(t_map map, int x, int y)
+{
+	if (x >= 0 && y >= 0 && x < map.width && y < map.height && map.matrix[y][x] == '1')
+	{
+		printf("collision at y: %d x: %d\n", y, x);
+		return (TRUE);
+	}
+	else
+		return (FALSE);
+}
+
+int	check_collision(t_map map, int x, int y)
+{
+	if (x >= 0 && y >= 0 && x < map.width && y < map.height && map.matrix[y][x] == '1')
+	{
+		return (TRUE);
+	}
+	else
+		return (FALSE);
+}
+
 int	find_collision(t_game *game, t_player player)
 {
 	int		next_x;

@@ -1,21 +1,9 @@
 #include "cub3d.h"
 
-int	ray_collided(t_map map, int x, int y)
-{
-	//printf("tile at %d %d contains : %c\n", x, y, map.matrix[y][x]);
-	if (x >= 0 && y >= 0 && x < map.width && y < map.height && map.matrix[y][x] == '1')
-	{
-		//printf("collision at %d %d\n", x , y);
-		return (TRUE);
-	}
 
-	else
-		return (FALSE);
-}
 
 void	raycasting(t_game *game, t_player player)
 {
-	//double	drawn_angle;
 	int		ray_count;
 	float	step;
 	t_ray	ray;
@@ -30,8 +18,6 @@ void	raycasting(t_game *game, t_player player)
 	ray.x_map = player.x;
 	ray.y_map = player.y;
 	max_depth = 10000;
-	//ray.angle = player.angle;
-	
 	while (ray_count < WINDOW_WIDTH)
 	{
 			
@@ -41,10 +27,8 @@ void	raycasting(t_game *game, t_player player)
 		 	ray.angle += 2 * M_PI;
 		ray.collision = 0;
 		ray.depth = 0;
-
 		ray.sin_a = sin(ray.angle);
 		ray.cos_a = cos(ray.angle);
-
 		//Horizontal collision checks
 		if (ray.sin_a > 0)
 		{
@@ -66,8 +50,7 @@ void	raycasting(t_game *game, t_player player)
 		{
 			ray.tile_hor[0] = (int)(ray.x_hor / GRID_UNIT);
 			ray.tile_hor[1] = (int)(ray.y_hor / GRID_UNIT);
-
-			if (ray_collided(game->map, ray.tile_hor[0], ray.tile_hor[1]))
+			if (check_collision(game->map, ray.tile_hor[0], ray.tile_hor[1]))
 				break;
 			ray.x_hor += ray.dx;
 			ray.y_hor += ray.dy;
@@ -96,7 +79,7 @@ void	raycasting(t_game *game, t_player player)
 		{
 			ray.tile_vert[0] = (int)(ray.x_vert / GRID_UNIT);
 			ray.tile_vert[1] = (int)(ray.y_vert / GRID_UNIT);
-			if (ray_collided(game->map, ray.tile_vert[0], ray.tile_vert[1]))
+			if (check_collision(game->map, ray.tile_vert[0], ray.tile_vert[1]))
 				break;
 			ray.x_vert += ray.dx;
 			ray.y_vert += ray.dy;
@@ -124,7 +107,6 @@ void	raycasting(t_game *game, t_player player)
 			draw_wall_ray(game, ray, ray_count);
 		}
 		mlx_circle_filled(game, game->player.x, game->player.y, PLAYER_SIZE, 0x0000FF);
-		
 		ray.angle += step;
 		ray_count+=1;	
 	}

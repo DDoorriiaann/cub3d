@@ -5,27 +5,32 @@ int	game_routine(t_game *game)
 	static int frame = 0;
 	//usleep(1000000/60);
 	frame = frame + 1;
+	game->player.dx = 0;
+	game->player.dy = 0;
 	if (game->player.up)
 	{
 		//if (find_collision(game, game->player) == FALSE)
 		//{
-			game->player.x += (int)(PLAYER_SPEED * cos(game->player.angle) * 20);
-			game->player.y += (int)(PLAYER_SPEED * sin(game->player.angle) * 20);
+			game->player.dx = (int)(PLAYER_SPEED * cos(game->player.angle) * 20);
+			game->player.dy = (int)(PLAYER_SPEED * sin(game->player.angle) * 20);
 		//}
 	}
 	if (game->player.down)
 	{
 		//if (find_collision(game, game->player) == FALSE)
 		//{
-			game->player.x -= (int)(PLAYER_SPEED * cos(game->player.angle) * 20);
-			game->player.y -= (int)(PLAYER_SPEED * sin(game->player.angle) * 20);
+			game->player.dx = (int)(PLAYER_SPEED * cos(game->player.angle) * 20) * -1;
+			game->player.dy = (int)(PLAYER_SPEED * sin(game->player.angle) * 20) * -1;
 		//}
 	}
 	if (game->player.left)
 		game->player.angle = (game->player.angle - PLAYER_TURN_SPEED);
 	if (game->player.right)
 		game->player.angle = (game->player.angle + PLAYER_TURN_SPEED);
-
+	if (!check_player_colision(game->map, (game->player.x + (game->player.dx * 5)) / GRID_UNIT, game->player.y / GRID_UNIT))
+		game->player.x += game->player.dx;
+	if (!check_player_colision(game->map,(game->player.x) / GRID_UNIT, (game->player.y  + (game->player.dy * 5)) / GRID_UNIT))
+		game->player.y += game->player.dy;
 	// Create image and get address
 	game->frame.img = mlx_new_image(game->mlx, GAME_WIDTH, GAME_HEIGHT);
 	game->frame.addr = mlx_get_data_addr(game->frame.img, &game->frame.bits_per_pixel, &game->frame.line_length, &game->frame.endian);
