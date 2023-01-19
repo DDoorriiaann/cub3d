@@ -5,15 +5,15 @@
 # include <math.h>
 # include "../mlx_linux/mlx.h"
 # include "../mlx_linux/mlx_int.h"
-# define GAME_WIDTH 1280
-# define GAME_HEIGHT 960
+# define GAME_WIDTH 800
+# define GAME_HEIGHT 600
 # define MINIMAP_HEIGHT 50
 # define MINIMAP_WIDTH 50
-# define WINDOW_WIDTH 1280
-# define WINDOW_HEIGHT 960
+# define WINDOW_WIDTH 800
+# define WINDOW_HEIGHT 600
 # define GRID_UNIT 128
 # define PLAYER_SIZE 1
-# define PLAYER_SPEED 1
+# define PLAYER_SPEED 0.5
 # define PLAYER_TURN_SPEED 0.03
 # define TRUE 1
 # define FALSE 0
