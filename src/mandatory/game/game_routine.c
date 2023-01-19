@@ -7,7 +7,7 @@ int	game_routine(t_game *game)
 	frame = frame + 1;
 	game->player.dx = 0;
 	game->player.dy = 0;
-	if (game->player.up)
+	if (game->player.up && !game->player.down)
 	{
 		//if (find_collision(game, game->player) == FALSE)
 		//{
@@ -15,7 +15,7 @@ int	game_routine(t_game *game)
 			game->player.dy = (int)(PLAYER_SPEED * sin(game->player.angle) * 20);
 		//}
 	}
-	if (game->player.down)
+	if (game->player.down && !game->player.up)
 	{
 		//if (find_collision(game, game->player) == FALSE)
 		//{

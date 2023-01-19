@@ -121,27 +121,27 @@ void	draw_square(t_game *game, int x, int y, int color)
 	}
 	
 }
-int	get_fogged_color(float distance, int color)
-{
-	int		fogged_color;
-	
+
+int get_fogged_color(float distance, int color) {
+    int fogged_color;
 	int		r;
 	int		g;
 	int		b;
+    float fog;
 
-	if (distance > 10000)
-		distance = 10000;
-	r = (color >> 16) & 0xFF - ((int)(distance * 255) / 10000);
-	g = (color >> 8) & 0xFF - ((int)(distance * 255) / 10000);
-	b = color & 0xFF - ((int)(distance * 255) / 10000);
-	if (r < 0)
-		r = 0;
-	if (g < 0)
-		g = 0;
-	if (b < 0)
-		b = 0;
-	fogged_color = r << 16 | g << 8 | b;
-	return (fogged_color);
+	fog = 1.0 - (distance / 10000.0);
+    if (fog < 0)
+		fog = 0;
+    if (fog > 1)
+		fog = 1;
+    r = (color >> 16) & 0xFF;
+    g = (color >> 8) & 0xFF;
+    b = color & 0xFF;
+    r = (int)(r * fog);
+    g = (int)(g * fog);
+    b = (int)(b * fog);
+    fogged_color = (r << 16) | (g << 8) | b;
+    return fogged_color;
 }
 
 int	get_texture_pixel(t_ray ray, t_texture texture, int wall_y)
@@ -198,17 +198,20 @@ void	draw_floor(t_frame frame)
 	int y;
 	int x;
 	int color;
+	int	distance;
 
 	y = WINDOW_HEIGHT;
+	distance = 0;
 	while (y > WINDOW_HEIGHT / 2)
 	{
 		x = 0;
-		color = get_fogged_color(((WINDOW_HEIGHT/2) - y) * 20, 0x0000FF);
+		color = get_fogged_color( (distance * distance) / 8, 0x0000FF);
 		while (x < WINDOW_WIDTH)
 		{
 			my_mlx_pixel_put(&frame, x, y, color);
 			x++;
 		}
+		distance++;
 		y--;
 	}
 }
@@ -223,7 +226,7 @@ void	draw_ceiling(t_frame frame)
 	while (y < WINDOW_HEIGHT / 2)
 	{
 		x = 0;
-		color = get_fogged_color(y * 20, 0xFF0000);
+		color = get_fogged_color((y * y) / 8, 0xFF0000);
 		while (x < WINDOW_WIDTH)
 		{
 			my_mlx_pixel_put(&frame, x, y, color);
@@ -256,8 +259,8 @@ void draw_wall_ray(t_game *game, t_ray ray, int ray_count)
 	{
 		wall_y = (bottom - WINDOW_HEIGHT / 2 + (ray.wall_height / 2)) - ray.wall_height;
 		color = wall_color(ray, game->player, game, -wall_y);
-		//fogged_color = get_fogged_color(ray.depth * 4, color);
-		fogged_color = color;
+		fogged_color = get_fogged_color(ray.depth * 5, color);
+		//fogged_color = color;
 		if (ray.depth > 2500)
 			fogged_color = 0x000000;
 		if (bottom > 0 && bottom < WINDOW_HEIGHT)

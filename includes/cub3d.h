@@ -5,6 +5,7 @@
 # include <math.h>
 # include "../mlx_linux/mlx.h"
 # include "../mlx_linux/mlx_int.h"
+# include "../libft/libft.h"
 # define GAME_WIDTH 800
 # define GAME_HEIGHT 600
 # define MINIMAP_HEIGHT 50
