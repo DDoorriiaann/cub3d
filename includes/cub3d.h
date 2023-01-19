@@ -14,7 +14,7 @@
 # define GRID_UNIT 128
 # define PLAYER_SIZE 1
 # define PLAYER_SPEED 1
-# define PLAYER_TURN_SPEED 0.02
+# define PLAYER_TURN_SPEED 0.03
 # define TRUE 1
 # define FALSE 0
 # define FOV 1.0 // 60 degrees
