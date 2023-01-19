@@ -53,6 +53,24 @@ typedef struct s_map
 }	t_map;
 
 
+typedef	struct s_texture
+{
+	void	*img;
+	char	*addr;
+	int		width;
+	int		height;
+	int		bpp;
+	int		line_len;
+	int		endian;
+}	t_texture;
+typedef struct s_textures
+{
+	t_texture	north;
+	t_texture	south;
+	t_texture	east;
+	t_texture	west;
+}	t_textures;
+
 typedef struct s_game
 {
 	void		*mlx;
@@ -61,17 +79,19 @@ typedef struct s_game
 	t_frame		minimap;
 	t_frame		zoomed_frame;
 	t_player	player;
-	t_map		map;	
+	t_map		map;
+	t_textures	textures;
 	int			floor_color;
 	int			ceiling_color;
 }	t_game;
+
 
 typedef struct ray
 {
 	double	x;
 	double	y;
 	double	depth;
-    double   angle;
+    double  angle;
 	int		collision;
 	double	wall_height;
 	int		x_dir;
@@ -131,6 +151,6 @@ int		game_routine(t_game *game);
 
 int	check_collision(t_map map, int x, int y);
 int	check_player_colision(t_map map, int x, int y);
-int	find_collision(t_game *game, t_player player);
+//int	find_collision(t_game *game, t_player player);
 
 #endif

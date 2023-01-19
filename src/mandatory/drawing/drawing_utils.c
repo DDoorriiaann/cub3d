@@ -32,6 +32,7 @@ void	draw_fov(t_game *game, t_player player)
 		iterations--;
 	}
 }
+
 int get_pixel(t_frame frame, int x, int y)
 {
     char *data =  frame.addr + (y * frame.line_length + x * (frame.bits_per_pixel / 8));
