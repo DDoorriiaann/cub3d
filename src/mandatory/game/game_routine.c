@@ -57,7 +57,7 @@ int	game_routine(t_game *game)
 	// }
 	//draw_map(game);
 	//draw_grid(game);
-	//draw_floor_and_ceiling(game->frame);
+	draw_floor_and_ceiling(game->frame);
 	raycasting(game, game->player);
 	
 	

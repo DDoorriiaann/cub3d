@@ -17,7 +17,7 @@ void	raycasting(t_game *game, t_player player)
 	ray.orig_y = player.y;
 	ray.x_map = player.x;
 	ray.y_map = player.y;
-	max_depth = 10000;
+	max_depth = 3000;
 	while (ray_count < WINDOW_WIDTH)
 	{
 			

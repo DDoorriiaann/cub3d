@@ -222,7 +222,7 @@ void	draw_floor(t_frame frame)
 	while (y > WINDOW_HEIGHT / 2)
 	{
 		x = 0;
-		color = get_fogged_color((((WINDOW_HEIGHT) - y) * 255) / (WINDOW_HEIGHT *2) * 0.9, 0x0000FF);
+		color = get_fogged_color(((WINDOW_HEIGHT/2) - y) * 20, 0x0000FF);
 		while (x < WINDOW_WIDTH)
 		{
 			my_mlx_pixel_put(&frame, x, y, color);
@@ -242,7 +242,7 @@ void	draw_ceiling(t_frame frame)
 	while (y < WINDOW_HEIGHT / 2)
 	{
 		x = 0;
-		color = get_fogged_color((y * 255 ) / (WINDOW_HEIGHT * 2) * 0.9, 0xFF0000);
+		color = get_fogged_color(y * 20, 0xFF0000);
 		while (x < WINDOW_WIDTH)
 		{
 			my_mlx_pixel_put(&frame, x, y, color);
@@ -264,8 +264,7 @@ void draw_wall_ray(t_game *game, t_ray ray, int ray_count)
 	int		fogged_color;
 	int 	color;
 
-	if (ray.depth > 10000)
-		return ;
+	
 	bottom = WINDOW_HEIGHT / 2 + (ray.wall_height * 25 / 2);
 	//printf("bottom: %d", bottom);
 	top = bottom - ray.wall_height * 25;
@@ -274,7 +273,9 @@ void draw_wall_ray(t_game *game, t_ray ray, int ray_count)
 		color = wall_color(ray, game->player);
 	// else
 	// 	color = 0x000000;
-	fogged_color = get_fogged_color(ray.depth, color);
+	fogged_color = get_fogged_color(ray.depth * 4, color);
+	if (ray.depth > 2400)
+		fogged_color = 0x000000;
 	//printf("ray depth %f\n", ray.depth);
 	//printf("ray distance : %f\n", ray.distance);
 	//fogged_color = color;
