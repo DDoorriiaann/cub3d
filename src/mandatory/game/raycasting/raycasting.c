@@ -107,7 +107,7 @@ void	raycasting(t_game *game, t_player player)
 			draw_wall_ray(game, ray, ray_count);
 		}
 		//mlx_circle_filled(game, game->player.x, game->player.y, PLAYER_SIZE, 0x0000FF);
-		draw_ray(game, game->player, ray.x, ray.y);
+		draw_ray(game, game->player, ray);
 		ray.angle += step;
 		ray_count+=1;	
 	}

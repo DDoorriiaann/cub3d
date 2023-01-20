@@ -22,70 +22,6 @@ void draw_protected_line_horizontal(t_game *game, t_frame minimap, int x, int y,
     }
 }
 
-void draw_ray(t_game *game, t_player player, int x2, int y2)
-{
-    int delta_x;
-	int delta_y;
-	int step_x;
-	int step_y;
-	int x;
-	int y;
-	int err;
-	int err2;
-
-	x = (int)((player.x / 128.0 ) * game->minimap.grid_size);
-	y = (int)((player.y / 128.0) * game->minimap.grid_size);
-	x2 = (x2 / 128.0) * game->minimap.grid_size;
-	y2 = (y2 / 128.0) * game->minimap.grid_size;
-    delta_x = abs(x2 - x);
-    delta_y = abs(y2 - y);
-    step_x = x < x2 ? 1 : -1;
-    step_y = y < y2 ? 1 : -1;
-    err = (delta_x > delta_y ? delta_x : - delta_y) / 2;
-
-    while (1)
-    {
-        if (x < game->minimap.width && y < game->minimap.height && x > 0 && y > 0)
-			//my_mlx_pixel_put(&game->minimap.frame, x, y, 0xFF0000);
-			my_mlx_pixel_put(&game->frame, x, y, 0xFF0000);
-		else
-			break ;
-        if (x == x2 && y == y2)
-            break ;
-        err2 = err;
-        if (err2 > - delta_x)
-        {
-            err -= delta_y;
-            x += step_x;
-        }
-        if (err2 < delta_y)
-        {
-            err += delta_x;
-            y += step_y;
-        }
-    }
-}
-
-void	draw_square(t_game *game, int x, int y, int color)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i <= game->minimap.grid_size)
-	{
-		j = 0;
-		while (j <=  game->minimap.grid_size)
-		{
-			//my_mlx_pixel_put(&game->minimap.frame, x + j, y + i, color);
-			my_mlx_pixel_put(&game->frame, x + j, y + i, color);
-			j++;
-		}
-		i++;
-	}
-	
-}
-
 int get_fogged_color(float distance, int color) {
     int fogged_color;
 	int		r;
@@ -108,6 +44,77 @@ int get_fogged_color(float distance, int color) {
     return fogged_color;
 }
 
+void draw_ray(t_game *game, t_player player, t_ray ray)
+{
+    int delta_x;
+	int delta_y;
+	int step_x;
+	int step_y;
+	int x;
+	int y;
+	int	x2;
+	int	y2;
+	int err;
+	int err2;
+	int	distance;
+
+
+	distance = 1;
+	x = (int)((player.x / 128.0 ) * game->minimap.grid_size);
+	y = (int)((player.y / 128.0) * game->minimap.grid_size);
+	x2 = (int)((ray.x / 128.0) * game->minimap.grid_size);
+	y2 = (int)((ray.y / 128.0) * game->minimap.grid_size);
+    delta_x = abs(x2 - x);
+    delta_y = abs(y2 - y);
+    step_x = x < x2 ? 1 : -1;
+    step_y = y < y2 ? 1 : -1;
+    err = (delta_x > delta_y ? delta_x : - delta_y) / 2;
+
+    while (1)
+    {
+
+        if (x < game->minimap.width && y < game->minimap.height && x > 0 && y > 0)
+			//my_mlx_pixel_put(&game->minimap.frame, x, y, 0xFF0000);
+			my_mlx_pixel_put(&game->frame, x, y, get_fogged_color((distance * distance) *2 , 0xFF0000));
+		else
+			break ;
+        if (x == x2 && y == y2)
+            break ;
+        err2 = err;
+        if (err2 > - delta_x)
+        {
+            err -= delta_y;
+            x += step_x;
+        }
+        if (err2 < delta_y)
+        {
+            err += delta_x;
+            y += step_y;
+        }
+		distance++;
+    }
+}
+
+void	draw_square(t_game *game, int x, int y, int color)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < game->minimap.grid_size)
+	{
+		j = 0;
+		while (j <  game->minimap.grid_size)
+		{
+			//my_mlx_pixel_put(&game->minimap.frame, x + j, y + i, color);
+			my_mlx_pixel_put(&game->frame, x + j, y + i, color);
+			j++;
+		}
+		i++;
+	}
+	
+}
+
 int	get_texture_pixel(t_ray ray, t_texture texture, int wall_y)
 {
 	//printf("wall_y : %d", wall_y);
@@ -118,7 +125,7 @@ int	get_texture_pixel(t_ray ray, t_texture texture, int wall_y)
 	int	texture_y;
 	char *data;
 
-	texture_y = (int)((wall_y / ray.wall_height) * texture.height);
+	texture_y = texture.height - (int)((wall_y / ray.wall_height) * texture.height);
 	if (ray.collision == 1)
 		texture_x = (int)(((ray.x / GRID_UNIT - (int)ray.x/ GRID_UNIT) ) * texture.width);
 	else
@@ -169,7 +176,7 @@ void	draw_floor(t_frame frame)
 	while (y > WINDOW_HEIGHT / 2)
 	{
 		x = 0;
-		color = get_fogged_color( (distance * distance) / 8, 0x0000FF);
+		color = get_fogged_color( (distance * distance) / 8, 0x4F4F4F);
 		while (x < WINDOW_WIDTH)
 		{
 			my_mlx_pixel_put(&frame, x, y, color);
@@ -190,7 +197,7 @@ void	draw_ceiling(t_frame frame)
 	while (y < WINDOW_HEIGHT / 2)
 	{
 		x = 0;
-		color = get_fogged_color((y * y) / 8, 0xFF0000);
+		color = get_fogged_color((y * y) / 8, 0x1F1F1F);
 		while (x < WINDOW_WIDTH)
 		{
 			my_mlx_pixel_put(&frame, x, y, color);
@@ -206,14 +213,13 @@ void draw_floor_and_ceiling(t_frame frame)
 	draw_ceiling(frame);
 }
 
-
 void draw_wall_ray(t_game *game, t_ray ray, int ray_count)
 {
-	float	bottom;
-	float	top;
-	int		fogged_color;
-	int 	color;
-	int		wall_y;
+	float		bottom;
+	float		top;
+	int			fogged_color;
+	int			color;
+	int			wall_y;
 	
 	ray.wall_height *= 25;
 	bottom = WINDOW_HEIGHT / 2 + (ray.wall_height / 2);
@@ -222,6 +228,7 @@ void draw_wall_ray(t_game *game, t_ray ray, int ray_count)
 	while (bottom > top)
 	{
 		wall_y = (bottom - WINDOW_HEIGHT / 2 + (ray.wall_height / 2)) - ray.wall_height;
+	
 		color = wall_color(ray, game->player, game, -wall_y);
 		fogged_color = get_fogged_color(ray.depth * 5, color);
 		//fogged_color = color;
@@ -251,8 +258,8 @@ void	draw_map(t_game *game)
 			cell_nb++;
 			if(game->map.matrix[y][x] == '1')
 				draw_square(game, x * minimap.grid_size , y * minimap.grid_size, 0xFFFFFF);
-			else
-				draw_square(game, x * minimap.grid_size, y * minimap.grid_size, 0x000000);
+			// else
+			// 	draw_square(game, x * minimap.grid_size, y * minimap.grid_size, 0x000000);
 			x++;
 		}
 		y++;

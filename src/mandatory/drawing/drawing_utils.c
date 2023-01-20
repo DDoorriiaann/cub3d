@@ -1,22 +1,5 @@
 #include "cub3d.h"
 
-void	draw_fov(t_game *game, t_player player)
-{
-	double	drawn_angle;
-	int	iterations;
-	float step;
-	
-	step = (float)FOV / (float)WINDOW_WIDTH;
-
-	iterations = WINDOW_WIDTH;
-	drawn_angle = player.angle - (FOV / 2);
-	while (iterations >= 0)
-	{
-		draw_ray(game, player, (int)(game->player.x - (cos(drawn_angle) * game->player.line_length)), (int)(game->player.y - (sin(drawn_angle) * game->player.line_length)));
-		drawn_angle += step;
-		iterations--;
-	}
-}
 
 int get_pixel(t_frame frame, int x, int y)
 {

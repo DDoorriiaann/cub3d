@@ -27,9 +27,9 @@ int	game_routine(t_game *game)
 		game->player.angle = (game->player.angle - PLAYER_TURN_SPEED);
 	if (game->player.right)
 		game->player.angle = (game->player.angle + PLAYER_TURN_SPEED);
-	if (!check_player_colision(game->map, (game->player.x + (game->player.dx * 5)) / GRID_UNIT, game->player.y / GRID_UNIT))
+	if (!check_player_colision(game->map, (game->player.x + (game->player.dx * 10)) / GRID_UNIT, game->player.y / GRID_UNIT))
 		game->player.x += game->player.dx;
-	if (!check_player_colision(game->map,(game->player.x) / GRID_UNIT, (game->player.y  + (game->player.dy * 5)) / GRID_UNIT))
+	if (!check_player_colision(game->map,(game->player.x) / GRID_UNIT, (game->player.y  + (game->player.dy * 10)) / GRID_UNIT))
 		game->player.y += game->player.dy;
 	// Create image and get address
 	game->frame.img = mlx_new_image(game->mlx, GAME_WIDTH, GAME_HEIGHT);
@@ -56,12 +56,12 @@ int	game_routine(t_game *game)
 	// 	// printf("sin: %f\n", sin(game->player.angle));
 	// }
 	draw_floor_and_ceiling(game->frame);
-	draw_map(game);
-	draw_grid(game);
+	
+	//draw_grid(game);
 	draw_disc(game, (game->player.x / 128.0) * game->minimap.grid_size, (game->player.y / 128.0) * game->minimap.grid_size, 2, 0xFF0000);
 	
 	raycasting(game, game->player);
-	
+	draw_map(game);
 	
 	// Put image to window
 	//zoom(game);

@@ -133,7 +133,7 @@ void	draw_map(t_game *game);
 void	draw_fov(t_game *game, t_player player);
 void	draw_line_horizontal(t_frame frame, int x, int y, int len, int color);
 void	draw_protected_line_horizontal(t_game *game, t_frame minimap, int x, int y, int len, int color);
-void	draw_ray(t_game *game, t_player player, int x2, int y2);
+void	draw_ray(t_game *game, t_player player, t_ray ray);
 void	draw_wall_ray(t_game *game, t_ray ray, int ray_count);
 void	draw_disc(t_game *game,
 			int x, int y, int r, int color);
