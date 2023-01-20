@@ -53,6 +53,15 @@ typedef struct s_map
 	int			height;
 }	t_map;
 
+typedef struct s_minimap
+{
+	int		x;
+	int		y;
+	int		width;
+	int		height;
+	int		grid_size;
+	t_frame	frame;
+}	t_minimap;
 
 typedef	struct s_texture
 {
@@ -77,10 +86,10 @@ typedef struct s_game
 	void		*mlx;
 	void		*window;
 	t_frame		frame;
-	t_frame		minimap;
 	t_frame		zoomed_frame;
 	t_player	player;
 	t_map		map;
+	t_minimap	minimap;
 	t_textures	textures;
 	int			floor_color;
 	int			ceiling_color;
@@ -121,13 +130,12 @@ typedef struct ray
 void	my_mlx_pixel_put(t_frame *frame, int x, int y, int color);
 void	draw_grid(t_game *game);
 void	draw_map(t_game *game);
-void 	draw_target(t_game *game, t_player player, int endX, int endY);
 void	draw_fov(t_game *game, t_player player);
-void	mlx_line_horizontal(t_frame frame, int x, int y, int len, int color);
+void	draw_line_horizontal(t_frame frame, int x, int y, int len, int color);
 void	draw_protected_line_horizontal(t_game *game, t_frame minimap, int x, int y, int len, int color);
-void	draw_line(t_game *game, t_player player, int x2, int y2);
+void	draw_ray(t_game *game, t_player player, int x2, int y2);
 void	draw_wall_ray(t_game *game, t_ray ray, int ray_count);
-void	mlx_circle_filled(t_game *game,
+void	draw_disc(t_game *game,
 			int x, int y, int r, int color);
 void	zoom(t_game *game);
 int		get_pixel(t_frame frame, int x, int y);
@@ -152,6 +160,5 @@ int		game_routine(t_game *game);
 
 int	check_collision(t_map map, int x, int y);
 int	check_player_colision(t_map map, int x, int y);
-//int	find_collision(t_game *game, t_player player);
 
 #endif

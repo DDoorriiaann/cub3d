@@ -34,8 +34,8 @@ int	game_routine(t_game *game)
 	// Create image and get address
 	game->frame.img = mlx_new_image(game->mlx, GAME_WIDTH, GAME_HEIGHT);
 	game->frame.addr = mlx_get_data_addr(game->frame.img, &game->frame.bits_per_pixel, &game->frame.line_length, &game->frame.endian);
-	game->minimap.img = mlx_new_image(game->mlx, game->map.width * GRID_UNIT, game->map.height * GRID_UNIT);
-	game->minimap.addr = mlx_get_data_addr(game->minimap.img, &game->minimap.bits_per_pixel, &game->minimap.line_length, &game->minimap.endian);
+	game->minimap.frame.img = mlx_new_image(game->mlx, game->map.width * GRID_UNIT, game->map.height * GRID_UNIT);
+	game->minimap.frame.addr = mlx_get_data_addr(game->minimap.frame.img, &game->minimap.frame.bits_per_pixel, &game->minimap.frame.line_length, &game->minimap.frame.endian);
 	if (game->player.angle > 2 * M_PI)
 		game->player.angle -= 2 * M_PI;
 	else if (game->player.angle < 0)
@@ -55,16 +55,19 @@ int	game_routine(t_game *game)
 	// 	// printf("cos: %f\n", cos(game->player.angle));
 	// 	// printf("sin: %f\n", sin(game->player.angle));
 	// }
-	//draw_map(game);
-	//draw_grid(game);
 	draw_floor_and_ceiling(game->frame);
+	draw_map(game);
+	draw_grid(game);
+	draw_disc(game, (game->player.x / 128.0) * game->minimap.grid_size, (game->player.y / 128.0) * game->minimap.grid_size, 2, 0xFF0000);
+	
 	raycasting(game, game->player);
 	
 	
 	// Put image to window
 	//zoom(game);
 	
-	//draw_minimap(game, game->minimap);
+	//draw_minimap(game, game->minimap.frame);
+	
 	mlx_put_image_to_window(game->mlx, game->window, game->frame.img, 0, 0);
 	// sleep(1);
 	if (game->frame.img)
