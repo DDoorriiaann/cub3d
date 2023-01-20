@@ -8,6 +8,15 @@ SRC				=	main.c\
 					game/quit_game.c\
 					game/movements/collisions.c\
 					game/raycasting/raycasting.c\
+					parsing/parse_map.c\
+					parsing/init.c\
+					parsing/error.c\
+					parsing/free_data.c\
+					parsing/floor.c\
+					parsing/ceiling.c\
+					parsing/parsing_utils_1.c\
+					parsing/parsing_utils_2.c\
+					parsing/parse_information.c\
 
 SRC_BONUS		=
 
