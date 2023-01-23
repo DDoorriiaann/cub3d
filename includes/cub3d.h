@@ -143,6 +143,7 @@ void        fill_map_and_count_lines(t_game *game, char *tmp);
 int         check_valid_map(t_game *game);
 int         valid_character(t_game *game);
 int         fill_player_position(t_game *game);
+int         player_exist(t_game *game);
 
 //ERROR
 

@@ -113,7 +113,7 @@ int    check_valid_map(t_game *game)
             if (game->map.matrix[i][j] == '0')
                 if (check_around(game, i, j, size))
                 {
-                    ft_error("Invalid MapError : one of the elements in the map is not good\n");
+                    ft_error("Invalid MapError : the map is not closed\n");
                     return (1);
                 }
             j++;
@@ -125,7 +125,7 @@ int    check_valid_map(t_game *game)
 
 int    player_exist(t_game *game)
 {
-    if (game->player.down == TRUE || game->player.up == TRUE || game->player.left == TRUE || game->player.right == TRUE)
+    if (game->player.angle != -1)
         return (TRUE);
     return (FALSE);
 }
@@ -144,30 +144,33 @@ int fill_player_position(t_game *game)
         {
             if (game->map.matrix[i][j] == 'N' && player_exist(game) == FALSE)
             {
-                game->player.up = TRUE;
+                game->player.angle = M_PI / 2;
                 game->map.matrix[i][j] = '0';
             }
             else if (game->map.matrix[i][j] == 'S' && player_exist(game) == FALSE)
             {
-                game->player.down = TRUE;
+                game->player.angle = 3 * (M_PI / 2);
                 game->map.matrix[i][j] = '0';
             }
             else if (game->map.matrix[i][j] == 'E' && player_exist(game) == FALSE)
-                game->player.right = TRUE;
+            {
+                game->player.angle = 0;
+                game->map.matrix[i][j] = '0';
+            }
             else if (game->map.matrix[i][j] == 'W' && player_exist(game) == FALSE)
-                game->player.left = TRUE;
+            {
+                game->player.angle = M_PI;
+                game->map.matrix[i][j] = '0';
+            }
             else if (game->map.matrix[i][j] != '0' && game->map.matrix[i][j] != '1' && game->map.matrix[i][j] != ' ')
             {
-                ft_error("Invalid MapError : Too many character\n");
+                ft_error("Invalid MapError : Too many players\n");
                 return (1);
             }
             j++;
         }
         i++;
     }
-    printf("N = %i\n", game->player.up);
-    printf("S = %i\n", game->player.down);
-    printf("E = %i\n", game->player.right);
-    printf("W = %i\n", game->player.left);
+    printf("angle = %f\n", game->player.angle);
     return (0);
 }

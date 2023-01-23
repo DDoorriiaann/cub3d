@@ -15,10 +15,7 @@ void	init_data(t_data *data, t_game *game)
 
 void    init_player(t_game *game)
 {
-    game->player.up = FALSE;
-    game->player.down = FALSE;
-    game->player.left = FALSE;
-    game->player.right = FALSE;
+    game->player.angle = -1;
 }
 
 int	open_fd(char *file)
@@ -50,6 +47,11 @@ int	read_fd(t_data *data,t_game *game,  int fd)
         return (1);
     if (fill_player_position(game))
         return (1);
+    if(!player_exist(game))
+    {
+        ft_error("Invalid MapError : the map must contain at least one player");
+        return (1);
+    }
     check_valid_map(game);
     //check_images(data);
 	return (0);
