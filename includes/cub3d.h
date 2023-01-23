@@ -8,12 +8,12 @@
 # include "../mlx_linux/mlx.h"
 # include "../mlx_linux/mlx_int.h"
 # include "../libft/libft.h"
-# define GAME_WIDTH 800
-# define GAME_HEIGHT 600
+# define GAME_WIDTH 400
+# define GAME_HEIGHT 300
 # define MINIMAP_HEIGHT 50
 # define MINIMAP_WIDTH 50
-# define WINDOW_WIDTH 800
-# define WINDOW_HEIGHT 600
+# define WINDOW_WIDTH 400
+# define WINDOW_HEIGHT 300
 # define GRID_UNIT 128
 # define PLAYER_SIZE 1
 # define PLAYER_SPEED 0.5
@@ -143,7 +143,6 @@ typedef struct ray
 void	my_mlx_pixel_put(t_frame *frame, int x, int y, int color);
 void	draw_grid(t_game *game);
 void	draw_map(t_game *game);
-void	draw_fov(t_game *game, t_player player);
 void	draw_line_horizontal(t_frame frame, int x, int y, int len, int color);
 void	draw_protected_line_horizontal(t_game *game, t_frame minimap, int x, int y, int len, int color);
 void	draw_ray(t_game *game, t_player player, t_ray ray);
@@ -153,6 +152,8 @@ void	draw_disc(t_game *game,
 void	zoom(t_game *game);
 int		get_pixel(t_frame frame, int x, int y);
 void	draw_minimap(t_game *game, t_frame minimap);
+void	draw_minimap_background(t_game *game);
+void	draw_square(t_game *game, int x, int y, int color);
 void	draw_floor_and_ceiling(t_frame frame);
 
 //RAYCASTING

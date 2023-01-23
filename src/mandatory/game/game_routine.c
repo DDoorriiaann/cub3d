@@ -3,7 +3,9 @@
 int	game_routine(t_game *game)
 {
 	static int frame = 0;
-	//usleep(1000000/60);
+	// usleep(1000000/60);
+	// if (frame == 60)
+	// 	frame = 0;
 	frame = frame + 1;
 	game->player.dx = 0;
 	game->player.dy = 0;
@@ -58,13 +60,14 @@ int	game_routine(t_game *game)
 	draw_floor_and_ceiling(game->frame);
 	
 	//draw_grid(game);
+	draw_minimap_background(game);
 	draw_disc(game, (game->player.x / 128.0) * game->minimap.grid_size, (game->player.y / 128.0) * game->minimap.grid_size, 2, 0xFF0000);
 	
 	raycasting(game, game->player);
 	draw_map(game);
 	
 	// Put image to window
-	//zoom(game);
+	zoom(game);
 	
 	//draw_minimap(game, game->minimap.frame);
 	

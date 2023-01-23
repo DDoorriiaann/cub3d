@@ -43,7 +43,7 @@ int main(int argc, char **argv)
 
 	// Initialize MinilibX
 	game.mlx = mlx_init();
-    game.window = mlx_new_window(game.mlx, GAME_WIDTH, GAME_HEIGHT, "cub3D");
+    game.window = mlx_new_window(game.mlx, GAME_WIDTH * 2, GAME_HEIGHT * 2, "cub3D");
 
  	// Initialize disk position
     // game.player.x = MINIMAP_WIDTH / 2 + 12;
