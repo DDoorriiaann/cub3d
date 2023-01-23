@@ -144,22 +144,30 @@ int fill_player_position(t_game *game)
         {
             if (game->map.matrix[i][j] == 'N' && player_exist(game) == FALSE)
             {
-                game->player.angle = M_PI / 2;
+                game->player.angle = 3 * (M_PI / 2);
+                game->player.x = (j * 128) + 64;
+                game->player.y = (i * 128) + 64;
                 game->map.matrix[i][j] = '0';
             }
             else if (game->map.matrix[i][j] == 'S' && player_exist(game) == FALSE)
             {
-                game->player.angle = 3 * (M_PI / 2);
+                game->player.angle = M_PI / 2;
+                game->player.x = (j * 128) + 64;
+                game->player.y = (i * 128) + 64;
                 game->map.matrix[i][j] = '0';
             }
             else if (game->map.matrix[i][j] == 'E' && player_exist(game) == FALSE)
             {
                 game->player.angle = 0;
+                game->player.x = (j * 128) + 64;
+                game->player.y = (i * 128) + 64;
                 game->map.matrix[i][j] = '0';
             }
             else if (game->map.matrix[i][j] == 'W' && player_exist(game) == FALSE)
             {
                 game->player.angle = M_PI;
+                game->player.x = (j * 128) + 64;
+                game->player.y = (i * 128) + 64;
                 game->map.matrix[i][j] = '0';
             }
             else if (game->map.matrix[i][j] != '0' && game->map.matrix[i][j] != '1' && game->map.matrix[i][j] != ' ')

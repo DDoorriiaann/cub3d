@@ -15,7 +15,8 @@ int main(int argc, char **argv)
 		return (1);
 	init_data(&data, &game);
 	fd = open_fd(argv[1]);
-	read_fd(&data, &game,  fd);
+	if  (read_fd(&data, &game,  fd))
+        return (1);
 	free_data(&data);
 	// char	*map[]= {
 	// 	"111111111111111111111111111111111111111111111111111",
@@ -47,9 +48,9 @@ int main(int argc, char **argv)
  	// Initialize disk position
     // game.player.x = MINIMAP_WIDTH / 2 + 12;
     // game.player.y = MINIMAP_HEIGHT/ 2  + 15;
-	game.player.x = 200;
-	game.player.y = 200;
-	game.player.angle = M_PI / 2;
+	//game.player.x = 200;
+	//game.player.y = 200;
+	//game.player.angle = M_PI / 2;
 	game.player.line_length = 50;
 	game.player.up = FALSE;
 	game.player.down = FALSE;
