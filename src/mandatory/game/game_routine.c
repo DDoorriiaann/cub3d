@@ -69,7 +69,7 @@ int	game_routine(t_game *game)
 	// Put image to window
 	zoom(game);
 	
-	//draw_minimap(game, game->minimap.frame);
+	draw_minimap(game, game->minimap.frame);
 	
 	mlx_put_image_to_window(game->mlx, game->window, game->frame.img, 0, 0);
 	// sleep(1);

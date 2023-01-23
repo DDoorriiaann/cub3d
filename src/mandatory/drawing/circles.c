@@ -21,10 +21,10 @@ void	draw_disc(t_game *game,
 	d = 3 - 2 * r;
 	while (cx <= cy)
 	{
-		draw_line_horizontal(game->frame, x - cy, y + cx, 2 * cy, color);
-		draw_line_horizontal(game->frame, x - cy, y - cx, 2 * cy, color);
-		draw_line_horizontal(game->frame, x - cx, y - cy, 2 * cx, color);
-		draw_line_horizontal(game->frame, x - cx, y + cy, 2 * cx, color);
+		draw_line_horizontal(game->minimap.frame, x - cy, y + cx, 2 * cy, color);
+		draw_line_horizontal(game->minimap.frame, x - cy, y - cx, 2 * cy, color);
+		draw_line_horizontal(game->minimap.frame, x - cx, y - cy, 2 * cx, color);
+		draw_line_horizontal(game->minimap.frame, x - cx, y + cy, 2 * cx, color);
 		if (d < 0)
 			d = d + 4 * cx + 6;
 		else
@@ -40,17 +40,30 @@ void draw_minimap(t_game *game, t_frame minimap)
 {
 	int x;
 	int y;
+	int	player_x;
+	int	player_y;
+	int	src_x;
+	int	src_y;
 
 	y = 0;
-	while (y < game->minimap.height )
+	player_x = (int)((game->player.x / 128.0 ) * game->minimap.grid_size);
+	player_y = (int)((game->player.y / 128.0) * game->minimap.grid_size);
+	src_y = player_y - 75;
+	while (y < 150 )
 	{
+		src_x = player_x - 75;
 		x = 0;
-		while (x < game->minimap.width)
+		while (x < 150)
 		{
-			my_mlx_pixel_put(&game->frame, x , y , get_pixel(minimap, x, y));
+			if (src_x > 0 && src_y > 0 && src_x < game->minimap.width && src_y < game->minimap.height)
+				my_mlx_pixel_put(&game->frame, x + 650 , y, get_pixel(minimap, src_x, src_y));
+			else
+				my_mlx_pixel_put(&game->frame, x + 650 , y, 0x000000);
 			x++;
+			src_x++;
 		}
 		y++;
+		src_y++;
 	}
 }
 
