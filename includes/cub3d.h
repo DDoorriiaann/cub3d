@@ -2,6 +2,9 @@
 # define CUB3D
 # include <stdio.h>
 # include <stdlib.h>
+#include "libft.h"
+#include "get_next_line.h"
+#include <errno.h>
 # include <math.h>
 # include "../mlx_linux/mlx.h"
 # include "../mlx_linux/mlx_int.h"
@@ -19,6 +22,17 @@
 # define TRUE 1
 # define FALSE 0
 # define FOV 1.0 // 60 degrees
+
+typedef struct s_data
+{
+	char	*NO;
+	char	*SO;
+	char 	*EA;
+	char 	*WE;
+	char 	*F;
+	char 	*C;
+	int		count;
+}	t_data;
 
 typedef struct s_player
 {
@@ -160,5 +174,39 @@ int		game_routine(t_game *game);
 
 int	check_collision(t_map map, int x, int y);
 int	check_player_colision(t_map map, int x, int y);
+
+//INIT
+
+void	    init_data(t_data *data, t_game *game);
+void        init_player(t_game *game);
+
+//PARSING
+
+int         check_map_description(t_data *data, int fd);
+char	    *save_path(t_data *data, char *line);
+int		    check_file_extension(char *file_name);
+int		    open_fd(char *file);
+int		    read_fd(t_data *data, t_game *game, int fd);
+void	    check_floor(t_data *data);
+int         ft_strlen_path(int i, const char *line);
+void	    check_empty_string(t_data *data, const char * line);
+void        check_is_number(char *tmp);
+int		    ft_number_comma(const char *str);
+void        check_is_valid_color(int color);
+void        check_ceiling(t_data *data);
+char        *fetch_map_to_string(int fd);
+void        fill_map_and_count_lines(t_game *game, char *tmp);
+int         check_valid_map(t_game *game);
+int         valid_character(t_game *game);
+int         fill_player_position(t_game *game);
+int         player_exist(t_game *game);
+
+//ERROR
+
+int		    ft_error(char *message);
+
+//FREE
+
+void    free_data(t_data *data);
 
 #endif

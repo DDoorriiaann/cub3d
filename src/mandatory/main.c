@@ -1,11 +1,22 @@
 #include "cub3d.h"
 
-
-
-
-int main() 
+int main(int argc, char **argv) 
 {
-    t_game	game;
+	t_data	data;
+  t_game  game;
+	int		fd;
+
+	if (argc != 2)
+	{
+		ft_error("You must enter two parameters\n");
+		return (1);
+	}
+	if (check_file_extension(argv[1]))
+		return (1);
+	init_data(&data, &game);
+	fd = open_fd(argv[1]);
+	read_fd(&data, &game,  fd);
+	free_data(&data);
 	char	*map[]= {
 		"111111111111111111111111111111111111111111111111111",
 		"100001110000000000000000000000000000000000000000001",
