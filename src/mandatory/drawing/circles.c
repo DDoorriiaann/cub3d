@@ -55,10 +55,13 @@ void draw_minimap(t_game *game, t_frame minimap)
 		x = 0;
 		while (x < 150)
 		{
-			if (src_x > 0 && src_y > 0 && src_x < game->minimap.width && src_y < game->minimap.height)
-				my_mlx_pixel_put(&game->frame, x + 650 , y, get_pixel(minimap, src_x, src_y));
-			else
-				my_mlx_pixel_put(&game->frame, x + 650 , y, 0x000000);
+			if (get_pixel(game->minimap_mask, x, y) != 0x12ff00)
+			{
+				if (src_x > 0 && src_y > 0 && src_x < game->minimap.width && src_y < game->minimap.height)
+					my_mlx_pixel_put(&game->frame, x + 625 , y + 25, get_pixel(minimap, src_x, src_y));
+				else
+					my_mlx_pixel_put(&game->frame, x + 625 , y + 25, 0x000000);
+			}
 			x++;
 			src_x++;
 		}
