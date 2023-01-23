@@ -22,6 +22,11 @@ char	*save_path(t_data *data, char *line)
         i++;
     len = ft_strlen_path(i, line);
     tmp = malloc(sizeof(char *) * len + 1);
+    if (!tmp)
+    {
+        free(tmp);
+        return (NULL);
+    }
     while (line[i])
     {
         tmp[j] = line[i];

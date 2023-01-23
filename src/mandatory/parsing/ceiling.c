@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-void    check_ceiling(t_data *data)
+int    check_ceiling(t_data *data)
 {
     int r;
     int g;
@@ -11,9 +11,15 @@ void    check_ceiling(t_data *data)
         ft_error("Too many comma\n");
     tmp = ft_split(data->C, ',');
     if (!tmp)
-        return ; // TODO free and leave
+    {
+        free_arr(tmp);
+        return (1);
+    }
     if (!(tmp[0] && tmp[1] && tmp[2]))
-        return ; // TODO free and leave
+    {
+        free_arr(tmp);
+        return (1);
+    }
     check_is_number(tmp[0]);
     check_is_number(tmp[1]);
     check_is_number(tmp[2]);
@@ -23,4 +29,5 @@ void    check_ceiling(t_data *data)
     check_is_valid_color(r);
     check_is_valid_color(g);
     check_is_valid_color(b);
+    return (0);
 }

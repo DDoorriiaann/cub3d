@@ -187,13 +187,13 @@ char	    *save_path(t_data *data, char *line);
 int		    check_file_extension(char *file_name);
 int		    open_fd(char *file);
 int		    read_fd(t_data *data, t_game *game, int fd);
-void	    check_floor(t_data *data);
+int 	    check_floor(t_data *data);
 int         ft_strlen_path(int i, const char *line);
 void	    check_empty_string(t_data *data, const char * line);
 void        check_is_number(char *tmp);
 int		    ft_number_comma(const char *str);
 void        check_is_valid_color(int color);
-void        check_ceiling(t_data *data);
+int         check_ceiling(t_data *data);
 char        *fetch_map_to_string(int fd);
 void        fill_map_and_count_lines(t_game *game, char *tmp);
 int         check_valid_map(t_game *game);
@@ -208,5 +208,6 @@ int		    ft_error(char *message);
 //FREE
 
 void    free_data(t_data *data);
+void    free_arr(char **arr);
 
 #endif
