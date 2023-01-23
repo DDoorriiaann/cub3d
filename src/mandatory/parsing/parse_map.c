@@ -75,13 +75,13 @@ void  fill_map_and_count_lines(t_game *game, char *tmp)
     {
         printf("map =  %s\n", game->map.matrix[i]);
         size = ft_strlen(game->map.matrix[i]);
-        if (size > game->map.map_width)
-            game->map.map_width = size;
-        game->map.map_height++;
+        if (size > game->map.width)
+            game->map.width = size;
+        game->map.height++;
         i++;
     }
-    printf("map_width = %i\n", game->map.map_width);
-    printf("map_height = %i\n", game->map.map_height);
+    printf("map_width = %i\n", game->map.width);
+    printf("map_height = %i\n", game->map.height);
 }
 
 int    check_around(t_game *game, int i, int j, int size)
@@ -92,7 +92,7 @@ int    check_around(t_game *game, int i, int j, int size)
         return (1);
     if (i - 1 < 0 || ((game->map.matrix[i - 1][j] != '1') && (game->map.matrix[i - 1][j] != '0')))
         return (1);
-    if (i + 1 >= game->map.map_height || ((game->map.matrix[i + 1][j] != '1') && (game->map.matrix[i + 1][j] != '0')))
+    if (i + 1 >= game->map.height || ((game->map.matrix[i + 1][j] != '1') && (game->map.matrix[i + 1][j] != '0')))
         return (1);
     return (0);
 }

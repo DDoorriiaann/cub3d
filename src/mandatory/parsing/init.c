@@ -9,8 +9,8 @@ void	init_data(t_data *data, t_game *game)
 	data->F = NULL;
 	data->C = NULL;
 	data->count = 0;
-    game->map.map_width = 0;
-    game->map.map_height = 0;
+    game->map.width = 0;
+    game->map.height = 0;
 }
 
 void    init_player(t_game *game)

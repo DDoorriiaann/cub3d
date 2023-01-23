@@ -2,7 +2,6 @@
 # define CUB3D
 # include <stdio.h>
 # include <stdlib.h>
-#include "libft.h"
 #include "get_next_line.h"
 #include <errno.h>
 # include <math.h>
