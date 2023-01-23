@@ -5,15 +5,16 @@
 # include <math.h>
 # include "../mlx_linux/mlx.h"
 # include "../mlx_linux/mlx_int.h"
-# define GAME_WIDTH 1280
-# define GAME_HEIGHT 960
+# include "../libft/libft.h"
+# define GAME_WIDTH 800
+# define GAME_HEIGHT 600
 # define MINIMAP_HEIGHT 50
 # define MINIMAP_WIDTH 50
-# define WINDOW_WIDTH 1280
-# define WINDOW_HEIGHT 960
+# define WINDOW_WIDTH 800
+# define WINDOW_HEIGHT 600
 # define GRID_UNIT 128
 # define PLAYER_SIZE 1
-# define PLAYER_SPEED 1
+# define PLAYER_SPEED 0.5
 # define PLAYER_TURN_SPEED 0.03
 # define TRUE 1
 # define FALSE 0
@@ -52,26 +53,55 @@ typedef struct s_map
 	int			height;
 }	t_map;
 
+typedef struct s_minimap
+{
+	int		x;
+	int		y;
+	int		width;
+	int		height;
+	int		grid_size;
+	t_frame	frame;
+}	t_minimap;
+
+typedef	struct s_texture
+{
+	void	*img;
+	char	*addr;
+	int		width;
+	int		height;
+	int		bpp;
+	int		line_len;
+	int		endian;
+}	t_texture;
+typedef struct s_textures
+{
+	t_texture	north;
+	t_texture	south;
+	t_texture	east;
+	t_texture	west;
+}	t_textures;
 
 typedef struct s_game
 {
 	void		*mlx;
 	void		*window;
 	t_frame		frame;
-	t_frame		minimap;
 	t_frame		zoomed_frame;
 	t_player	player;
-	t_map		map;	
+	t_map		map;
+	t_minimap	minimap;
+	t_textures	textures;
 	int			floor_color;
 	int			ceiling_color;
 }	t_game;
+
 
 typedef struct ray
 {
 	double	x;
 	double	y;
 	double	depth;
-    double   angle;
+    double  angle;
 	int		collision;
 	double	wall_height;
 	int		x_dir;
@@ -100,13 +130,12 @@ typedef struct ray
 void	my_mlx_pixel_put(t_frame *frame, int x, int y, int color);
 void	draw_grid(t_game *game);
 void	draw_map(t_game *game);
-void 	draw_target(t_game *game, t_player player, int endX, int endY);
 void	draw_fov(t_game *game, t_player player);
-void	mlx_line_horizontal(t_frame frame, int x, int y, int len, int color);
+void	draw_line_horizontal(t_frame frame, int x, int y, int len, int color);
 void	draw_protected_line_horizontal(t_game *game, t_frame minimap, int x, int y, int len, int color);
-void	draw_line(t_game *game, t_player player, int x2, int y2);
+void	draw_ray(t_game *game, t_player player, t_ray ray);
 void	draw_wall_ray(t_game *game, t_ray ray, int ray_count);
-void	mlx_circle_filled(t_game *game,
+void	draw_disc(t_game *game,
 			int x, int y, int r, int color);
 void	zoom(t_game *game);
 int		get_pixel(t_frame frame, int x, int y);
@@ -131,6 +160,5 @@ int		game_routine(t_game *game);
 
 int	check_collision(t_map map, int x, int y);
 int	check_player_colision(t_map map, int x, int y);
-int	find_collision(t_game *game, t_player player);
 
 #endif
