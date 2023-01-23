@@ -100,6 +100,7 @@ typedef struct s_game
 	void		*window;
 	t_frame		frame;
 	t_frame		zoomed_frame;
+	t_frame		minimap_mask;
 	t_player	player;
 	t_map		map;
 	t_minimap	minimap;
