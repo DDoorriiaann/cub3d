@@ -9,7 +9,7 @@ of the circle, the radius of the circle and the color of the circle in
 hexadecimal as input.
 */
 
-void	mlx_circle_filled(t_game *game,
+void	draw_disc(t_game *game,
 			int x, int y, int r, int color)
 {
 	int	d;
@@ -21,10 +21,10 @@ void	mlx_circle_filled(t_game *game,
 	d = 3 - 2 * r;
 	while (cx <= cy)
 	{
-		mlx_line_horizontal(game->frame, x - cy, y + cx, 2 * cy, color);
-		mlx_line_horizontal(game->frame, x - cy, y - cx, 2 * cy, color);
-		mlx_line_horizontal(game->frame, x - cx, y - cy, 2 * cx, color);
-		mlx_line_horizontal(game->frame, x - cx, y + cy, 2 * cx, color);
+		draw_line_horizontal(game->frame, x - cy, y + cx, 2 * cy, color);
+		draw_line_horizontal(game->frame, x - cy, y - cx, 2 * cy, color);
+		draw_line_horizontal(game->frame, x - cx, y - cy, 2 * cx, color);
+		draw_line_horizontal(game->frame, x - cx, y + cy, 2 * cx, color);
 		if (d < 0)
 			d = d + 4 * cx + 6;
 		else
@@ -33,6 +33,24 @@ void	mlx_circle_filled(t_game *game,
 			cy--;
 		}
 		cx++;
+	}
+}
+
+void draw_minimap(t_game *game, t_frame minimap)
+{
+	int x;
+	int y;
+
+	y = 0;
+	while (y < game->minimap.height )
+	{
+		x = 0;
+		while (x < game->minimap.width)
+		{
+			my_mlx_pixel_put(&game->frame, x , y , get_pixel(minimap, x, y));
+			x++;
+		}
+		y++;
 	}
 }
 
