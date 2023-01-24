@@ -20,6 +20,7 @@
 # define PLAYER_TURN_SPEED 0.03
 # define TRUE 1
 # define FALSE 0
+# define ERROR 1
 # define FOV 1.0
 # define GREEN_MASK 0x12ff00
 
@@ -86,10 +87,13 @@ typedef	struct s_texture
 	int		bpp;
 	int		line_len;
 	int		endian;
+    char    *path;
 }	t_texture;
 
 typedef struct s_textures
 {
+    int         floor_color;
+    int         ceiling_color;
 	t_texture	north;
 	t_texture	south;
 	t_texture	east;
@@ -107,8 +111,6 @@ typedef struct s_game
 	t_map		map;
 	t_minimap	minimap;
 	t_textures	textures;
-	int			floor_color;
-	int			ceiling_color;
 }	t_game;
 
 typedef struct ray
@@ -214,20 +216,22 @@ int         check_map_description(t_data *data, int fd);
 char	    *save_path(t_data *data, char *line);
 int		    check_file_extension(char *file_name);
 int		    open_fd(char *file);
-int		    read_fd(t_data *data, t_game *game, int fd);
-int 	    check_floor(t_data *data);
+int		    read_fd(t_data *data, t_game *game, int fd, t_textures *textures);
+int 	    check_floor(t_data *data, t_textures *textures);
 int         ft_strlen_path(int i, const char *line);
-void	    check_empty_string(t_data *data, const char * line);
-void        check_is_number(char *tmp);
+void	    check_empty_string(t_data *data, char * line);
+int         check_is_number(char *tmp);
 int		    ft_number_comma(const char *str);
-void        check_is_valid_color(int color);
-int         check_ceiling(t_data *data);
+int         check_is_valid_color(int color);
+int         get_hex_color(int r, int g, int b);
+int         check_ceiling(t_data *data, t_textures *textures);
 char        *fetch_map_to_string(int fd);
 void        fill_map_and_count_lines(t_game *game, char *tmp);
 int         check_valid_map(t_game *game);
 int         valid_character(t_game *game);
 int         fill_player_position(t_game *game);
 int         player_exist(t_game *game);
+int         fill_spaces_map(t_game *game);
 
 //ERROR
 

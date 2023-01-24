@@ -13,7 +13,7 @@ int	ft_strlen_path(int i, const char *line)
     return (count);
 }
 
-void	check_empty_string(t_data *data, const char * line)
+void	check_empty_string(t_data *data, char * line)
 {
     int	i;
 
@@ -25,6 +25,7 @@ void	check_empty_string(t_data *data, const char * line)
     {
         ft_error("You have an empty information\n");
         free_data(data);
+        free(line);
         exit (1);
     }
 }
@@ -35,23 +36,27 @@ static int	ft_is_number(const char *str)
 
     i = 0;
     if (str[i] == '\n')
-        ft_error("Invalid format color");
+        return (ERROR);
     while (str[i] && str[i] != '\n')
     {
         if (str[i] < 48 || str[i] > 57)
-            return (1);
+            return (ERROR);
         i++;
     }
     return (0);
 }
 
-void    check_is_number(char *tmp)
+int    check_is_number(char *tmp)
 {
     int i;
 
     i = ft_is_number(tmp);
-    if (i == 1)
-        ft_error("Color is not a digit\n");
+    if (i == ERROR)
+    {
+        ft_error("Invalid format color\n");
+        return (ERROR);
+    }
+    return (0);
 }
 
 int		ft_number_comma(const char *str)
