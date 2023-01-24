@@ -1,5 +1,47 @@
 #include "cub3d.h"
 
+int	get_fogged_color(float distance, int color)
+{
+	int		fogged_color;
+	int		r;
+	int		g;
+	int		b;
+	float	fog;
+
+	fog = 1.0 - (distance / 10000.0);
+	if (fog < 0)
+		fog = 0;
+	if (fog > 1)
+		fog = 1;
+	r = (color >> 16) & 0xFF;
+	g = (color >> 8) & 0xFF;
+	b = color & 0xFF;
+	r = (int)(r * fog);
+	g = (int)(g * fog);
+	b = (int)(b * fog);
+	fogged_color = (r << 16) | (g << 8) | b;
+	return (fogged_color);
+}
+
+int	get_texture_pixel(t_ray ray, t_texture texture, int wall_y)
+{
+	int		texture_x;
+	int		texture_y;
+	char	*data;
+
+	texture_y = texture.height - (int)((wall_y / ray.wall_height)
+			* texture.height);
+	if (ray.collision == 1)
+		texture_x = (int)(((ray.x / GRID_UNIT - (int)ray.x / GRID_UNIT))
+				* texture.width);
+	else
+		texture_x = (int)(((ray.y / GRID_UNIT - (int)ray.y / GRID_UNIT))
+				* texture.width);
+	data = texture.addr + (texture_y * texture.line_len
+			+ texture_x * (texture.bpp / 8));
+	return (*(int *)data);
+}
+
 int	get_pixel(t_frame frame, int x, int y)
 {
 	char	*data;

@@ -21,6 +21,7 @@
 # define TRUE 1
 # define FALSE 0
 # define FOV 1.0
+# define GREEN_MASK 0x12ff00
 
 typedef struct s_data
 {
@@ -176,6 +177,8 @@ void	draw_disc(t_game *game,
 			int x, int y, int r);
 void	zoom(t_game *game);
 int		get_pixel(t_frame frame, int x, int y);
+int		get_fogged_color(float distance, int color);
+int		get_texture_pixel(t_ray ray, t_texture texture, int wall_y);
 void	draw_minimap(t_game *game, t_frame minimap);
 void	draw_minimap_background(t_game *game);
 void	draw_square(t_game *game, int x, int y, int color);
