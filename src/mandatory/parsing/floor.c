@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-int	check_floor(t_data *data)
+int	check_floor(t_data *data, t_textures *textures)
 {
     int r;
     int g;
@@ -15,19 +15,25 @@ int	check_floor(t_data *data)
         free_arr(tmp);
         return (1);
     }
-    if (!(tmp[0] && tmp[1] && tmp[2]))
+    if (!tmp[0] || !tmp[1] || !tmp[2])
     {
         free_arr(tmp);
         return (1);
     }
-    check_is_number(tmp[0]);
-    check_is_number(tmp[1]);
-    check_is_number(tmp[2]);
+    if ((check_is_number(tmp[0]) == ERROR) || (check_is_number(tmp[1]) == ERROR) || (check_is_number(tmp[2]) == ERROR))
+    {
+        free_arr(tmp);
+        return (ERROR);
+    }
     r = ft_atoi(tmp[0]);
     g = ft_atoi(tmp[1]);
     b = ft_atoi(tmp[2]);
-    check_is_valid_color(r);
-    check_is_valid_color(g);
-    check_is_valid_color(b);
+    if ((check_is_valid_color(r) == ERROR) || (check_is_valid_color(g) == ERROR) || (check_is_valid_color(b) == ERROR))
+    {
+        free_arr(tmp);
+        return (ERROR);
+    }
+    free_arr(tmp);
+    textures->floor_color = get_hex_color(r, g, b);
     return (0);
 }

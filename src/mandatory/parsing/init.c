@@ -28,31 +28,34 @@ int	open_fd(char *file)
 	return (fd);
 }
 
-int	read_fd(t_data *data,t_game *game,  int fd)
+int	read_fd(t_data *data,t_game *game, int fd, t_textures *textures)
 {
     char    *tmp;
 
     if (check_map_description(data, fd))
     {
         ft_error("Invalid information\n");
-        return (1);
+        return (ERROR);
     }
-	check_floor(data);
-    check_ceiling(data);
+	if (check_floor(data, textures) == ERROR)
+        return (ERROR);
+    if (check_ceiling(data, textures) == ERROR)
+        return(ERROR);
     tmp = fetch_map_to_string(fd);
     if (tmp == NULL)
-        return (1);
+        return (ERROR);
     fill_map_and_count_lines(game, tmp);
     if (valid_character(game))
-        return (1);
+        return (ERROR);
     if (fill_player_position(game))
-        return (1);
+        return (ERROR);
+    if (check_valid_map(game) == ERROR)
+        return (ERROR);
+    fill_spaces_map(game);
     if(!player_exist(game))
     {
         ft_error("Invalid MapError : the map must contain at least one player");
-        return (1);
+        return (ERROR);
     }
-    check_valid_map(game);
-    //check_images(data);
-	return (0);
+    return (0);
 }

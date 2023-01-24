@@ -14,7 +14,7 @@ int valid_character(t_game *game)
             if (ft_strchr("01 NSEW", game->map.matrix[i][j]) == 0)
             {
                 ft_error("Invalid MapError : invalid character!");
-                return (1);
+                return (ERROR);
             }
             j++;
         }
@@ -33,7 +33,7 @@ int	check_file_extension(char *file_name)
 		|| file_name[len - 5] == '/')
 	{
 		ft_error("wrong file extension\n");
-		return (1);
+		return (ERROR);
 	}
 	return (0);
 }
@@ -55,12 +55,15 @@ char    *fetch_map_to_string(int fd)
         if ( line[0] == '\n')
         {
             ft_error("Invalid MapError : the map contains empty lines\n");
+            free(line);
+            free(tmp);
             return (NULL);
         }
         tmp = ft_strjoin(tmp, line);
         free(line);
         line = get_next_line(fd);
     }
+    free(line);
     return (tmp);
 }
 
@@ -80,6 +83,7 @@ void  fill_map_and_count_lines(t_game *game, char *tmp)
         game->map.height++;
         i++;
     }
+    free(tmp);
     printf("map_width = %i\n", game->map.width);
     printf("map_height = %i\n", game->map.height);
 }
@@ -87,13 +91,13 @@ void  fill_map_and_count_lines(t_game *game, char *tmp)
 int    check_around(t_game *game, int i, int j, int size)
 {
     if (j - 1 < 0 || ((game->map.matrix[i][j - 1] != '1') && (game->map.matrix[i][j - 1] != '0')))
-        return (1);
+        return (ERROR);
     if (j + 1 >= size || ((game->map.matrix[i][j + 1] != '1') && (game->map.matrix[i][j + 1] != '0')))
-        return (1);
+        return (ERROR);
     if (i - 1 < 0 || ((game->map.matrix[i - 1][j] != '1') && (game->map.matrix[i - 1][j] != '0')))
-        return (1);
+        return (ERROR);
     if (i + 1 >= game->map.height || ((game->map.matrix[i + 1][j] != '1') && (game->map.matrix[i + 1][j] != '0')))
-        return (1);
+        return (ERROR);
     return (0);
 }
 
@@ -111,10 +115,10 @@ int    check_valid_map(t_game *game)
         while (j < size)
         {
             if (game->map.matrix[i][j] == '0')
-                if (check_around(game, i, j, size))
+                if (check_around(game, i, j, size) == ERROR)
                 {
                     ft_error("Invalid MapError : the map is not closed\n");
-                    return (1);
+                    return (ERROR);
                 }
             j++;
         }
@@ -173,7 +177,7 @@ int fill_player_position(t_game *game)
             else if (game->map.matrix[i][j] != '0' && game->map.matrix[i][j] != '1' && game->map.matrix[i][j] != ' ')
             {
                 ft_error("Invalid MapError : Too many players\n");
-                return (1);
+                return (ERROR);
             }
             j++;
         }

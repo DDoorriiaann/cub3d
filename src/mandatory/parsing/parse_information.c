@@ -14,11 +14,17 @@ int get_info(t_data *data, char *line)
         data->F = save_path(data, line);
     else if ((strncmp(line, "C ", 2) == 0) && data->C == NULL)
         data->C = save_path(data, line);
+    else if (line[0] == '\n')
+    {
+        free(line);
+        return (0);
+    }
     else if (line[0] != '\n')
     {
         free(line);
-        return (1);
+        return (ERROR);
     }
+    data->count++;
     return (0);
 }
 
@@ -29,15 +35,12 @@ int	check_map_description(t_data *data, int fd)
     line = get_next_line(fd);
     while (line != NULL && data->count != 6)
     {
-        if (get_info(data, line))
+        if (get_info(data, line) == ERROR)
             return (1);
-        if (line[0] == '\n')
-            free(line);
-        else
-            data->count++;
         line = get_next_line(fd);
     }
+    free(line);
     if (data->count != 6)
-        return (1);
+        return (ERROR);
     return (0);
 }
