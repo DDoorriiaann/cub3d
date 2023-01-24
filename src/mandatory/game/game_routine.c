@@ -11,19 +11,14 @@ int	game_routine(t_game *game)
 	game->player.dy = 0;
 	if (game->player.up && !game->player.down)
 	{
-		//if (find_collision(game, game->player) == FALSE)
-		//{
+
 			game->player.dx = (int)(PLAYER_SPEED * cos(game->player.angle) * 20);
 			game->player.dy = (int)(PLAYER_SPEED * sin(game->player.angle) * 20);
-		//}
 	}
 	if (game->player.down && !game->player.up)
 	{
-		//if (find_collision(game, game->player) == FALSE)
-		//{
 			game->player.dx = (int)(PLAYER_SPEED * cos(game->player.angle) * 20) * -1;
 			game->player.dy = (int)(PLAYER_SPEED * sin(game->player.angle) * 20) * -1;
-		//}
 	}
 	if (game->player.left)
 		game->player.angle = (game->player.angle - PLAYER_TURN_SPEED);
@@ -50,18 +45,10 @@ int	game_routine(t_game *game)
 		game->player.y_dir = 1;
 	else
 		game->player.y_dir = -1;
-	// if (frame % 20 == 0)
-	// {
-	// 	printf("angle: %f\n", game->player.angle * (180 / M_PI));
-	// 	// printf("line end x: %f \nline end y : %f\n", game->player.x + (cos(game->player.angle) * game->player.line_length), game->player.y + (sin(game->player.angle) * game->player.line_length));
-	// 	// printf("cos: %f\n", cos(game->player.angle));
-	// 	// printf("sin: %f\n", sin(game->player.angle));
-	// }
 	draw_floor_and_ceiling(game->frame);
-	
-	//draw_grid(game);
 	draw_minimap_background(game);
-	draw_disc(game, (game->player.x / 128.0) * game->minimap.grid_size, (game->player.y / 128.0) * game->minimap.grid_size, 2, 0xFF0000);
+	draw_disc(game, (game->player.x / 128.0) * game->minimap.grid_size,
+			(game->player.y / 128.0) * game->minimap.grid_size, 2);
 	
 	raycasting(game, game->player);
 	draw_map(game);
