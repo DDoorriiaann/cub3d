@@ -4,6 +4,8 @@ SRC				=	main.c\
 					drawing/mlx_addons.c\
 					drawing/drawing_utils.c\
 					drawing/minimap.c\
+					drawing/minimap_rays.c\
+					drawing/game_window.c\
 					input_management/keys.c\
 					game/game_routine.c\
 					game/quit_game.c\
