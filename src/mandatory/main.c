@@ -25,7 +25,6 @@ int	init_game(t_game	*game)
 	game->textures.east.img = mlx_xpm_file_to_image(game->mlx, "./textures/brick2.xpm", &game->textures.east.width,  &game->textures.east.height);
 	game->textures.east.addr = mlx_get_data_addr(game->textures.east.img, &game->textures.east.bpp, &game->textures.east.line_len, &game->textures.east.endian);
 	return 0;
-
 }
 
 int main(int argc, char **argv) 
