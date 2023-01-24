@@ -1,7 +1,7 @@
-SO ./path_to_the_south_texture
-NO ./path_to_the_north_texture
-WE ./path_to_the_west_texture
-EA ./path_to_the_east_texture
+SO ./textures/brick1.xpm
+NO ./textures/brick1.xpm
+WE ./textures/brick1.xpm
+EA ./textures/brick1.xpm
 
 F 255,233,232
 C 255,255,234

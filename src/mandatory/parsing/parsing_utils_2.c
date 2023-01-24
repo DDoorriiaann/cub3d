@@ -31,7 +31,7 @@ char	*save_path(t_data *data, char *line)
         free(line);
         return (NULL);
     }
-    while (line[i])
+    while (line[i] && line[i] != '\n')
     {
         tmp[j] = line[i];
         i++;
