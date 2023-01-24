@@ -2,8 +2,8 @@
 # define CUB3D
 # include <stdio.h>
 # include <stdlib.h>
-#include "get_next_line.h"
-#include <errno.h>
+# include "get_next_line.h"
+# include <errno.h>
 # include <math.h>
 # include "../mlx_linux/mlx.h"
 # include "../mlx_linux/mlx_int.h"
@@ -20,7 +20,8 @@
 # define PLAYER_TURN_SPEED 0.03
 # define TRUE 1
 # define FALSE 0
-# define FOV 1.0 // 60 degrees
+# define FOV 1.0
+# define GREEN_MASK 0x12ff00
 
 typedef struct s_data
 {
@@ -86,6 +87,7 @@ typedef	struct s_texture
 	int		line_len;
 	int		endian;
 }	t_texture;
+
 typedef struct s_textures
 {
 	t_texture	north;
@@ -108,7 +110,6 @@ typedef struct s_game
 	int			floor_color;
 	int			ceiling_color;
 }	t_game;
-
 
 typedef struct ray
 {
@@ -139,19 +140,45 @@ typedef struct ray
 	int		tile_hor[2];
 }	t_ray;
 
+typedef struct s_ray_draw
+{
+	int	delta_x;
+	int	delta_y;
+	int	step_x;
+	int	step_y;
+	int	x;
+	int	y;
+	int	x2;
+	int	y2;
+	int	err;
+	int	err2;
+	int	distance;
+}	t_raydraw;
+
+typedef struct s_minimap_draw
+{
+	int	x;
+	int	y;
+	int	player_x;
+	int	player_y;
+	int	src_x;
+	int	src_y;
+}	t_minimap_draw;
+
 //DRAWING
 
 void	my_mlx_pixel_put(t_frame *frame, int x, int y, int color);
-void	draw_grid(t_game *game);
 void	draw_map(t_game *game);
-void	draw_line_horizontal(t_frame frame, int x, int y, int len, int color);
+void	draw_line_horizontal(t_frame frame, int x, int y, int len);
 void	draw_protected_line_horizontal(t_game *game, t_frame minimap, int x, int y, int len, int color);
 void	draw_ray(t_game *game, t_player player, t_ray ray);
 void	draw_wall_ray(t_game *game, t_ray ray, int ray_count);
 void	draw_disc(t_game *game,
-			int x, int y, int r, int color);
+			int x, int y, int r);
 void	zoom(t_game *game);
 int		get_pixel(t_frame frame, int x, int y);
+int		get_fogged_color(float distance, int color);
+int		get_texture_pixel(t_ray ray, t_texture texture, int wall_y);
 void	draw_minimap(t_game *game, t_frame minimap);
 void	draw_minimap_background(t_game *game);
 void	draw_square(t_game *game, int x, int y, int color);
