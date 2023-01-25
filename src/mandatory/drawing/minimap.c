@@ -72,10 +72,10 @@ void	print_map_inside_circle(t_minimap_draw data, t_game *game,
 {
 	if (data.src_x > 0 && data.src_y > 0 && data.src_x < game->minimap.width
 		&& data.src_y < game->minimap.height)
-		my_mlx_pixel_put(&game->frame, data.x + 625, data.y + 25,
+		my_mlx_pixel_put(&game->frame, data.x + 1250, data.y + 50,
 			get_pixel(minimap, data.src_x, data.src_y));
 	else
-		my_mlx_pixel_put(&game->frame, data.x + 625, data.y + 25, 0x000000);
+		my_mlx_pixel_put(&game->frame, data.x + 1250, data.y + 50, 0x000000);
 }
 
 void	draw_minimap(t_game *game, t_frame minimap)
@@ -85,12 +85,12 @@ void	draw_minimap(t_game *game, t_frame minimap)
 	data.y = 0;
 	data.player_x = (int)((game->player.x / 128.0) * game->minimap.grid_size);
 	data.player_y = (int)((game->player.y / 128.0) * game->minimap.grid_size);
-	data.src_y = data.player_y - 75;
-	while (data.y < 150)
+	data.src_y = data.player_y - 150;
+	while (data.y < 300)
 	{
-		data.src_x = data.player_x - 75;
+		data.src_x = data.player_x - 150;
 		data.x = 0;
-		while (data.x < 150)
+		while (data.x < 300)
 		{
 			if (get_pixel(game->minimap_mask, data.x, data.y) != GREEN_MASK)
 				print_map_inside_circle(data, game, minimap);

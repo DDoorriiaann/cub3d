@@ -12,7 +12,7 @@ void	reset_ray(t_ray *ray, t_player player)
 	ray->cos_a = cos(ray->angle);
 }
 
-void	fisheye_correction(t_ray *ray, float player_angle)
+void	fisheye_correction(t_ray *ray, double player_angle)
 {
 	ray->depth = ray->depth * cos(player_angle - ray->angle);
 }
@@ -20,10 +20,10 @@ void	fisheye_correction(t_ray *ray, float player_angle)
 void	raycasting(t_game *game, t_player player)
 {
 	int		ray_count;
-	float	step;
+	double	step;
 	t_ray	ray;
 
-	step = (((float)FOV / (float)WINDOW_WIDTH));
+	step = (((double)FOV / (double)WINDOW_WIDTH));
 	ray_count = 0;
 	ray.angle = player.angle - (FOV / 2) + 0.0001;
 	while (ray_count < WINDOW_WIDTH)

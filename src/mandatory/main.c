@@ -26,12 +26,22 @@ int	init_game(t_game	*game, t_data *data)
 	game->textures.west.addr = mlx_get_data_addr(game->textures.west.img, &game->textures.west.bpp, &game->textures.west.line_len, &game->textures.west.endian);
 	game->textures.east.img = mlx_xpm_file_to_image(game->mlx, data->EA, &game->textures.east.width,  &game->textures.east.height);
 	game->textures.east.addr = mlx_get_data_addr(game->textures.east.img, &game->textures.east.bpp, &game->textures.east.line_len, &game->textures.east.endian);
+	int i=0;
+	while (i < 9)
+	{
+		char *filename;
+		filename = ft_strdup("./textures/rick/rick .xpm");
+		filename[20] = i + '0';	
+		game->textures.bonus[i].img = mlx_xpm_file_to_image(game->mlx, filename, &game->textures.bonus[i].width, &game->textures.bonus[i].height);
+		game->textures.bonus[i].addr = mlx_get_data_addr(game->textures.bonus[i].img, &game->textures.bonus[i].bpp, 
+				&game->textures.bonus[i].line_len, &game->textures.bonus[i].endian);
+		i++;
+	}
 	return 0;
 }
 
 int main(int argc, char **argv) 
 {
-
 	t_data	data;
 	t_game  game;
 	int		fd;
@@ -51,6 +61,10 @@ int main(int argc, char **argv)
         return (1);
     }
 	init_game(&game, &data);
+	/////test bonus
+	game.bonus = TRUE;
+	game.frame_nb = 0;
+	//////
   free_data(&data);
 	mlx_do_key_autorepeatoff(game.mlx);
 	mlx_hook(game.window, 2, 1L<<0, key_press, &game);

@@ -8,16 +8,16 @@
 # include "../mlx_linux/mlx.h"
 # include "../mlx_linux/mlx_int.h"
 # include "../libft/libft.h"
-# define GAME_WIDTH 400
-# define GAME_HEIGHT 300
+# define GAME_WIDTH 800
+# define GAME_HEIGHT 600
 # define MINIMAP_HEIGHT 50
 # define MINIMAP_WIDTH 50
-# define WINDOW_WIDTH 400
-# define WINDOW_HEIGHT 300
+# define WINDOW_WIDTH 800
+# define WINDOW_HEIGHT 600
 # define GRID_UNIT 128
 # define PLAYER_SIZE 1
-# define PLAYER_SPEED 0.5
-# define PLAYER_TURN_SPEED 0.03
+# define PLAYER_SPEED 1
+# define PLAYER_TURN_SPEED 0.05
 # define TRUE 1
 # define FALSE 0
 # define ERROR 1
@@ -99,6 +99,7 @@ typedef struct s_textures
 	t_texture	south;
 	t_texture	east;
 	t_texture	west;
+	t_texture	bonus[9];
 }	t_textures;
 
 typedef struct s_game
@@ -112,6 +113,9 @@ typedef struct s_game
 	t_map		map;
 	t_minimap	minimap;
 	t_textures	textures;
+	int			bonus;
+	int			frame_nb;
+	int			anim_frame_nb;
 }	t_game;
 
 typedef struct ray
@@ -179,7 +183,7 @@ void	draw_disc(t_game *game,
 			int x, int y, int r);
 void	zoom(t_game *game);
 int		get_pixel(t_frame frame, int x, int y);
-int		get_fogged_color(float distance, int color);
+int		get_fogged_color(double distance, int color);
 int		get_texture_pixel(t_ray ray, t_texture texture, int wall_y);
 void	draw_minimap(t_game *game, t_frame minimap);
 void	draw_minimap_background(t_game *game);
@@ -191,7 +195,7 @@ void	draw_floor_and_ceiling(t_frame frame);
 void	raycasting(t_game *game, t_player player);
 void	horizontal_collision_check(t_game *game, t_ray *ray);
 void	vertical_collision_check(t_game *game, t_ray *ray);
-void	fisheye_correction(t_ray *ray, float player_angle);
+void	fisheye_correction(t_ray *ray, double player_angle);
 void	draw_horizontal_collision(t_game *game, t_ray *ray,
 			t_player player, int ray_count);
 

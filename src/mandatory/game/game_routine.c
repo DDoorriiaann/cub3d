@@ -30,6 +30,9 @@ void	init_frames(t_game *game)
 
 int	game_routine(t_game *game)
 {
+	if (game->frame_nb > 72)
+		game->frame_nb = 0;
+	game->anim_frame_nb = game->frame_nb / 9;
 	reset_player_movement(&game->player);
 	get_player_input_directions(&game->player, game);
 	init_frames(game);
@@ -44,5 +47,6 @@ int	game_routine(t_game *game)
 	draw_minimap(game, game->minimap.frame);
 	mlx_put_image_to_window(game->mlx, game->window, game->frame.img, 0, 0);
 	destroy_frames(game);
+	game->frame_nb+=2;
 	return (0);
 }
