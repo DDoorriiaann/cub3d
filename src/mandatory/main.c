@@ -65,7 +65,7 @@ int main(int argc, char **argv)
     free_data(&data);
 
 	/////test bonus
-	game.bonus = TRUE;
+	game.bonus = FALSE;
 	game.frame_nb = 0;
 	//////
 	mlx_do_key_autorepeatoff(game.mlx);

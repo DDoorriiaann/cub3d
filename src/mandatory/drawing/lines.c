@@ -72,7 +72,6 @@ void	draw_wall_ray(t_game *game, t_ray ray, int ray_count)
 			fogged_color = get_fogged_color(ray.depth * 5, color);
 			if (ray.depth > 2500)
 				fogged_color = 0x000000;
-		
 			my_mlx_pixel_put(&game->frame, (int)ray_count,
 				(int)bottom, fogged_color);
 		}
