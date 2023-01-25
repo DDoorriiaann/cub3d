@@ -32,14 +32,17 @@ int	check_map_description(t_data *data, int fd)
 {
     char	*line;
 
-    line = get_next_line(fd);
-    while (line != NULL && data->count != 6)
+    while (data->count != 6)
     {
-        if (get_info(data, line) == ERROR)
-            return (1);
         line = get_next_line(fd);
+        if (!line)
+            break;
+        else
+        {
+            if (get_info(data, line) == ERROR)
+                return (1);
+        }
     }
-    free(line);
     if (data->count != 6)
         return (ERROR);
     return (0);

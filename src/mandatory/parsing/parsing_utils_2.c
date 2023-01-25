@@ -95,7 +95,6 @@ int fill_spaces_map(t_game *game)
                 j++;
             }
         }
-        printf("map = %s\n", game->map.matrix[i]);
         i++;
     }
     return (0);

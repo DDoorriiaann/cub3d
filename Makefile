@@ -23,6 +23,7 @@ SRC				=	main.c\
 					parsing/parsing_utils_1.c\
 					parsing/parsing_utils_2.c\
 					parsing/parse_information.c\
+					parsing/init_xpm.c\
 
 SRC_BONUS		=
 
