@@ -10,6 +10,8 @@ int	init_game(t_game	*game, t_data *data)
 	game->player.down = FALSE;
 	game->player.left = FALSE;
 	game->player.right = FALSE;
+	game->player.strafe_l = FALSE;
+	game->player.strafe_r = FALSE;
     game->frame.img = NULL;
 	game->minimap.frame.img = NULL;
 	game->minimap.grid_size = 5;

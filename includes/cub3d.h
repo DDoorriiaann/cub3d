@@ -46,6 +46,8 @@ typedef struct s_player
 	int		down;
 	int		left;
 	int		right;
+	int		strafe_l;
+	int		strafe_r;
 	double	angle;
 	int		x_dir;
 	int		y_dir;

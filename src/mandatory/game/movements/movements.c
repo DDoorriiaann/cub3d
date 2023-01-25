@@ -18,6 +18,16 @@ void	get_player_input_directions(t_player *player, t_game *game)
 		player->dx = (int)-(PLAYER_SPEED * cos(player->angle) * 20);
 		player->dy = (int)-(PLAYER_SPEED * sin(player->angle) * 20);
 	}
+	if (player->strafe_l)
+	{
+		player->dx = (int)(PLAYER_SPEED * cos((player->angle + ((3 * M_PI )/ 2))) * 20);
+		player->dy = (int)(PLAYER_SPEED * sin((player->angle + ((3 * M_PI )/ 2))) * 20);
+	}
+	if (player->strafe_r)
+	{
+		player->dx = (int)(PLAYER_SPEED * cos(player->angle + (M_PI / 2)) * 20);
+		player->dy = (int)(PLAYER_SPEED * sin(player->angle + (M_PI / 2)) * 20);
+	}
 	if (player->left)
 		player->angle = (player->angle - PLAYER_TURN_SPEED);
 	if (player->right)
