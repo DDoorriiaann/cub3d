@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-int key_press(int key, t_game *game) 
+int	key_press(int key, t_game *game)
 {
 	if (key == 119)
 		game->player.up = TRUE;
@@ -12,8 +12,7 @@ int key_press(int key, t_game *game)
 		game->player.right = TRUE;
 	else if (key == 65307)
 		quit_game(game);
-
-	return 0;
+	return (0);
 }
 
 int	key_release(int key, t_game *game)
@@ -26,6 +25,5 @@ int	key_release(int key, t_game *game)
 		game->player.left = FALSE;
 	else if (key == 100)
 		game->player.right = FALSE;
-
-	return 0;
+	return (0);
 }

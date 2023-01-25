@@ -23,6 +23,7 @@
 # define ERROR 1
 # define FOV 1.0
 # define GREEN_MASK 0x12ff00
+# define RAY_MAX_DEPTH 3000
 
 typedef struct s_data
 {
@@ -189,6 +190,14 @@ void	draw_floor_and_ceiling(t_frame frame);
 //RAYCASTING
 
 void	raycasting(t_game *game, t_player player);
+void	horizontal_collision_check(t_game *game, t_ray *ray);
+void	vertical_collision_check(t_game *game, t_ray *ray);
+void	fisheye_correction(t_ray *ray, float player_angle);
+void	draw_horizontal_collision(t_game *game, t_ray *ray,
+			t_player player, int ray_count);
+
+void	draw_vertical_collision(t_game *game, t_ray *ray,
+			t_player player, int ray_count);
 
 //INPUT MANAGEMENT
 
@@ -202,8 +211,11 @@ int		game_routine(t_game *game);
 
 //MOVEMENTS
 
-int	check_collision(t_map map, int x, int y);
-int	check_player_colision(t_map map, int x, int y);
+int		check_collision(t_map map, int x, int y);
+int		check_player_colision(t_map map, int x, int y);
+void	reset_player_movement(t_player *player);
+void	get_player_input_directions(t_player *player, t_game *game);
+void	set_player_direction(t_player *player);
 
 //INIT
 

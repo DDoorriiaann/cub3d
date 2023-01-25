@@ -10,7 +10,10 @@ SRC				=	main.c\
 					game/game_routine.c\
 					game/quit_game.c\
 					game/movements/collisions.c\
+					game/movements/movements.c\
 					game/raycasting/raycasting.c\
+					game/raycasting/horizontal_collision.c\
+					game/raycasting/vertical_collision.c\
 					parsing/parse_map.c\
 					parsing/init.c\
 					parsing/error.c\
