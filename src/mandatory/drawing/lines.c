@@ -59,21 +59,25 @@ void	draw_wall_ray(t_game *game, t_ray ray, int ray_count)
 	int			fogged_color;
 	int			color;
 	int			wall_y;
+	int			dy;
 
 	ray.wall_height *= 25;
 	bottom = WINDOW_HEIGHT / 2 + (ray.wall_height / 2);
 	top = bottom - ray.wall_height;
+	dy = (int)(ray.wall_height / 2) - floor(ray.wall_height);
 	while (bottom > top)
 	{
-		wall_y = floor(bottom - WINDOW_HEIGHT / 2
-				+ (ray.wall_height / 2)) - floor(ray.wall_height);
-		color = wall_color(ray, game->player, game, -wall_y);
-		fogged_color = get_fogged_color(ray.depth * 5, color);
-		if (ray.depth > 2500)
-			fogged_color = 0x000000;
 		if (bottom > 0 && bottom < WINDOW_HEIGHT)
+		{
+			wall_y = (bottom - WINDOW_HEIGHT / 2) + dy;
+			color = wall_color(ray, game->player, game, -wall_y);
+			fogged_color = get_fogged_color(ray.depth * 5, color);
+			if (ray.depth > 2500)
+				fogged_color = 0x000000;
+		
 			my_mlx_pixel_put(&game->frame, (int)ray_count,
 				(int)bottom, fogged_color);
+		}
 		bottom--;
 	}
 }
