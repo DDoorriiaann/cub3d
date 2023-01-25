@@ -209,8 +209,9 @@ int		key_release(int key, t_game *game);
 
 //GAME
 
-void	quit_game(t_game *game);
+int		quit_game(t_game *game);
 int		game_routine(t_game *game);
+void	destroy_frames(t_game *game);
 
 //MOVEMENTS
 
