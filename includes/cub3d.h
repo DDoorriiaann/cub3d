@@ -209,6 +209,11 @@ int	check_player_colision(t_map map, int x, int y);
 
 void	    init_data(t_data *data, t_game *game);
 void        init_player(t_game *game);
+int         init_xpm_north(t_data *data, t_game *game);
+int         init_xpm_south(t_data *data, t_game *game);
+int         init_xpm_east(t_data *data, t_game *game);
+int         init_xpm_west(t_data *data, t_game *game);
+int         init_all_xpm(t_data *data, t_game *game);
 
 //PARSING
 

@@ -50,7 +50,7 @@ char    *fetch_map_to_string(int fd)
         free(line);
         line = get_next_line(fd);
     }
-    while (line != NULL )
+    while (line != NULL)
     {
         if ( line[0] == '\n')
         {
@@ -76,7 +76,6 @@ void  fill_map_and_count_lines(t_game *game, char *tmp)
     game->map.matrix = ft_split(tmp, '\n');
     while ( game->map.matrix[i] != NULL)
     {
-        printf("map =  %s\n", game->map.matrix[i]);
         size = ft_strlen(game->map.matrix[i]);
         if (size > game->map.width)
             game->map.width = size;
@@ -84,8 +83,6 @@ void  fill_map_and_count_lines(t_game *game, char *tmp)
         i++;
     }
     free(tmp);
-    printf("map_width = %i\n", game->map.width);
-    printf("map_height = %i\n", game->map.height);
 }
 
 int    check_around(t_game *game, int i, int j, int size)
@@ -183,6 +180,5 @@ int fill_player_position(t_game *game)
         }
         i++;
     }
-    printf("angle = %f\n", game->player.angle);
     return (0);
 }
