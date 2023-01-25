@@ -29,7 +29,12 @@ int	wall_color(t_ray ray, t_player player, t_game *game, int wall_y)
 		if ((int)ray.y > (int)(player.y))
 			color = get_texture_pixel(ray, game->textures.north, wall_y);
 		else
-			color = get_texture_pixel(ray, game->textures.south, wall_y);
+		{
+			if (game->bonus == TRUE)
+				color = get_texture_pixel(ray, game->textures.bonus[game->anim_frame_nb], wall_y);
+			else
+				color = get_texture_pixel(ray, game->textures.south, wall_y);
+		}	
 	}	
 	else
 	{
@@ -37,15 +42,20 @@ int	wall_color(t_ray ray, t_player player, t_game *game, int wall_y)
 		if ((int)ray.x > (int)(player.x))
 			color = get_texture_pixel(ray, game->textures.west, wall_y);
 		else
-			color = get_texture_pixel(ray, game->textures.east, wall_y);
+		{
+			if (game->bonus == TRUE)
+				color = get_texture_pixel(ray, game->textures.bonus[game->anim_frame_nb], wall_y);
+			else
+				color = get_texture_pixel(ray, game->textures.east, wall_y);
+		}
 	}
 	return (color);
 }
 
 void	draw_wall_ray(t_game *game, t_ray ray, int ray_count)
 {
-	float		bottom;
-	float		top;
+	double		bottom;
+	double		top;
 	int			fogged_color;
 	int			color;
 	int			wall_y;
@@ -55,8 +65,8 @@ void	draw_wall_ray(t_game *game, t_ray ray, int ray_count)
 	top = bottom - ray.wall_height;
 	while (bottom > top)
 	{
-		wall_y = (bottom - WINDOW_HEIGHT / 2
-				+ (ray.wall_height / 2)) - ray.wall_height;
+		wall_y = floor(bottom - WINDOW_HEIGHT / 2
+				+ (ray.wall_height / 2)) - floor(ray.wall_height);
 		color = wall_color(ray, game->player, game, -wall_y);
 		fogged_color = get_fogged_color(ray.depth * 5, color);
 		if (ray.depth > 2500)

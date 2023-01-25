@@ -1,5 +1,5 @@
-#ifndef CUB3D
-# define CUB3D
+#ifndef CUB3D_H
+# define CUB3D_H
 # include <stdio.h>
 # include <stdlib.h>
 # include "get_next_line.h"
@@ -8,21 +8,22 @@
 # include "../mlx_linux/mlx.h"
 # include "../mlx_linux/mlx_int.h"
 # include "../libft/libft.h"
-# define GAME_WIDTH 400
-# define GAME_HEIGHT 300
+# define GAME_WIDTH 800
+# define GAME_HEIGHT 600
 # define MINIMAP_HEIGHT 50
 # define MINIMAP_WIDTH 50
-# define WINDOW_WIDTH 400
-# define WINDOW_HEIGHT 300
+# define WINDOW_WIDTH 800
+# define WINDOW_HEIGHT 600
 # define GRID_UNIT 128
 # define PLAYER_SIZE 1
-# define PLAYER_SPEED 0.5
-# define PLAYER_TURN_SPEED 0.03
+# define PLAYER_SPEED 1
+# define PLAYER_TURN_SPEED 0.05
 # define TRUE 1
 # define FALSE 0
 # define ERROR 1
 # define FOV 1.0
 # define GREEN_MASK 0x12ff00
+# define RAY_MAX_DEPTH 3000
 
 typedef struct s_data
 {
@@ -37,21 +38,23 @@ typedef struct s_data
 
 typedef struct s_player
 {
-	int	x;
-	int	y;
-	int	dx;
-	int	dy;
+	int		x;
+	int		y;
+	int		dx;
+	int		dy;
 	int		up;
 	int		down;
 	int		left;
 	int		right;
+	int		strafe_l;
+	int		strafe_r;
 	double	angle;
 	int		x_dir;
 	int		y_dir;
 	int		line_length;
 }	t_player;
 
-typedef struct	s_frame {
+typedef struct s_frame {
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
@@ -78,7 +81,7 @@ typedef struct s_minimap
 	t_frame	frame;
 }	t_minimap;
 
-typedef	struct s_texture
+typedef struct s_texture
 {
 	void	*img;
 	char	*addr;
@@ -87,17 +90,18 @@ typedef	struct s_texture
 	int		bpp;
 	int		line_len;
 	int		endian;
-    char    *path;
+	char	*path;
 }	t_texture;
 
 typedef struct s_textures
 {
-    int         floor_color;
-    int         ceiling_color;
+	int			floor_color;
+	int			ceiling_color;
 	t_texture	north;
 	t_texture	south;
 	t_texture	east;
 	t_texture	west;
+	t_texture	bonus[9];
 }	t_textures;
 
 typedef struct s_game
@@ -111,6 +115,9 @@ typedef struct s_game
 	t_map		map;
 	t_minimap	minimap;
 	t_textures	textures;
+	int			bonus;
+	int			frame_nb;
+	int			anim_frame_nb;
 }	t_game;
 
 typedef struct ray
@@ -118,7 +125,7 @@ typedef struct ray
 	double	x;
 	double	y;
 	double	depth;
-    double  angle;
+	double	angle;
 	int		collision;
 	double	wall_height;
 	int		x_dir;
@@ -172,14 +179,13 @@ typedef struct s_minimap_draw
 void	my_mlx_pixel_put(t_frame *frame, int x, int y, int color);
 void	draw_map(t_game *game);
 void	draw_line_horizontal(t_frame frame, int x, int y, int len);
-void	draw_protected_line_horizontal(t_game *game, t_frame minimap, int x, int y, int len, int color);
 void	draw_ray(t_game *game, t_player player, t_ray ray);
 void	draw_wall_ray(t_game *game, t_ray ray, int ray_count);
 void	draw_disc(t_game *game,
 			int x, int y, int r);
 void	zoom(t_game *game);
 int		get_pixel(t_frame frame, int x, int y);
-int		get_fogged_color(float distance, int color);
+int		get_fogged_color(double distance, int color);
 int		get_texture_pixel(t_ray ray, t_texture texture, int wall_y);
 void	draw_minimap(t_game *game, t_frame minimap);
 void	draw_minimap_background(t_game *game);
@@ -189,6 +195,14 @@ void	draw_floor_and_ceiling(t_frame frame);
 //RAYCASTING
 
 void	raycasting(t_game *game, t_player player);
+void	horizontal_collision_check(t_game *game, t_ray *ray);
+void	vertical_collision_check(t_game *game, t_ray *ray);
+void	fisheye_correction(t_ray *ray, double player_angle);
+void	draw_horizontal_collision(t_game *game, t_ray *ray,
+			t_player player, int ray_count);
+
+void	draw_vertical_collision(t_game *game, t_ray *ray,
+			t_player player, int ray_count);
 
 //INPUT MANAGEMENT
 
@@ -197,13 +211,17 @@ int		key_release(int key, t_game *game);
 
 //GAME
 
-void	quit_game(t_game *game);
+int		quit_game(t_game *game);
 int		game_routine(t_game *game);
+void	destroy_frames(t_game *game);
 
 //MOVEMENTS
 
-int	check_collision(t_map map, int x, int y);
-int	check_player_colision(t_map map, int x, int y);
+int		check_collision(t_map map, int x, int y);
+int		check_player_colision(t_map map, int x, int y);
+void	reset_player_movement(t_player *player);
+void	get_player_input_directions(t_player *player, t_game *game);
+void	set_player_direction(t_player *player);
 
 //INIT
 

@@ -1,12 +1,12 @@
 #include "cub3d.h"
 
-int	get_fogged_color(float distance, int color)
+int	get_fogged_color(double distance, int color)
 {
 	int		fogged_color;
 	int		r;
 	int		g;
 	int		b;
-	float	fog;
+	double	fog;
 
 	fog = 1.0 - (distance / 10000.0);
 	if (fog < 0)
