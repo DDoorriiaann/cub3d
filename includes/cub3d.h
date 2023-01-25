@@ -190,7 +190,8 @@ int		get_texture_pixel(t_ray ray, t_texture texture, int wall_y);
 void	draw_minimap(t_game *game, t_frame minimap);
 void	draw_minimap_background(t_game *game);
 void	draw_square(t_game *game, int x, int y, int color);
-void	draw_floor_and_ceiling(t_frame frame);
+void	draw_floor_and_ceiling(t_frame frame,
+			int ceiling_color, int floor_color);
 
 //RAYCASTING
 
