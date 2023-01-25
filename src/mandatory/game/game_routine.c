@@ -37,7 +37,8 @@ int	game_routine(t_game *game)
 	get_player_input_directions(&game->player, game);
 	init_frames(game);
 	set_player_direction(&game->player);
-	draw_floor_and_ceiling(game->frame);
+	draw_floor_and_ceiling(game->frame, game->textures.ceiling_color,
+		game->textures.floor_color);
 	draw_minimap_background(game);
 	draw_disc(game, (game->player.x / 128.0) * game->minimap.grid_size,
 		(game->player.y / 128.0) * game->minimap.grid_size, 2);
@@ -47,6 +48,6 @@ int	game_routine(t_game *game)
 	draw_minimap(game, game->minimap.frame);
 	mlx_put_image_to_window(game->mlx, game->window, game->frame.img, 0, 0);
 	destroy_frames(game);
-	game->frame_nb+=2;
+	game->frame_nb += 2;
 	return (0);
 }
