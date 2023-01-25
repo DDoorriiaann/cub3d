@@ -1,5 +1,5 @@
-#ifndef CUB3D
-# define CUB3D
+#ifndef CUB3D_H
+# define CUB3D_H
 # include <stdio.h>
 # include <stdlib.h>
 # include "get_next_line.h"
@@ -38,10 +38,10 @@ typedef struct s_data
 
 typedef struct s_player
 {
-	int	x;
-	int	y;
-	int	dx;
-	int	dy;
+	int		x;
+	int		y;
+	int		dx;
+	int		dy;
 	int		up;
 	int		down;
 	int		left;
@@ -52,7 +52,7 @@ typedef struct s_player
 	int		line_length;
 }	t_player;
 
-typedef struct	s_frame {
+typedef struct s_frame {
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
@@ -79,7 +79,7 @@ typedef struct s_minimap
 	t_frame	frame;
 }	t_minimap;
 
-typedef	struct s_texture
+typedef struct s_texture
 {
 	void	*img;
 	char	*addr;
@@ -88,13 +88,13 @@ typedef	struct s_texture
 	int		bpp;
 	int		line_len;
 	int		endian;
-    char    *path;
+	char	*path;
 }	t_texture;
 
 typedef struct s_textures
 {
-    int         floor_color;
-    int         ceiling_color;
+	int			floor_color;
+	int			ceiling_color;
 	t_texture	north;
 	t_texture	south;
 	t_texture	east;
@@ -119,7 +119,7 @@ typedef struct ray
 	double	x;
 	double	y;
 	double	depth;
-    double  angle;
+	double	angle;
 	int		collision;
 	double	wall_height;
 	int		x_dir;
@@ -173,7 +173,6 @@ typedef struct s_minimap_draw
 void	my_mlx_pixel_put(t_frame *frame, int x, int y, int color);
 void	draw_map(t_game *game);
 void	draw_line_horizontal(t_frame frame, int x, int y, int len);
-void	draw_protected_line_horizontal(t_game *game, t_frame minimap, int x, int y, int len, int color);
 void	draw_ray(t_game *game, t_player player, t_ray ray);
 void	draw_wall_ray(t_game *game, t_ray ray, int ray_count);
 void	draw_disc(t_game *game,
