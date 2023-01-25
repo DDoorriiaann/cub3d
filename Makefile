@@ -43,7 +43,7 @@ CFLAGS			=	-Wall -Werror -Wextra -g
 
 RM				=	rm -rf
 
-NAME			=	cub3d
+NAME			=	cub3D
 
 .c.o			:
 					${CC} ${CFLAGS} ${HEAD} -c $< -o ${<:.c=.o}

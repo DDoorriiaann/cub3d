@@ -2,7 +2,6 @@
 
 int	key_press(int key, t_game *game)
 {
-	printf("key: %d", key);
 	if (key == 119)
 		game->player.up = TRUE;
 	else if (key == 115)
