@@ -32,7 +32,7 @@ int	check_map_description(t_data *data, int fd)
 {
 	char	*line;
 
-	while (data->count < 6)
+	while (data->count != 6)
 	{
 		line = get_next_line(fd);
 		if (!line)

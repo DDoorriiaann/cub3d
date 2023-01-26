@@ -43,7 +43,7 @@ int	read_fd(t_data *data, t_game *game, int fd, t_textures *textures)
 	tmp = fetch_map_to_string(fd);
 	if (tmp == NULL)
 	{
-		ft_error("Invalid map : No Map !\n");
+		ft_error("Invalid map : Map Error !\n");
 		return (ERROR);
 	}
 	fill_map_and_count_lines(game, tmp);
