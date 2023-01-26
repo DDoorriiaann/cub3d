@@ -16,8 +16,8 @@
 # define WINDOW_HEIGHT 600
 # define GRID_UNIT 128
 # define PLAYER_SIZE 1
-# define PLAYER_SPEED 1
-# define PLAYER_TURN_SPEED 0.08
+# define PLAYER_SPEED 0.7
+# define PLAYER_TURN_SPEED 0.05
 # define TRUE 1
 # define FALSE 0
 # define ERROR 1
@@ -272,5 +272,6 @@ int		ft_error(char *message);
 
 void	free_data(t_data *data);
 void	free_arr(char **arr);
+void	free_xpm(t_game *game, t_textures *textures);
 
 #endif

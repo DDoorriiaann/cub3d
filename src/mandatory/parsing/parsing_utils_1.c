@@ -20,7 +20,8 @@ void	check_empty_string(t_data *data, char *line)
 	i = 0;
 	while (line[i] != ' ')
 		i++;
-	i++;
+	while (line[i] == ' ')
+		i++;
 	if (line[i] == '\n' || line[i] == '\0')
 	{
 		ft_error("You have an empty information\n");
@@ -53,7 +54,7 @@ int	check_is_number(char *tmp)
 	i = ft_is_number(tmp);
 	if (i == ERROR)
 	{
-		ft_error("Invalid format color\n");
+		ft_error("Invalid color format\n");
 		return (ERROR);
 	}
 	return (0);

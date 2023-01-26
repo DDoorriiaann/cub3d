@@ -2,6 +2,7 @@
 
 int	init_xpm_north(t_data *data, t_game *game)
 {
+	game->textures.north.addr = NULL;
 	game->textures.north.img = mlx_xpm_file_to_image(game->mlx, data->NO,
 			&game->textures.north.width, &game->textures.north.height);
 	if (!game->textures.north.img)
@@ -22,6 +23,7 @@ int	init_xpm_north(t_data *data, t_game *game)
 
 int	init_xpm_south(t_data *data, t_game *game)
 {
+	game->textures.south.addr = NULL;
 	game->textures.south.img = mlx_xpm_file_to_image(game->mlx, data->SO,
 			&game->textures.south.width, &game->textures.south.height);
 	if (!game->textures.south.img)
@@ -42,6 +44,7 @@ int	init_xpm_south(t_data *data, t_game *game)
 
 int	init_xpm_east(t_data *data, t_game *game)
 {
+	game->textures.east.addr = NULL;
 	game->textures.east.img = mlx_xpm_file_to_image(game->mlx, data->EA,
 			&game->textures.east.width, &game->textures.east.height);
 	if (!game->textures.east.img)
@@ -62,6 +65,7 @@ int	init_xpm_east(t_data *data, t_game *game)
 
 int	init_xpm_west(t_data *data, t_game *game)
 {
+	game->textures.west.addr = NULL;
 	game->textures.west.img = mlx_xpm_file_to_image(game->mlx, data->WE,
 			&game->textures.west.width,
 			&game->textures.west.height);

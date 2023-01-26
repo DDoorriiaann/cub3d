@@ -79,8 +79,7 @@ int	fill_spaces_map(t_game *game)
 			if (tmp == NULL)
 				return (ERROR);
 			free(game->map.matrix[i]);
-			game->map.matrix[i] = ft_strdup(tmp);
-			free(tmp);
+			game->map.matrix[i] = tmp;
 		}
 		else
 			replace_spaces_in_longer_lines(game, i, j);

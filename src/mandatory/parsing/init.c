@@ -9,6 +9,8 @@ void	init_data(t_data *data, t_game *game)
 	data->F = NULL;
 	data->C = NULL;
 	data->count = 0;
+	game->map.matrix = NULL;
+	game->minimap_mask.img = NULL;
 	game->map.width = 0;
 	game->map.height = 0;
 }

@@ -16,6 +16,18 @@ void	free_data(t_data *data)
 		free(data->C);
 }
 
+void	free_xpm(t_game *game, t_textures *textures)
+{
+	if (textures->north.img)
+		mlx_destroy_image(game->mlx, textures->north.img);
+	if (textures->south.img)
+		mlx_destroy_image(game->mlx, textures->south.img);
+	if (textures->east.img)
+		mlx_destroy_image(game->mlx, textures->east.img);
+	if (textures->west.img)
+		mlx_destroy_image(game->mlx, textures->west.img);
+}
+
 void	free_arr(char **arr)
 {
 	int	i;

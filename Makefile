@@ -55,8 +55,7 @@ NAME			=	cub3D
 $(NAME)			:	${OBJS}
 					make -sC libft
 					make -sC mlx_linux
-					${CC} ${CFLAGS} ${LIB_FLAGS} ${OBJS} -o ${NAME} -lft ${MLX_FLAGS}
-
+					${CC} ${CFLAGS} ${LIB_FLAGS} ${OBJS} -o ${NAME} -lft ${MLX_FLAGS} 
 all				:	${NAME}
 
 bonus			:	${OBJS_BONUS}

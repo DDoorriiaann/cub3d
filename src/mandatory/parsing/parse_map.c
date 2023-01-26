@@ -13,7 +13,7 @@ int	valid_character(t_game *game)
 		{
 			if (ft_strchr("01 NSEW", game->map.matrix[i][j]) == 0)
 			{
-				ft_error("Invalid MapError : invalid character!");
+				ft_error("Invalid MapError : invalid character!\n");
 				return (ERROR);
 			}
 			j++;
