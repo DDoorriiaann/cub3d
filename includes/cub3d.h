@@ -127,7 +127,7 @@ typedef struct ray
 	double	depth;
 	double	angle;
 	int		collision;
-	double	wall_height;
+	float	wall_height;
 	int		x_dir;
 	int		y_dir;
 	double	orig_x;

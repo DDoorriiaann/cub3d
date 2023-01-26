@@ -5,7 +5,7 @@ int	init_game(t_game	*game, t_data *data)
 	game->mlx = mlx_init();
 	if (!game->mlx)
 		return (ERROR);
-    game->window = mlx_new_window(game->mlx, GAME_WIDTH * 2, GAME_HEIGHT * 2, "cub3D");
+    game->window = mlx_new_window(game->mlx, GAME_WIDTH, GAME_HEIGHT, "cub3D");
 	game->player.line_length = 50;
 	game->player.up = FALSE;
 	game->player.down = FALSE;

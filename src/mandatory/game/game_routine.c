@@ -44,7 +44,7 @@ int	game_routine(t_game *game)
 		(game->player.y / 128.0) * game->minimap.grid_size, 2);
 	raycasting(game, game->player);
 	draw_map(game);
-	zoom(game);
+	//zoom(game);
 	draw_minimap(game, game->minimap.frame);
 	mlx_put_image_to_window(game->mlx, game->window, game->frame.img, 0, 0);
 	destroy_frames(game);
