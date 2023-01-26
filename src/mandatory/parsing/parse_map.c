@@ -1,26 +1,26 @@
 #include "cub3d.h"
 
-int valid_character(t_game *game)
+int	valid_character(t_game *game)
 {
 	int	i;
-    int j;
+	int	j;
 
 	i = 0;
 	while (game->map.matrix[i])
 	{
-        j = 0;
-        while (game->map.matrix[i][j])
-        {
-            if (ft_strchr("01 NSEW", game->map.matrix[i][j]) == 0)
-            {
-                ft_error("Invalid MapError : invalid character!");
-                return (ERROR);
-            }
-            j++;
-        }
+		j = 0;
+		while (game->map.matrix[i][j])
+		{
+			if (ft_strchr("01 NSEW", game->map.matrix[i][j]) == 0)
+			{
+				ft_error("Invalid MapError : invalid character!");
+				return (ERROR);
+			}
+			j++;
+		}
 		i++;
 	}
-    return (0);
+	return (0);
 }
 
 int	check_file_extension(char *file_name)
@@ -38,147 +38,66 @@ int	check_file_extension(char *file_name)
 	return (0);
 }
 
-char    *fetch_map_to_string(int fd)
+char	*fetch_map_to_string(int fd)
 {
-    char	*line;
-    char    *tmp;
+	char	*line;
+	char	*tmp;
 
-    tmp = NULL;
-    line = get_next_line(fd);
-    while (line != NULL && line[0] == '\n')
-    {
-        free(line);
-        line = get_next_line(fd);
-    }
-    while (line != NULL)
-    {
-        if ( line[0] == '\n')
-        {
-            ft_error("Invalid MapError : the map contains empty lines\n");
-            free(line);
-            free(tmp);
-            return (NULL);
-        }
-        tmp = ft_strjoin(tmp, line);
-        free(line);
-        line = get_next_line(fd);
-    }
-    free(line);
-    return (tmp);
+	tmp = NULL;
+	line = get_next_line(fd);
+	while (line != NULL && line[0] == '\n')
+	{
+		free(line);
+		line = get_next_line(fd);
+	}
+	while (line != NULL)
+	{
+		if (line[0] == '\n')
+		{
+			ft_error("Invalid MapError : the map contains empty lines\n");
+			free(line);
+			free(tmp);
+			return (NULL);
+		}
+		tmp = ft_strjoin(tmp, line);
+		free(line);
+		line = get_next_line(fd);
+	}
+	free(line);
+	return (tmp);
 }
 
-void  fill_map_and_count_lines(t_game *game, char *tmp)
+void	fill_map_and_count_lines(t_game *game, char *tmp)
 {
-    int i;
-    int size;
+	int	i;
+	int	size;
 
-    i = 0;
-    game->map.matrix = ft_split(tmp, '\n');
-    while ( game->map.matrix[i] != NULL)
-    {
-        size = ft_strlen(game->map.matrix[i]);
-        if (size > game->map.width)
-            game->map.width = size;
-        game->map.height++;
-        i++;
-    }
-    free(tmp);
+	i = 0;
+	game->map.matrix = ft_split(tmp, '\n');
+	while (game->map.matrix[i] != NULL)
+	{
+		size = ft_strlen(game->map.matrix[i]);
+		if (size > game->map.width)
+			game->map.width = size;
+		game->map.height++;
+		i++;
+	}
+	free(tmp);
 }
 
-int    check_around(t_game *game, int i, int j, int size)
+int	check_around(t_game *game, int i, int j, int size)
 {
-    if (j - 1 < 0 || ((game->map.matrix[i][j - 1] != '1') && (game->map.matrix[i][j - 1] != '0')))
-        return (ERROR);
-    if (j + 1 >= size || ((game->map.matrix[i][j + 1] != '1') && (game->map.matrix[i][j + 1] != '0')))
-        return (ERROR);
-    if (i - 1 < 0 || ((game->map.matrix[i - 1][j] != '1') && (game->map.matrix[i - 1][j] != '0')))
-        return (ERROR);
-    if (i + 1 >= game->map.height || ((game->map.matrix[i + 1][j] != '1') && (game->map.matrix[i + 1][j] != '0')))
-        return (ERROR);
-    return (0);
-}
-
-int    check_valid_map(t_game *game)
-{
-    int i;
-    int j;
-    int size;
-
-    i = 0;
-    while (game->map.matrix[i])
-    {
-        j = 0;
-        size = ft_strlen(game->map.matrix[i]);
-        while (j < size)
-        {
-            if (game->map.matrix[i][j] == '0')
-                if (check_around(game, i, j, size) == ERROR)
-                {
-                    ft_error("Invalid MapError : the map is not closed\n");
-                    return (ERROR);
-                }
-            j++;
-        }
-        i++;
-    }
-    return (0);
-}
-
-int    player_exist(t_game *game)
-{
-    if (game->player.angle != -1)
-        return (TRUE);
-    return (FALSE);
-}
-
-int fill_player_position(t_game *game)
-{
-    int	i;
-    int j;
-
-    init_player(game);
-    i = 0;
-    while (game->map.matrix[i])
-    {
-        j = 0;
-        while (game->map.matrix[i][j])
-        {
-            if (game->map.matrix[i][j] == 'N' && player_exist(game) == FALSE)
-            {
-                game->player.angle = 3 * (M_PI / 2);
-                game->player.x = (j * 128) + 64;
-                game->player.y = (i * 128) + 64;
-                game->map.matrix[i][j] = '0';
-            }
-            else if (game->map.matrix[i][j] == 'S' && player_exist(game) == FALSE)
-            {
-                game->player.angle = M_PI / 2;
-                game->player.x = (j * 128) + 64;
-                game->player.y = (i * 128) + 64;
-                game->map.matrix[i][j] = '0';
-            }
-            else if (game->map.matrix[i][j] == 'E' && player_exist(game) == FALSE)
-            {
-                game->player.angle = 0;
-                game->player.x = (j * 128) + 64;
-                game->player.y = (i * 128) + 64;
-                game->map.matrix[i][j] = '0';
-            }
-            else if (game->map.matrix[i][j] == 'W' && player_exist(game) == FALSE)
-            {
-                game->player.angle = M_PI;
-                game->player.x = (j * 128) + 64;
-                game->player.y = (i * 128) + 64;
-                game->map.matrix[i][j] = '0';
-            }
-            else if (game->map.matrix[i][j] != '0' && game->map.matrix[i][j] != '1' && game->map.matrix[i][j] != ' ')
-            {
-                ft_error("Invalid MapError : Too many players\n");
-                return (ERROR);
-            }
-            j++;
-        }
-        i++;
-    }
-    return (0);
+	if (j - 1 < 0 || ((game->map.matrix[i][j - 1] != '1')
+		&& (game->map.matrix[i][j - 1] != '0')))
+		return (ERROR);
+	if (j + 1 >= size || ((game->map.matrix[i][j + 1] != '1')
+		&& (game->map.matrix[i][j + 1] != '0')))
+		return (ERROR);
+	if (i - 1 < 0 || ((game->map.matrix[i - 1][j] != '1')
+		&& (game->map.matrix[i - 1][j] != '0')))
+		return (ERROR);
+	if (i + 1 >= game->map.height || ((game->map.matrix[i + 1][j] != '1')
+		&& (game->map.matrix[i + 1][j] != '0')))
+		return (ERROR);
+	return (0);
 }
