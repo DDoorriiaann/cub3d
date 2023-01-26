@@ -260,6 +260,8 @@ void	south_position(t_game *game, int i, int j);
 void	east_position(t_game *game, int i, int j);
 void	west_position(t_game *game, int i, int j);
 int		position_in_map(t_game *game, int i, int j);
+char	*replace_spaces_in_smaller_lines(t_game *game, int i, int j);
+void	replace_spaces_in_longer_lines(t_game *game, int i, int j);
 
 //ERROR
 
