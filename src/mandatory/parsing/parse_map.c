@@ -54,7 +54,6 @@ char	*fetch_map_to_string(int fd)
 	{
 		if (line[0] == '\n')
 		{
-			ft_error("Invalid MapError : the map contains empty lines\n");
 			free(line);
 			free(tmp);
 			return (NULL);
