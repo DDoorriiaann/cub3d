@@ -24,6 +24,7 @@ SRC				=	main.c\
 					parsing/parsing_utils_2.c\
 					parsing/parsing_utils_3.c\
 					parsing/parsing_utils_4.c\
+					parsing/parsing_utils_5.c\
 					parsing/parse_information.c\
 					parsing/init_xpm.c\
 					parsing/open_and_read_fd.c\
