@@ -7,8 +7,10 @@ int	init_game(t_game	*game, t_data *data)
 
 	i = 0;
 	game->mlx = mlx_init();
-	game->window = mlx_new_window(game->mlx, GAME_WIDTH
-			* 2, GAME_HEIGHT * 2, "cub3D");
+
+	if (!game->mlx)
+		return (ERROR);
+  game->window = mlx_new_window(game->mlx, GAME_WIDTH, GAME_HEIGHT, "cub3D");
 	game->player.line_length = 50;
 	game->player.up = FALSE;
 	game->player.down = FALSE;
@@ -73,7 +75,7 @@ int	main(int argc, char **argv)
 	}
 	free_data(&data);
 	/////test bonus
-	game.bonus = TRUE;
+	game.bonus = FALSE;
 	game.frame_nb = 0;
 	//////
 	mlx_do_key_autorepeatoff(game.mlx);

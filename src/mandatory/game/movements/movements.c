@@ -33,11 +33,11 @@ void	get_player_input_directions(t_player *player, t_game *game)
 	if (player->right)
 		player->angle = (player->angle + PLAYER_TURN_SPEED);
 	if (!check_player_colision(game->map,
-			(game->player.x + (game->player.dx * 10))
+			(game->player.x + (game->player.dx * 2))
 			/ GRID_UNIT, game->player.y / GRID_UNIT))
 		game->player.x += game->player.dx;
 	if (!check_player_colision(game->map, (game->player.x) / GRID_UNIT,
-			(game->player.y + (game->player.dy * 10)) / GRID_UNIT))
+			(game->player.y + (game->player.dy * 2)) / GRID_UNIT))
 		game->player.y += game->player.dy;
 }
 

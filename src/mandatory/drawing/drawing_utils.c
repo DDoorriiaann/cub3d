@@ -29,8 +29,8 @@ int	get_texture_pixel(t_ray ray, t_texture texture, int wall_y)
 	int		texture_y;
 	char	*data;
 
-	texture_y = texture.height - (int)((wall_y / ray.wall_height)
-			* texture.height);
+	texture_y = texture.height - ((wall_y / ray.wall_height)
+			* texture.height) -1;
 	if (ray.collision == 1)
 		texture_x = (int)(((ray.x / GRID_UNIT - (int)ray.x / GRID_UNIT))
 				* texture.width);

@@ -17,7 +17,7 @@
 # define GRID_UNIT 128
 # define PLAYER_SIZE 1
 # define PLAYER_SPEED 1
-# define PLAYER_TURN_SPEED 0.05
+# define PLAYER_TURN_SPEED 0.08
 # define TRUE 1
 # define FALSE 0
 # define ERROR 1
@@ -127,7 +127,7 @@ typedef struct ray
 	double	depth;
 	double	angle;
 	int		collision;
-	double	wall_height;
+	float	wall_height;
 	int		x_dir;
 	int		y_dir;
 	double	orig_x;
@@ -190,7 +190,8 @@ int		get_texture_pixel(t_ray ray, t_texture texture, int wall_y);
 void	draw_minimap(t_game *game, t_frame minimap);
 void	draw_minimap_background(t_game *game);
 void	draw_square(t_game *game, int x, int y, int color);
-void	draw_floor_and_ceiling(t_frame frame);
+void	draw_floor_and_ceiling(t_frame frame,
+			int ceiling_color, int floor_color);
 
 //RAYCASTING
 
