@@ -22,8 +22,11 @@ SRC				=	main.c\
 					parsing/ceiling.c\
 					parsing/parsing_utils_1.c\
 					parsing/parsing_utils_2.c\
+					parsing/parsing_utils_3.c\
+					parsing/parsing_utils_4.c\
 					parsing/parse_information.c\
 					parsing/init_xpm.c\
+					parsing/open_and_read_fd.c\
 
 SRC_BONUS		=
 

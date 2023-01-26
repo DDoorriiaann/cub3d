@@ -226,44 +226,51 @@ void	set_player_direction(t_player *player);
 
 //INIT
 
-void	    init_data(t_data *data, t_game *game);
-void        init_player(t_game *game);
-int         init_xpm_north(t_data *data, t_game *game);
-int         init_xpm_south(t_data *data, t_game *game);
-int         init_xpm_east(t_data *data, t_game *game);
-int         init_xpm_west(t_data *data, t_game *game);
-int         init_all_xpm(t_data *data, t_game *game);
+void	init_data(t_data *data, t_game *game);
+void	init_player(t_game *game);
+int		init_xpm_north(t_data *data, t_game *game);
+int		init_xpm_south(t_data *data, t_game *game);
+int		init_xpm_east(t_data *data, t_game *game);
+int		init_xpm_west(t_data *data, t_game *game);
+int		init_all_xpm(t_data *data, t_game *game);
 
 //PARSING
 
-int         check_map_description(t_data *data, int fd);
-char	    *save_path(t_data *data, char *line);
-int		    check_file_extension(char *file_name);
-int		    open_fd(char *file);
-int		    read_fd(t_data *data, t_game *game, int fd, t_textures *textures);
-int 	    check_floor(t_data *data, t_textures *textures);
-int         ft_strlen_path(int i, const char *line);
-void	    check_empty_string(t_data *data, char * line);
-int         check_is_number(char *tmp);
-int		    ft_number_comma(const char *str);
-int         check_is_valid_color(int color);
-int         get_hex_color(int r, int g, int b);
-int         check_ceiling(t_data *data, t_textures *textures);
-char        *fetch_map_to_string(int fd);
-void        fill_map_and_count_lines(t_game *game, char *tmp);
-int         check_valid_map(t_game *game);
-int         valid_character(t_game *game);
-int         fill_player_position(t_game *game);
-int         player_exist(t_game *game);
-int         fill_spaces_map(t_game *game);
+int		check_map_description(t_data *data, int fd);
+char	*save_path(t_data *data, char *line);
+int		check_file_extension(char *file_name);
+int		open_fd(char *file);
+int		read_fd(t_data *data, t_game *game, int fd, t_textures *textures);
+int		check_floor(t_data *data, t_textures *textures);
+int		ft_strlen_path(int i, const char *line);
+void	check_empty_string(t_data *data, char *line);
+int		check_is_number(char *tmp);
+int		ft_number_comma(const char *str);
+int		check_is_valid_color(int color);
+int		get_hex_color(int r, int g, int b);
+int		check_ceiling(t_data *data, t_textures *textures);
+char	*fetch_map_to_string(int fd);
+void	fill_map_and_count_lines(t_game *game, char *tmp);
+int		check_valid_map(t_game *game);
+int		valid_character(t_game *game);
+int		fill_player_position(t_game *game);
+int		player_exist(t_game *game);
+int		fill_spaces_map(t_game *game);
+void	north_position(t_game *game, int i, int j);
+void	south_position(t_game *game, int i, int j);
+void	east_position(t_game *game, int i, int j);
+void	west_position(t_game *game, int i, int j);
+int		position_in_map(t_game *game, int i, int j);
+char	*replace_spaces_in_smaller_lines(t_game *game, int i, int j);
+void	replace_spaces_in_longer_lines(t_game *game, int i, int j);
 
 //ERROR
 
-int		    ft_error(char *message);
+int		ft_error(char *message);
 
 //FREE
 
-void    free_data(t_data *data);
-void    free_arr(char **arr);
+void	free_data(t_data *data);
+void	free_arr(char **arr);
 
 #endif

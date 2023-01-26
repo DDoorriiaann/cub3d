@@ -1,9 +1,9 @@
 #include "cub3d.h"
 
-void    free_data(t_data *data)
+void	free_data(t_data *data)
 {
 	if (data->NO)
-    	free(data->NO);
+		free(data->NO);
 	if (data->SO)
 		free(data->SO);
 	if (data->EA)
@@ -16,15 +16,15 @@ void    free_data(t_data *data)
 		free(data->C);
 }
 
-void    free_arr(char **arr)
+void	free_arr(char **arr)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (arr[i])
-    {
-        free(arr[i]);
-        i++;
-    }
-    free(arr);
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
 }
