@@ -30,6 +30,10 @@ int	init_game(t_game	*game, t_data *data)
 	if (init_all_xpm(data, game) == ERROR)
 		return (ERROR);
 	game->window = mlx_new_window(game->mlx, GAME_WIDTH, GAME_HEIGHT, "cub3D");
+	if (!game->window)
+	{
+		return (ERROR);
+	}
 	// while (i < 9)
 	// {
 	// 	filename = ft_strdup("./textures/rick/rick .xpm");
@@ -62,6 +66,8 @@ int	main(int argc, char **argv)
 		return (1);
 	init_data(&data, &game);
 	fd = open_fd(argv[1]);
+	if (fd == ERROR)
+		return (ERROR);
 	if (read_fd(&data, &game, fd, &game.textures) == ERROR)
 	{
 		free_data(&data);
