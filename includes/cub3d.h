@@ -183,7 +183,6 @@ void	draw_ray(t_game *game, t_player player, t_ray ray);
 void	draw_wall_ray(t_game *game, t_ray ray, int ray_count);
 void	draw_disc(t_game *game,
 			int x, int y, int r);
-void	zoom(t_game *game);
 int		get_pixel(t_frame frame, int x, int y);
 int		get_fogged_color(double distance, int color);
 int		get_texture_pixel(t_ray ray, t_texture texture, int wall_y);
