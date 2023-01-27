@@ -6,10 +6,7 @@ int	open_fd(char *file)
 
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-	{
 		ft_error("failed to open fd\n");
-		return (ERROR);
-	}
 	return (fd);
 }
 

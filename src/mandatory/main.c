@@ -66,7 +66,7 @@ int	main(int argc, char **argv)
 		return (1);
 	init_data(&data, &game);
 	fd = open_fd(argv[1]);
-	if (fd == ERROR)
+	if (fd < 0)
 		return (ERROR);
 	if (read_fd(&data, &game, fd, &game.textures) == ERROR)
 	{

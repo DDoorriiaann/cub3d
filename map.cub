@@ -15,7 +15,7 @@ EA ./textures/brick1.xpm
 
 NO ./textures/wall2.xpm
 WE ./textures/wall4.xpm
-C 42,42,42
+C 42,42,
 F 255,0,123
 
 1111111111111111111111111111111111

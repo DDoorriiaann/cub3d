@@ -45,6 +45,7 @@ int	check_ceiling(t_data *data, t_textures *textures)
 	if (!tmp ||!tmp[0] || !tmp[1] || !tmp[2])
 	{
 		free_arr(tmp);
+		ft_error("Missing color\n");
 		return (ERROR);
 	}
 	if (check_number(tmp) == ERROR)
